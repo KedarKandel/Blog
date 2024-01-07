@@ -1,5 +1,7 @@
 import Header from "../components/header";
 import Blog from "../components/Blog";
+import AddBlog from "../components/AddBlog";
+import { useState } from "react";
 
 export interface IBlog {
   id: number;
@@ -8,6 +10,8 @@ export interface IBlog {
 }
 
 const Blogs = () => {
+
+ 
   // Assuming you have a blogPosts array in your Redux store
   const blogPosts: IBlog[] = [
     { id: 1, title: "commerce", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nunc sed augue lacus viverra vitae congue. Ultrices in iaculis nunc sed. " },
@@ -22,6 +26,7 @@ const Blogs = () => {
   return (
     <div className="p-4">
       <Header />
+      <AddBlog/>
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
         {blogPosts.map((post: IBlog) => (
           <Blog key={post.id} {...post} />
