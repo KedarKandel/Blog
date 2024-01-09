@@ -7,7 +7,6 @@ import AddBlogBtn from "../components/AddBlogBtn";
 
 const Blogs = () => {
   const blogs = useSelector((state: RootState) => state.blog);
-
   return (
     <div className="p-4 flex flex-col">
       <Header />
