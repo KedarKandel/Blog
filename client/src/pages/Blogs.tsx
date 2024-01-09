@@ -8,13 +8,15 @@ import AddBlogBtn from "../components/AddBlogBtn";
 const Blogs = () => {
   const blogs = useSelector((state: RootState) => state.blog);
 
+  console.log(blogs.map((b)=>(b)))
+
   return (
     <div className="p-4 flex flex-col">
       <Header />
       <AddBlogBtn />
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
-        {blogs.map((post: IBlog) => (
-          <Blog key={post.id} {...post} />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {blogs.map((blog: IBlog) => (
+         <Blog key={blog.id} {...blog}/>
         ))}
       </div>
     </div>

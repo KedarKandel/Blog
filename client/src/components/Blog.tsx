@@ -4,18 +4,32 @@ interface BlogProps {
   id: number;
   title: string;
   content: string;
+  image: string;
 }
 const Blog = (blog: BlogProps) => {
+  
   return (
-    <div className="flex flex-col p-3 shadow-md justify-center items-center cursor-pointer">
-      <h3 className=" uppercase text-xl font-medium p-2 text-cyan-500">
-        {blog.title}
-      </h3>
-      <p className=" text-center space-x-2">{blog.content.slice(0, 100)}</p>
-      <button className=" p-1 mt-2 text-black outline ">
-        <Link to={`/blogs/${blog.id}`}>Read More</Link>
-      </button>
-    </div>
+    <Link to={`/blogs/${blog.id}`}>
+      <div
+        key={blog.id}
+        className="bg-white rounded-md shadow-md p-4 flex flex-col items-center"
+      >
+        {/* Placeholder for the blog image */}
+        <img
+          src={blog.image}
+          alt={`Blog Image - ${blog.title}`}
+          className="w-full h-32 object-cover mb-4 rounded-md"
+         
+        />
+        <div className="flex-grow">
+          <h3 className="text-lg font-bold mb-2">{blog.title}</h3>
+          <p className="text-gray-600">{blog.content}</p>
+        </div>
+        <div className="mt-2">
+          {/* Additional information or actions if needed */}
+        </div>
+      </div>
+    </Link>
   );
 };
 
