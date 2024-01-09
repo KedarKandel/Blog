@@ -6,7 +6,7 @@ import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Blog from "./pages/Blog";
-import AddBlog from "./components/AddBlog";
+import AddBlogForm from "./components/AddBlogForm";
 
 
 
@@ -17,7 +17,7 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="blogs" element={<Blogs />} />
-          <Route path="addBlog" element={<AddBlog />} />
+          <Route path="addBlogForm" element={<AddBlogForm />} />
           <Route path="blogs/:id" element={<Blog />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />

@@ -6,16 +6,19 @@ import { IBlog } from "../interface";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
 import { addNewBlog } from "../redux/reducers/blogReducer";
+import { useNavigate } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
 
-const AddBlog = () => {
+const AddBlogForm = () => {
   const dispatch = useDispatch<AppDispatch>();
-  // const navigate= useNavigate()
+  const navigate = useNavigate();
   const [blog, setBlog] = useState<Partial<IBlog>>({
     title: "",
     content: "",
-    image: ""
+    image: "",
   });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -24,16 +27,18 @@ const AddBlog = () => {
   };
 
   // submit blog
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsSubmitting(true);
     dispatch(addNewBlog(blog as IBlog));
 
     // Notify with toast
-    toast.success("New Blog has been added!", {
-      onClose: () => {
-        setBlog({ title: "", content: "", image:"" });
-      },
-    });
+    toast.success("New Blog has been added!");
+    setTimeout(() => {
+      setBlog({ title: "", content: "", image: "" });
+      setIsSubmitting(false);
+      navigate("/blogs");
+    }, 4000);
   };
 
   return (
@@ -85,8 +90,9 @@ const AddBlog = () => {
         <button
           className="mt-6 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
           type="submit"
+          disabled={isSubmitting}
         >
-          Add Blog
+          {isSubmitting ? "submitting..." : "Add Blog"}
         </button>
       </form>
 
@@ -95,4 +101,4 @@ const AddBlog = () => {
   );
 };
 
-export default AddBlog;
+export default AddBlogForm;
