@@ -1,4 +1,8 @@
 import { ChangeEvent, FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import { IBlog } from "../interface";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
@@ -6,6 +10,7 @@ import { addNewBlog } from "../redux/reducers/blogReducer";
 
 const AddBlog = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const [blog, setBlog] = useState<Partial<IBlog>>({
     title: "",
     content: "",
@@ -19,17 +24,18 @@ const AddBlog = () => {
 
   // submit blog
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Dispatch the action with the new blog object containing only title and content
     dispatch(addNewBlog(blog as IBlog));
-
-    // Reset the form after adding a blog
-    setBlog({ title: "", content: "" });
+    // Notify with toast
+    toast.success("New Blog has been added!", {
+      onClose: () => {
+        setBlog({ title: "", content: "" });
+      
+      },
+    });
   };
-
-
 
   return (
     <div className="bg-blue-50 min-h-screen flex items-center justify-center">
@@ -72,6 +78,8 @@ const AddBlog = () => {
           Add Blog
         </button>
       </form>
+
+      <ToastContainer />
     </div>
   );
 };
