@@ -9,7 +9,7 @@ const Header = () => {
         id=""
         className=" text-cyan-500 outline-none p-2 rounded-lg"
       >
-        <option value="" selected>All</option>
+        <option value="" defaultValue="">All</option>
         <option value="">Newest</option>
         <option value="">Oldest</option>
         <option value="">Science</option>
