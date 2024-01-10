@@ -1,27 +1,19 @@
-import { Outlet, Link } from "react-router-dom";
+import Footer from "../components/Footer";
+import Hero from "../components/Hero";
+import Header from "../components/header";
+import { Outlet } from "react-router-dom";
 
 const Layout = () => {
   return (
-    <>
-      <nav className=" w-100 flex bg-gray-100 justify-between items-center p-5 shadow-sm">
-        <h1 className="text-2xl font-mono text-cyan-500">
-          <Link to="/">Bloggers</Link>
-        </h1>
-        <ul className="text-lg text-cyan-500 font-semibold flex gap-4">
-          <li>
-            <Link to="/blogs">Blogs</Link>
-          </li>
-          <li>
-            <Link to="/login">Login</Link>
-          </li>
-          <li>
-            <Link to="/register">Register</Link>
-          </li>
-        </ul>
-      </nav>
+    <div className=" flex flex-col min-h-screen">
+      <Header />
+      <Hero />
+      <div className=" container mx-auto flex-1 py-6">
+        <Outlet />
+      </div>
 
-      <Outlet />
-    </>
+      <Footer />
+    </div>
   );
 };
 

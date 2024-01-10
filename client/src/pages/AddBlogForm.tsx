@@ -42,7 +42,7 @@ const AddBlogForm = () => {
   };
 
   return (
-    <div className="bg-blue-50 min-h-screen flex items-center justify-center">
+    <div className="bg-blue-50 flex items-center justify-center">
       <form
         className="bg-white p-8 rounded-md shadow-md max-w-md w-full"
         onSubmit={handleSubmit}

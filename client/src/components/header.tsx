@@ -1,28 +1,18 @@
-
+import { Link } from "react-router-dom"
 
 const Header = () => {
   return (
-    <div className="flex items-center justify-around shadow-lg h-40 rounded-lg">
-      <h2 className=" text-cyan-500 text-2xl font-mono font-semibold">All Blogs</h2>
-      <select
-        name="Sort"
-        id=""
-        className=" text-cyan-500 outline-none p-2 rounded-lg"
-      >
-        <option value="" defaultValue="">All</option>
-        <option value="">Newest</option>
-        <option value="">Oldest</option>
-        <option value="">Science</option>
-        <option value="">Commerce</option>
-        <option value="">Finance</option>
-      </select>
-      <input
-        className=" p-2 text-justify outline-none text-cyan-500 placeholder:text-cyan-500 rounded-lg"
-        type="text"
-        placeholder="search"
-      />
+    <div className="bg-blue-800 py-6">
+      <div className=" container mx-auto flex justify-between">
+        <span className=" text-2xl text-white font-bold tracking-tight">
+          <Link to={"/"}>BlogHub</Link>
+        </span>
+        <span className=" flex bg-white space-x-2">
+          <Link to={"/sign-in"} className="flex items-center text-blue-600 px-3 font-bold hover:bg-gray-200">Sign In</Link>
+        </span>
+      </div>
     </div>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

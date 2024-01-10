@@ -6,7 +6,8 @@ import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Blog from "./pages/Blog";
-import AddBlogForm from "./components/AddBlogForm";
+import AddBlogForm from "./pages/AddBlogForm";
+
 
 
 
