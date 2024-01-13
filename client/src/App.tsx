@@ -20,7 +20,7 @@ export default function App() {
           <Route path="blogs" element={<Blogs />} />
           <Route path="addBlogForm" element={<AddBlogForm />} />
           <Route path="blogs/:id" element={<Blog />} />
-          <Route path="login" element={<Login />} />
+          <Route path="sign-in" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="*" element={<NotFound />} />
         </Route>
