@@ -1,7 +1,10 @@
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { registerUserAsync } from "../redux/reducers/userSlice";
+import { AppDispatch } from "../redux/store";
 
-type RegisterFormData = {
+export type RegisterFormData = {
   firstName: string;
   lastName: string;
   email: string;
@@ -14,26 +17,30 @@ const Register = () => {
     register,
     watch,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<RegisterFormData>();
 
+
+  const dispatch = useDispatch<AppDispatch>()
   const onSubmit = handleSubmit((data) => {
-    console.log(data);
+    dispatch(registerUserAsync(data))
+    // reset the form 
+    reset()
   });
   return (
-    // <div className="container m-2 flex items-center justify-center">
     <form
-      className=" container rounded-md shadow-md p-2 md:mx-80  flex flex-col"
+      className=" container rounded-md shadow-lg p-2 xl:mx-80 flex flex-col"
       onSubmit={onSubmit}
     >
-      <h1 className="text-3xl mb-5 font-bold">Create an account</h1>
+      <h1 className="text-3xl mb-5 font-bold">Create An Account</h1>
       <div className="mb-4">
-        <label htmlFor="FirstName" className="block">
+        <label htmlFor="FirstName" className="block font-semibold">
           First Name
           <input
             type="text"
             placeholder="First Name"
-            className="mt-1 p-2 w-full rounded-md"
+            className="mt-1 px-2 py-3 w-full rounded-md"
             {...register("firstName", { required: "This field is required" })}
           />
           {errors.firstName && (
@@ -42,12 +49,12 @@ const Register = () => {
         </label>
       </div>
       <div className="mb-4">
-        <label htmlFor="LastName" className="block">
+        <label htmlFor="LastName" className="block font-semibold">
           Last Name
           <input
             type="text"
             placeholder="Last Name"
-            className="mt-1 p-2 w-full rounded-md"
+            className="mt-1 px-2 py-3  w-full rounded-md"
             {...register("lastName", { required: "This field is required" })}
           />
           {errors.lastName && (
@@ -56,12 +63,12 @@ const Register = () => {
         </label>
       </div>
       <div className="mb-4">
-        <label htmlFor="email" className="block">
+        <label htmlFor="email" className="block font-semibold">
           Email
           <input
             type="email"
             placeholder="Enter your email"
-            className="mt-1 p-2 w-full rounded-md"
+            className="mt-1 px-2 py-3  w-full rounded-md"
             {...register("email", { required: "This field is required" })}
           />
           {errors.email && (
@@ -70,12 +77,12 @@ const Register = () => {
         </label>
       </div>
       <div className="mb-4">
-        <label htmlFor="password" className="block ">
+        <label htmlFor="password" className="block font-semibold">
           Password
           <input
             type="password"
             placeholder="Enter your password"
-            className="mt-1 p-2 w-full rounded-md"
+            className="mt-1 px-2 py-3  w-full rounded-md"
             {...register("password", {
               required: "This field is required",
               minLength: {
@@ -90,12 +97,12 @@ const Register = () => {
         </label>
       </div>
       <div className="mb-6">
-        <label htmlFor="confirmPassword" className="block ">
+        <label htmlFor="confirmPassword" className="block font-semibold ">
           Confirm Password
           <input
             type="password"
             placeholder="Confirm your password"
-            className="mt-1 p-2 w-full rounded-md"
+            className="mt-1 px-2 py-3  w-full rounded-md"
             {...register("confirmPassword", {
               validate: (value) => {
                 if (!value) {
@@ -113,10 +120,10 @@ const Register = () => {
           )}
         </label>
       </div>
-      <div className=" flex md:justify-between items-center">
+      <div className=" flex md:justify-between items-center gap-2">
         <button
           type="submit"
-          className="bg-white text-red-500 py-2 px-4 rounded-md hover:bg-gray-200 transition-colors duration-300 w-fit"
+          className="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-400 transition-colors duration-300 w-fit"
         >
           Register
         </button>
@@ -125,7 +132,6 @@ const Register = () => {
         </Link>
       </div>
     </form>
-    // </div>
   );
 };
 

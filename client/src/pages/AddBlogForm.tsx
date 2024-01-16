@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { IBlog } from "../interface";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
-import { addNewBlog } from "../redux/reducers/blogReducer";
+import { addNewBlog } from "../redux/reducers/blogSlice";
 import { useNavigate } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
 
