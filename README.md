@@ -40,21 +40,6 @@ Database: MongoDB
 Authentication: JSON Web Tokens (JWT), Bcrypt for password hashing
 
 
-Folder Structure
-blog-app/
-|-- client/                 # Frontend React app
-|   |-- src/
-|   |-- ...
-|
-|-- server/                 # Backend Express app
-|   |-- src/
-|   |-- ...
-|
-|-- README.md               # Project README file
-|-- .gitignore              # Git ignore file                    
-|-- ...
-
-
 Usage
 Sign Up:
 Register with a unique username and a secure password.
