@@ -1,5 +1,11 @@
 import { Link } from "react-router-dom";
 
+
+export type LoginFormData = {
+  email: string,
+  password: string
+}
+
 const Login = () => {
   return (
     <div className=" container  flex items-center justify-center">

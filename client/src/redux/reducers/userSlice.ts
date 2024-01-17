@@ -1,18 +1,17 @@
 // src/state/user/userSlice.ts
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IUser } from '../../interface';
-import { register } from '../../api-client';
+import { register, validateToken } from '../../api-client';
 import { RegisterFormData } from '../../pages/Register';
 
 
-interface UserState {
-  data: null | IUser;
+export type  UserState = {
+  isLoggedIn: boolean;
   loading: boolean;
   error: null | string;
 }
 
 const initialState: UserState = {
-  data: null,
+  isLoggedIn: false,
   loading: false,
   error: null,
 };
@@ -32,9 +31,9 @@ const userSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    registerSuccess: (state, action: PayloadAction<IUser>) => {
+    registerSuccess: (state, action: PayloadAction<boolean>) => {
       state.loading = false;
-      state.data = action.payload;
+      state.isLoggedIn = action.payload;
     },
     registerFailure: (state, action: PayloadAction<string>) => {
       state.loading = false;
@@ -47,10 +46,20 @@ const userSlice = createSlice({
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(registerUserAsync.fulfilled, (state, action) => {
-      state.loading = false;
-      state.data = action.payload;
+    // builder.addCase(registerUserAsync.fulfilled, (state, action: PayloadAction<boolean>) => {
+    //   state.loading = false;
+    //   state.data = action.payload;
+    // });
+    builder.addCase(registerUserAsync.fulfilled, (state, action: PayloadAction<boolean>) => {
+
+
+// HOW TO USE VALIDATEtOKEN FUNCTION THAT VARIFIES THE TOKEN.
+
+       
+      userSlice.caseReducers.registerSuccess(state, action);
+      
     });
+
     builder.addCase(registerUserAsync.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message ?? 'Registration failed.';
@@ -58,7 +67,7 @@ const userSlice = createSlice({
   },
 });
 
-export const { registerStart, registerSuccess, registerFailure } = userSlice.actions;
+export const { registerStart, registerFailure } = userSlice.actions;
 
 export default userSlice.reducer;
 
