@@ -15,7 +15,6 @@ export const register = async (formData: RegisterFormData) => {
   });
 
   const responseBody = await response.json();
-  console.log(responseBody);
   if (!response.ok) {
     throw new Error(responseBody.message);
   }
@@ -41,16 +40,21 @@ export const login = async (loginData: LoginFormData) => {
   return responseBody;
 };
 
+export const logout = async()=>{
+  await fetch(`${API_BASE_URL}/api/auth/logout`, {
+    method: "POST",
+  });
+}
+
 // validate token
 
 export const validateToken = async () => {
   const response = await fetch(`${API_BASE_URL}/api/auth/validate-token`, {
     credentials: "include",
   });
-
   if (!response.ok) {
     throw new Error("Invalid token");
   }
-
+console.log(response)
   return response.json;
 };

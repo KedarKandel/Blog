@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { registerUserAsync } from "../redux/reducers/userSlice";
 import { AppDispatch } from "../redux/store";
 
@@ -13,6 +13,7 @@ export type RegisterFormData = {
 };
 
 const Register = () => {
+ 
   const {
     register,
     watch,
@@ -21,12 +22,13 @@ const Register = () => {
     formState: { errors },
   } = useForm<RegisterFormData>();
 
-
-  const dispatch = useDispatch<AppDispatch>()
-  const onSubmit = handleSubmit((data) => {
-    dispatch(registerUserAsync(data))
-    // reset the form 
-    reset()
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const onSubmit = handleSubmit(async (data) => {
+    await dispatch(registerUserAsync(data));
+    // reset the form
+    reset();
+    navigate("/");
   });
   return (
     <form
