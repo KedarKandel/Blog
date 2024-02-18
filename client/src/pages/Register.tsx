@@ -1,10 +1,11 @@
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { registerUserAsync } from "../redux/reducers/userSlice";
 import { AppDispatch } from "../redux/store";
 import { showToast } from "../redux/reducers/toastSlice";
-import { useState } from "react";
+import * as apiClient from "../api-client";
 
 export type RegisterFormData = {
   firstName: string;
@@ -29,7 +30,7 @@ const Register = () => {
   const navigate = useNavigate();
   const onSubmit = handleSubmit(async (data) => {
     const actionResult = await dispatch(registerUserAsync(data));
-    console.log(actionResult)
+    console.log(actionResult);
 
     if (registerUserAsync.rejected.match(actionResult)) {
       setError(
@@ -39,7 +40,8 @@ const Register = () => {
       // reset the form
       reset();
       navigate("/");
-      dispatch(showToast("Registration successful"))
+      dispatch(showToast("Registration successful"));
+      await apiClient.validateToken();
     }
   });
   return (

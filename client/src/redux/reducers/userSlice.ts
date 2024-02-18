@@ -1,8 +1,9 @@
 // src/state/user/userSlice.ts
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { login, register, validateToken, logout } from "../../api-client";
 import { RegisterFormData } from "../../pages/Register";
 import { LoginFormData } from "../../pages/Login";
+
+import * as apiClient from "../../api-client";
 
 export type UserState = {
   isLoggedIn: boolean;
@@ -20,20 +21,21 @@ const initialState: UserState = {
 export const registerUserAsync = createAsyncThunk(
   "user/register",
   async (formData: RegisterFormData) => {
-    const response = await register(formData);
+    const response = await apiClient.register(formData);
     return response;
   }
 );
 export const loginUserAsync = createAsyncThunk(
   "user/login",
   async (loginData: LoginFormData) => {
-    const response = await login(loginData);
+    const response = await apiClient.login(loginData);
+
     return response;
   }
 );
 
 export const logoutUser = createAsyncThunk("user/logout", async () => {
-  const response = await logout();
+  const response = await apiClient.logout();
   return response;
 });
 
@@ -62,7 +64,6 @@ const userSlice = createSlice({
     });
 
     builder.addCase(registerUserAsync.fulfilled, (state, action) => {
-      validateToken();
       userSlice.caseReducers.registerSuccess(state, action);
     });
 

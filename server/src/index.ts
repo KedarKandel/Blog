@@ -7,14 +7,15 @@ import mongoose from "mongoose";
 // routes
 import usersRoutes from "./routes/users";
 import authRoutes from "./routes/auth";
-import blogRoutes from "./routes/blog"
+import blogRoutes from "./routes/blog";
 
 //database connection
 mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string);
 
 const app = express();
-app.use(cookieParser());
 app.use(express.json());
+app.use(cookieParser());
+
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({

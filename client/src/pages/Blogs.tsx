@@ -6,14 +6,13 @@ import { IBlog } from "../types";
 import AddBlogBtn from "../components/AddBlogBtn";
 
 const Blogs = () => {
-  const blogs = useSelector((state:RootState)=>state.blog.blogs)
+  const blogs = useSelector((state: RootState) => state.blog.blogs);
   return (
     <div className="container mx-auto flex flex-col ">
-     
       <AddBlogBtn />
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {blogs?.map((blog: IBlog) => (
-         <Blog key={blog.id} {...blog}/>
+          <Blog id={blog.id} title={blog.title} content={blog.description} />
         ))}
       </div>
     </div>

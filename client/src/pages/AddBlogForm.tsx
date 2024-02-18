@@ -1,21 +1,18 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
-import { IBlog } from "../types";
 import { useDispatch } from "react-redux";
+import "react-toastify/dist/ReactToastify.css";
+import { IBlog } from "../types";
 import { AppDispatch } from "../redux/store";
-
-import { useNavigate } from "react-router-dom";
 import { createBlogAsync } from "../redux/reducers/blogSlice";
-
+import * as apiClient from "../api-client";
+import { useNavigate } from "react-router-dom";
 
 const AddBlogForm = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const [blog, setBlog] = useState<Partial<IBlog>>({
     title: "",
-    content: "",
+    description: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -27,18 +24,20 @@ const AddBlogForm = () => {
   };
 
   // submit blog
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    dispatch(createBlogAsync(blog as IBlog));
-
-    // Notify with toast
-    toast.success("New Blog has been added!");
-    setTimeout(() => {
-      setBlog({ title: "", content: "" });
+    try {
+      await apiClient.validateToken(); // Wait for token validation to complete
+      await dispatch(createBlogAsync(blog as IBlog)); // Dispatch createBlogAsync after token validation
+      setBlog({ title: "", description: "" });
       setIsSubmitting(false);
-      navigate("/blogs");
-    }, 4000);
+      navigate("/blogs")
+    } catch (error) {
+      // Handle token validation error
+      console.error("Error while validating token:", error);
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -62,16 +61,16 @@ const AddBlogForm = () => {
         />
 
         <label className="block mt-4 mb-2 text-gray-700" htmlFor="content">
-          Content
+          Description
         </label>
         <textarea
           className="w-full p-2 border rounded-md focus:outline-none focus:border-blue-500"
-          id="content"
-          name="content"
+          id="description"
+          name="description"
           placeholder="Enter content"
           rows={4}
           required
-          value={blog.content}
+          value={blog.description}
           onChange={handleChange}
         />
 
@@ -83,8 +82,6 @@ const AddBlogForm = () => {
           {isSubmitting ? "submitting..." : "Add Blog"}
         </button>
       </form>
-
-      <ToastContainer />
     </div>
   );
 };

@@ -61,16 +61,18 @@ export const validateToken = async () => {
 // add a blog
 
 export const createBlog = async (blog: IBlog) => {
+  console.log(blog)
   const response = await fetch(`${API_BASE_URL}/api/blogs/`, {
     method: "POST",
+    credentials:"include",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(blog),
   });
-  const responseBody = await response.json()
-  if(!response.ok){
-    throw new Error(responseBody.message)
-  }  
-  return responseBody
+  const responseBody = await response.json();
+  if (!response.ok) {
+    throw new Error(responseBody.message);
+  }
+  return responseBody;
 };

@@ -1,6 +1,6 @@
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {  createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IBlog } from "../../types";
-import { createBlog, validateToken } from "../../api-client";
+import * as apiClient from "../../api-client";
 
 export type blogState = {
   loading: boolean;
@@ -18,10 +18,8 @@ export const createBlogAsync = createAsyncThunk(
   "blogs/create",
   async (blog: IBlog) => {
     try {
-      await validateToken();
-
       // If token is valid, proceed to create the blog
-      const response = await createBlog(blog);
+      const response = await apiClient.createBlog(blog);
       return response;
     } catch (error) {
       console.log(error);

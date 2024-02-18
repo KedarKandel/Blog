@@ -5,6 +5,7 @@ import { AppDispatch } from "../redux/store";
 import { loginUserAsync } from "../redux/reducers/userSlice";
 import { showToast } from "../redux/reducers/toastSlice";
 import { useState } from "react";
+import * as apiClient from "../api-client";
 
 export type LoginFormData = {
   email: string;
@@ -30,6 +31,9 @@ const Login = () => {
         reset();
         navigate("/");
         dispatch(showToast("Login successful"));
+
+        // Validate token after successful login
+        await apiClient.validateToken();
       }
     } catch (error) {
       // Handle any unexpected errors
