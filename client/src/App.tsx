@@ -13,17 +13,21 @@ import Toast from "./components/Toast";
 
 export default function App() {
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
-
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="blogs" element={<Blogs />} />
-          <Route path="addBlogForm" element={<AddBlogForm />} />
-          <Route path="blogs/:id" element={<Blog />} />
           <Route path="sign-in" element={<Login />} />
           <Route path="register" element={<Register />} />
+          {isLoggedIn && (
+            <>
+              <Route path="blogs" element={<Blogs />} />
+              <Route path="addBlogForm" element={<AddBlogForm />} />
+              <Route path="blogs/:id" element={<Blog />} />
+            </>
+          )}
+
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

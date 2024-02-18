@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RootState } from "../redux/store";
-import { IBlog } from "../interface";
+import { IBlog } from "../types";
 
 type Props = {};
 

@@ -1,18 +1,46 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { IBlog } from "../../interface";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { IBlog } from "../../types";
+import { createBlog, validateToken } from "../../api-client";
 
-const initialState: IBlog[] = [];
+export type blogState = {
+  loading: boolean;
+  error: string | null;
+  blogs: IBlog[];
+};
+
+const initialState: blogState = {
+  loading: false,
+  error: null,
+  blogs: [],
+};
+// to continue from here
+export const createBlogAsync = createAsyncThunk(
+  "blogs/create",
+  async (blog: IBlog) => {
+    try {
+      await validateToken();
+
+      // If token is valid, proceed to create the blog
+      const response = await createBlog(blog);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
 
 const blogSlice = createSlice({
   name: "blog",
   initialState,
-  reducers: {
-    addNewBlog: (state, action: PayloadAction<IBlog>) => {
-      const newBlog = { ...action.payload, id: state.length + 1 };
-      state.push(newBlog);
-    },
+  reducers: {},
+  extraReducers(builder) {
+    builder.addCase(createBlogAsync.fulfilled, (state, action) => {
+      state.blogs.push(action.payload);
+      state.error = null;
+      state.loading = false;
+    });
   },
 });
 
-export const { addNewBlog } = blogSlice.actions;
+export const {} = blogSlice.actions;
 export default blogSlice.reducer;

@@ -2,12 +2,13 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { IBlog } from "../interface";
+import { IBlog } from "../types";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
-import { addNewBlog } from "../redux/reducers/blogSlice";
+
 import { useNavigate } from "react-router-dom";
-// import { useNavigate } from "react-router-dom";
+import { createBlogAsync } from "../redux/reducers/blogSlice";
+
 
 const AddBlogForm = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -15,7 +16,6 @@ const AddBlogForm = () => {
   const [blog, setBlog] = useState<Partial<IBlog>>({
     title: "",
     content: "",
-    image: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -30,12 +30,12 @@ const AddBlogForm = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    dispatch(addNewBlog(blog as IBlog));
+    dispatch(createBlogAsync(blog as IBlog));
 
     // Notify with toast
     toast.success("New Blog has been added!");
     setTimeout(() => {
-      setBlog({ title: "", content: "", image: "" });
+      setBlog({ title: "", content: "" });
       setIsSubmitting(false);
       navigate("/blogs");
     }, 4000);
@@ -72,18 +72,6 @@ const AddBlogForm = () => {
           rows={4}
           required
           value={blog.content}
-          onChange={handleChange}
-        />
-
-        <label className="block mt-4 mb-2 text-gray-700" htmlFor="content">
-          Image
-        </label>
-        <input
-          className="w-full p-2 border rounded-md focus:outline-none focus:border-blue-500"
-          id="image"
-          name="image"
-          placeholder="Enter image source url"
-          value={blog.image}
           onChange={handleChange}
         />
 

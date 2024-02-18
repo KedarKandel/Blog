@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 // routes
 import usersRoutes from "./routes/users";
 import authRoutes from "./routes/auth";
+import blogRoutes from "./routes/blog"
 
 //database connection
 mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string);
@@ -24,6 +25,7 @@ app.use(
 
 app.use("/api/users", usersRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/blogs", blogRoutes);
 
 app.listen(7000, () => {
   console.log("server is running on port 7000");

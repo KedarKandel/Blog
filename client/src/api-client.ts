@@ -1,5 +1,6 @@
 import { LoginFormData } from "./pages/Login";
 import { RegisterFormData } from "./pages/Register";
+import { IBlog } from "./types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -39,11 +40,11 @@ export const login = async (loginData: LoginFormData) => {
   return responseBody;
 };
 
-export const logout = async()=>{
+export const logout = async () => {
   await fetch(`${API_BASE_URL}/api/auth/logout`, {
     method: "POST",
   });
-}
+};
 
 // validate token
 
@@ -55,4 +56,21 @@ export const validateToken = async () => {
     throw new Error("Invalid token");
   }
   return response.json;
+};
+
+// add a blog
+
+export const createBlog = async (blog: IBlog) => {
+  const response = await fetch(`${API_BASE_URL}/api/blogs/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(blog),
+  });
+  const responseBody = await response.json()
+  if(!response.ok){
+    throw new Error(responseBody.message)
+  }  
+  return responseBody
 };
