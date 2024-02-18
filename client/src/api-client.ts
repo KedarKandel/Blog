@@ -36,7 +36,6 @@ export const login = async (loginData: LoginFormData) => {
   if (!response.ok) {
     throw new Error(responseBody.message);
   }
-
   return responseBody;
 };
 
@@ -55,6 +54,5 @@ export const validateToken = async () => {
   if (!response.ok) {
     throw new Error("Invalid token");
   }
-console.log(response)
   return response.json;
 };

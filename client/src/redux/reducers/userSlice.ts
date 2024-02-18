@@ -19,15 +19,9 @@ const initialState: UserState = {
 // Create an async thunk for user registration
 export const registerUserAsync = createAsyncThunk(
   "user/register",
-  async (formData: RegisterFormData, { rejectWithValue }) => {
-    try {
-      const response = await register(formData);
-      if (response.message === "user registration successful") {
-        return true;
-      } else return false;
-    } catch (error) {
-      return rejectWithValue(error);
-    }
+  async (formData: RegisterFormData) => {
+    const response = await register(formData);
+    return response;
   }
 );
 export const loginUserAsync = createAsyncThunk(
@@ -83,11 +77,11 @@ const userSlice = createSlice({
       state.isLoggedIn = true;
     });
 
-    builder.addCase(logoutUser.fulfilled, (state)=>{
-         state.loading = false
-         state.isLoggedIn= false
-         state.error = null
-    })
+    builder.addCase(logoutUser.fulfilled, (state) => {
+      state.loading = false;
+      state.isLoggedIn = false;
+      state.error = null;
+    });
   },
 });
 

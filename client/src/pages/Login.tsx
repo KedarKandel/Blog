@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { AppDispatch } from "../redux/store";
 import { loginUserAsync } from "../redux/reducers/userSlice";
+import { showToast } from "../redux/reducers/toastSlice";
+import { useState } from "react";
 
 export type LoginFormData = {
   email: string;
@@ -10,21 +12,31 @@ export type LoginFormData = {
 };
 
 const Login = () => {
+  const [error, setError] = useState<string | null>(null);
   const { register, reset, handleSubmit } = useForm<LoginFormData>();
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const onSubmit = handleSubmit(async (data) => {
-    const actionResult = await dispatch(loginUserAsync(data));
-    
-    if (loginUserAsync.fulfilled.match(actionResult)) {
-      // Login successful, navigate to the homepage
-      reset();
-      navigate("/");
-    } else {
-      console.log("Login failed");
+    try {
+      const actionResult = await dispatch(loginUserAsync(data));
+
+      if (loginUserAsync.rejected.match(actionResult)) {
+        // If the login request is rejected, set the error state
+        setError(
+          actionResult.error.message || "An error occurred during login."
+        );
+      } else {
+        // Login successful, navigate to the homepage
+        reset();
+        navigate("/");
+        dispatch(showToast("Login successful"));
+      }
+    } catch (error) {
+      // Handle any unexpected errors
+      console.error("An unexpected error occurred during login:", error);
+      setError("An unexpected error occurred.");
     }
   });
-
   return (
     <div className=" container  flex items-center justify-center">
       <form
@@ -56,6 +68,8 @@ const Login = () => {
             />
           </label>
         </div>
+
+        {error && <span className=" text-sm text-red-400 m-2">{error}</span>}
 
         <button
           type="submit"

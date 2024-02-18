@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { registerUserAsync } from "../redux/reducers/userSlice";
 import { AppDispatch } from "../redux/store";
+import { showToast } from "../redux/reducers/toastSlice";
+import { useState } from "react";
 
 export type RegisterFormData = {
   firstName: string;
@@ -13,7 +15,8 @@ export type RegisterFormData = {
 };
 
 const Register = () => {
- 
+  const [error, setError] = useState<string | null>(null);
+
   const {
     register,
     watch,
@@ -25,10 +28,19 @@ const Register = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const onSubmit = handleSubmit(async (data) => {
-    await dispatch(registerUserAsync(data));
-    // reset the form
-    reset();
-    navigate("/");
+    const actionResult = await dispatch(registerUserAsync(data));
+    console.log(actionResult)
+
+    if (registerUserAsync.rejected.match(actionResult)) {
+      setError(
+        actionResult.error.message || "An error occured during registration"
+      );
+    } else {
+      // reset the form
+      reset();
+      navigate("/");
+      dispatch(showToast("Registration successful"))
+    }
   });
   return (
     <form
@@ -122,6 +134,7 @@ const Register = () => {
           )}
         </label>
       </div>
+      {error && <span className=" text-sm text-red-500 m-2">{error}</span>}
       <div className=" flex md:justify-between items-center gap-2">
         <button
           type="submit"

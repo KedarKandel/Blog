@@ -9,10 +9,10 @@ import Blog from "./pages/Blog";
 import AddBlogForm from "./pages/AddBlogForm";
 import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
+import Toast from "./components/Toast";
 
 export default function App() {
-  
-const isLoggedIn = useSelector((state: RootState)=>state.user.isLoggedIn)
+  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
 
   return (
     <Router>
@@ -27,6 +27,7 @@ const isLoggedIn = useSelector((state: RootState)=>state.user.isLoggedIn)
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
+      <Toast />
     </Router>
   );
 }
