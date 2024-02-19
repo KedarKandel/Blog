@@ -2,7 +2,7 @@ import { LoginFormData } from "./pages/Login";
 import { RegisterFormData } from "./pages/Register";
 import { IBlog } from "./types";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 // register an user
 export const register = async (formData: RegisterFormData) => {
