@@ -1,8 +1,8 @@
 
 
-type Props = {}
 
-const NotFound = (props: Props) => {
+
+const NotFound = () => {
   return (
     <div>NotFound</div>
   )

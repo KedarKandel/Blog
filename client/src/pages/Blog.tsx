@@ -3,9 +3,9 @@ import { useParams } from "react-router-dom";
 import { RootState } from "../redux/store";
 import { IBlog } from "../types";
 
-type Props = {};
 
-const Blog = (props: Props) => {
+
+const Blog = () => {
   const { id } = useParams<string>();
   const blogs = useSelector((state: RootState) => state.blog.blogs);
 
