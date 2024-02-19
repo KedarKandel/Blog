@@ -21,6 +21,7 @@ const toastSlice = createSlice({
     },
     hideToast(state) {
       state.message = null;
+      state.type = null
     },
   },
 });

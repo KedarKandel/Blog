@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { IBlog } from "../types";
-import { AppDispatch, RootState } from "../redux/store";
+import { AppDispatch } from "../redux/store";
 import { createBlogAsync } from "../redux/reducers/blogSlice";
 import * as apiClient from "../api-client";
 import { useNavigate } from "react-router-dom";

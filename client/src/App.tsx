@@ -8,7 +8,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 
 import Toast from "./components/Toast";
-import Create from "./pages/create";
+import Create from "./pages/Create";
 
 export default function App() {
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
