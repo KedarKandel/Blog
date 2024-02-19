@@ -25,7 +25,7 @@ app.use(
   })
 );
 
-app.use(express.static(path.join(__dirname, "../../frontend/dist")));
+app.use(express.static(path.join(__dirname, "../../client/dist")));
 
 app.use("/api/users", usersRoutes);
 app.use("/api/auth", authRoutes);
@@ -33,7 +33,7 @@ app.use("/api/blogs", blogRoutes);
 
 
 app.get("*", (req: Request, res: Response) => {
-  res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
+  res.sendFile(path.join(__dirname, "../../client/dist/index.html"));
 });
 
 app.listen(7000, () => {
