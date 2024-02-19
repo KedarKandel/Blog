@@ -1,20 +1,23 @@
 // toastSlice.ts
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface ToastState {
+export type ToastState = {
   message: string | null;
+  type: "error" | "success" | null;
 }
 
 const initialState: ToastState = {
   message: null,
+  type: null,
 };
 
 const toastSlice = createSlice({
-  name: 'toast',
+  name: "toast",
   initialState,
   reducers: {
-    showToast(state, action: PayloadAction<string>) {
-      state.message = action.payload;
+    showToast(state, action: PayloadAction<{ message: string; type: "error" | "success" }>) {
+      state.message = action.payload.message;
+      state.type = action.payload.type
     },
     hideToast(state) {
       state.message = null;

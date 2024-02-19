@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { AppDispatch } from "../redux/store";
 import { loginUserAsync } from "../redux/reducers/userSlice";
 import { showToast } from "../redux/reducers/toastSlice";
-import { useState } from "react";
 import * as apiClient from "../api-client";
 
 export type LoginFormData = {
@@ -13,34 +12,41 @@ export type LoginFormData = {
 };
 
 const Login = () => {
-  const [error, setError] = useState<string | null>(null);
   const { register, reset, handleSubmit } = useForm<LoginFormData>();
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const onSubmit = handleSubmit(async (data) => {
     try {
       const actionResult = await dispatch(loginUserAsync(data));
-
       if (loginUserAsync.rejected.match(actionResult)) {
         // If the login request is rejected, set the error state
-        setError(
-          actionResult.error.message || "An error occurred during login."
+
+        dispatch(
+          showToast({
+            message:
+              actionResult.error.message || "An error occurred during login.",
+            type: "error",
+          })
         );
       } else {
-        // Login successful, navigate to the homepage
         reset();
         navigate("/");
-        dispatch(showToast("Login successful"));
-
+        dispatch(showToast({ message: "Login successful", type: "success" }));
         // Validate token after successful login
         await apiClient.validateToken();
       }
     } catch (error) {
       // Handle any unexpected errors
+      dispatch(
+        showToast({
+          message: "An unexpected error occured during login",
+          type: "error",
+        })
+      );
       console.error("An unexpected error occurred during login:", error);
-      setError("An unexpected error occurred.");
     }
   });
+
   return (
     <div className=" container  flex items-center justify-center">
       <form
@@ -72,8 +78,6 @@ const Login = () => {
             />
           </label>
         </div>
-
-        {error && <span className=" text-sm text-red-400 m-2">{error}</span>}
 
         <button
           type="submit"

@@ -33,9 +33,9 @@ const Header = () => {
           ) : (
             <Link
               to={"/sign-in"}
-              className="flex items-center text-blue-600 px-3 font-bold hover:bg-gray-200"
+              className="flex items-center bg-white text-blue-500 px-3 font-bold hover:bg-gray-200"
             >
-              Sign In
+              Log In
             </Link>
           )}
         </span>

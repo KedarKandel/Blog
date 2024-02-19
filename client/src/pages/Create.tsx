@@ -1,21 +1,19 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import { useDispatch } from "react-redux";
-import "react-toastify/dist/ReactToastify.css";
+import { useDispatch, useSelector } from "react-redux";
 import { IBlog } from "../types";
-import { AppDispatch } from "../redux/store";
+import { AppDispatch, RootState } from "../redux/store";
 import { createBlogAsync } from "../redux/reducers/blogSlice";
 import * as apiClient from "../api-client";
 import { useNavigate } from "react-router-dom";
+import { showToast } from "../redux/reducers/toastSlice";
 
-const AddBlogForm = () => {
+const Create = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [blog, setBlog] = useState<Partial<IBlog>>({
     title: "",
     description: "",
   });
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -26,17 +24,18 @@ const AddBlogForm = () => {
   // submit blog
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmitting(true);
+
     try {
-      await apiClient.validateToken(); // Wait for token validation to complete
-      await dispatch(createBlogAsync(blog as IBlog)); // Dispatch createBlogAsync after token validation
+      await apiClient.validateToken();
+      await dispatch(createBlogAsync(blog as IBlog));
       setBlog({ title: "", description: "" });
-      setIsSubmitting(false);
-      navigate("/blogs")
+      navigate("/");
+      dispatch(
+        showToast({ message: "New blog creation successful", type: "success" })
+      );
     } catch (error) {
-      // Handle token validation error
       console.error("Error while validating token:", error);
-      setIsSubmitting(false);
+      dispatch(showToast({ message: "Error adding blog", type: "error" }));
     }
   };
 
@@ -77,13 +76,12 @@ const AddBlogForm = () => {
         <button
           className="mt-6 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
           type="submit"
-          disabled={isSubmitting}
         >
-          {isSubmitting ? "submitting..." : "Add Blog"}
+          {1 ? "submitting..." : "Add Blog"}
         </button>
       </form>
     </div>
   );
 };
 
-export default AddBlogForm;
+export default Create;
