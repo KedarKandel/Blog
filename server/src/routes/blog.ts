@@ -20,28 +20,27 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
 });
 
 router.get("/", async (req: Request, res: Response) => {
-  const { search, filter } = req.query;
-
+  const { search, filter, page, limit } = req.query;
   const searchTerm: string = search as string;
   const filterOptions: string = filter as string;
+  const pageNumber: number = parseInt(page as string) || 1;
+  const pageSize: number = parseInt(limit as string) || 10;
 
   try {
-    let query: ParamsRequest = { searchTerm: "", filterOptions: "" };
+    const query = <ParamsRequest>{};
 
-    if (searchTerm) {
-      query.searchTerm = searchTerm;
-    }
+    if (searchTerm) query.searchTerm = searchTerm;
+    if (filterOptions) query.filterOptions = filterOptions;
 
-    if (filterOptions) {
-      query.filterOptions = filterOptions;
-    }
+    const skip = (pageNumber - 1) * pageSize;
+    const totalBlogs = await Blog.countDocuments(query);
+    const totalPages = Math.ceil(totalBlogs / pageSize);
+    const blogs = await Blog.find(query).skip(skip).limit(pageSize);
 
-    const blogs = await Blog.find(query);
-
-    res.json(blogs);
+    res.json({ blogs, currentPage: pageNumber, totalPages, total: totalBlogs });
   } catch (error) {
     console.error("Error fetching blogs:", error);
-    res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ message: "Internal server error" });
   }
 });
 

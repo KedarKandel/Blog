@@ -8,4 +8,6 @@ export type IBlog = {
   export type ParamsRequest = {
     searchTerm: string;
     filterOptions: string;
+    page: number
+    limit: number
   }

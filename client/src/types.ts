@@ -9,6 +9,13 @@ export type IBlog = {
     searchTerm: string;
     filterOptions: string;
   }
+
+  export type BlogResponse = {
+    blogs: IBlog[],
+    currentPage: number,
+    total: number
+    totalPages: number
+  }
  
 
  

@@ -1,6 +1,6 @@
 import { LoginFormData } from "./pages/Login";
 import { RegisterFormData } from "./pages/Register";
-import { IBlog, ParamsRequest } from "./types";
+import { BlogResponse, IBlog, ParamsRequest } from "./types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
@@ -77,7 +77,7 @@ export const createBlog = async (blog: IBlog) => {
   return responseBody;
 };
 
-export const fetchAllBlogs = async (params: ParamsRequest): Promise<IBlog> => {
+export const fetchAllBlogs = async (params: ParamsRequest): Promise<BlogResponse> => {
   let url = `${API_BASE_URL}/api/blogs/`;
 
   const { searchTerm, filterOptions } = params;
@@ -92,7 +92,7 @@ export const fetchAllBlogs = async (params: ParamsRequest): Promise<IBlog> => {
   }
 
   try {
-    const response = await fetch(`${API_BASE_URL}/api/blogs/`, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -102,6 +102,7 @@ export const fetchAllBlogs = async (params: ParamsRequest): Promise<IBlog> => {
     if (!response.ok) {
       throw new Error(responseBody.message);
     }
+    console.log(responseBody)
     return responseBody;
   } catch (error) {
     console.error("Error fetching blogs:", error);

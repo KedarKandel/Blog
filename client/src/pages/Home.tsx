@@ -4,22 +4,19 @@ import SearchBar from "../components/Search";
 import FilterOptions from "../components/Filter";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
-import { fetchAllBlogs } from "../api-client";
+import { fetchBlogs } from "../redux/reducers/blogSlice";
 
 const HomePage = () => {
-  const blogs = useSelector((state:RootState)=>state.blog.blogs)
+  const blogs = useSelector((state: RootState) => state.blog.blogs);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("newest");
-
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-   // to be continue
-
-   dispatch(dispatch)
-    
-    
-  }, [searchQuery, selectedFilter]);
+    dispatch(
+      fetchBlogs({ searchTerm: searchQuery, filterOptions: selectedFilter })
+    );
+  }, [searchQuery, selectedFilter, dispatch]);
 
   const handleSearch = (searchQuery: string) => {
     setSearchQuery(searchQuery);
@@ -37,8 +34,13 @@ const HomePage = () => {
       </div>
 
       <div>
-        {/* Render blogs based on the fetched data */}
-        {/* Example: {blogs.map(blog => <BlogItem key={blog.id} blog={blog} />)} */}
+        {blogs.map((blog) => (
+          <div key={blog.id}>
+            <h1 key={blog.title}>{blog.title}</h1>
+            <p key={blog.description}>{blog.description}</p>
+            <p key={blog.createdBy}>{blog.createdBy}</p>
+          </div>
+        ))}
       </div>
     </div>
   );
