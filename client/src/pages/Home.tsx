@@ -1,25 +1,47 @@
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { RootState } from "../redux/store";
+// HomePage.js
+import { useState, useEffect } from "react";
+import SearchBar from "../components/Search";
+import FilterOptions from "../components/Filter";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../redux/store";
+import { fetchAllBlogs } from "../api-client";
 
-const Home = () => {
-  const blogs = useSelector((state: RootState) => state.blog.blogs);
+const HomePage = () => {
+  const blogs = useSelector((state:RootState)=>state.blog.blogs)
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedFilter, setSelectedFilter] = useState("newest");
+
+  const dispatch = useDispatch<AppDispatch>()
+
+  useEffect(() => {
+   // to be continue
+
+   dispatch(dispatch)
+    
+    
+  }, [searchQuery, selectedFilter]);
+
+  const handleSearch = (searchQuery: string) => {
+    setSearchQuery(searchQuery);
+  };
+
+  const handleFilter = (filterQuery: string) => {
+    setSelectedFilter(filterQuery);
+  };
+
   return (
-    <div className="flex flex-col">
-      <h1>homepage</h1>
-      <div className="flex gap-3 flex-1 ">
-        {blogs?.map((b,i) => (
-          <div key={i} className=" bg-gray-600">
-            <h1>{b.id}</h1>
-            <span>{b.title}</span>
-            <p>{b.description}</p>
-          </div>
-        ))}
+    <div className="container mx-auto flex flex-col">
+      <div className="flex justify-between">
+        <SearchBar handleSearch={handleSearch} />
+        <FilterOptions handleFilter={handleFilter} />
       </div>
 
-      <Link to="/blogs">blog</Link>
+      <div>
+        {/* Render blogs based on the fetched data */}
+        {/* Example: {blogs.map(blog => <BlogItem key={blog.id} blog={blog} />)} */}
+      </div>
     </div>
   );
 };
 
-export default Home;
+export default HomePage;

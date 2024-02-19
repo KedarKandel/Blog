@@ -1,6 +1,6 @@
 import { LoginFormData } from "./pages/Login";
 import { RegisterFormData } from "./pages/Register";
-import { IBlog } from "./types";
+import { IBlog, ParamsRequest } from "./types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
@@ -61,10 +61,10 @@ export const validateToken = async () => {
 // add a blog
 
 export const createBlog = async (blog: IBlog) => {
-  console.log(blog)
+  console.log(blog);
   const response = await fetch(`${API_BASE_URL}/api/blogs/`, {
     method: "POST",
-    credentials:"include",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -75,4 +75,36 @@ export const createBlog = async (blog: IBlog) => {
     throw new Error(responseBody.message);
   }
   return responseBody;
+};
+
+export const fetchAllBlogs = async (params: ParamsRequest): Promise<IBlog> => {
+  let url = `${API_BASE_URL}/api/blogs/`;
+
+  const { searchTerm, filterOptions } = params;
+
+  // If there are filter and search options, add them to the URL
+  if (searchTerm) {
+    url += `?search=${encodeURIComponent(searchTerm)}`;
+  }
+  if (filterOptions) {
+    const filterParams = new URLSearchParams(filterOptions).toString();
+    url += `${searchTerm ? "&" : "?"}${filterParams}`;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/blogs/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const responseBody = await response.json();
+    if (!response.ok) {
+      throw new Error(responseBody.message);
+    }
+    return responseBody;
+  } catch (error) {
+    console.error("Error fetching blogs:", error);
+    throw error;
+  }
 };

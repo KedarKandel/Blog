@@ -2,29 +2,46 @@ import express, { Request, Response, Router } from "express";
 
 import Blog from "../models/blog";
 import verifyToken from "../middleware/auth";
+import { ParamsRequest } from "../sharedTypes";
 
 const router: Router = express.Router();
 
 // Create a new blog
-router.post('/', verifyToken, async (req: Request, res: Response) => {
-    try {
-        const { title, description } = req.body;
-        const newBlog = new Blog({ title, description });
-        await newBlog.save();
-        return res.status(201).json(newBlog);
-    } catch (error) {
-        console.error(error);
-       return res.status(500).json({ message: 'Internal server error' });
-    }
+router.post("/", verifyToken, async (req: Request, res: Response) => {
+  try {
+    const { title, description } = req.body;
+    const newBlog = new Blog({ title, description });
+    await newBlog.save();
+    return res.status(201).json(newBlog);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
 });
 
-// Read all blogs
-router.get("/", verifyToken, async (req: Request, res: Response) => {
+router.get("/", async (req: Request, res: Response) => {
+  const { search, filter } = req.query;
+
+  const searchTerm: string = search as string;
+  const filterOptions: string = filter as string;
+
   try {
-    const blogs = await Blog.find();
-    return res.json(blogs);
+    let query: ParamsRequest = { searchTerm: "", filterOptions: "" };
+
+    if (searchTerm) {
+      query.searchTerm = searchTerm;
+    }
+
+    if (filterOptions) {
+      query.filterOptions = filterOptions;
+    }
+
+    const blogs = await Blog.find(query);
+
+    res.json(blogs);
   } catch (error) {
-    return res.status(500).json({ message: "Internal server error" });
+    console.error("Error fetching blogs:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 

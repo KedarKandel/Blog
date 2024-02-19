@@ -9,6 +9,3 @@ export type IBlog = {
     searchTerm: string;
     filterOptions: string;
   }
- 
-
- 

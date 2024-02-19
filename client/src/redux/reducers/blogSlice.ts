@@ -1,5 +1,5 @@
 import {  createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { IBlog } from "../../types";
+import { IBlog, ParamsRequest } from "../../types";
 import * as apiClient from "../../api-client";
 
 export type blogState = {
@@ -26,6 +26,15 @@ export const createBlogAsync = createAsyncThunk(
     }
   }
 );
+
+export const fetchBlogs = createAsyncThunk("blogs/fetchAll", async(params: ParamsRequest)=>{
+  try {
+    const response = await apiClient.fetchAllBlogs(params)
+    return response
+  } catch (error) {
+    console.log(error)
+  }
+})
 
 const blogSlice = createSlice({
   name: "blog",
