@@ -55,7 +55,7 @@ const Create = () => {
   };
 
   return (
-    <div className=" flex items-center justify-center">
+    <div className=" flex flex-1 items-center justify-center">
       <form
         className=" p-8 rounded-md shadow-2xl max-w-md w-full"
         onSubmit={handleSubmit}
@@ -82,7 +82,7 @@ const Create = () => {
           id="description"
           name="description"
           placeholder="Enter content"
-          rows={4}
+          rows={8}
           required
           value={description}
           onChange={handleChange}

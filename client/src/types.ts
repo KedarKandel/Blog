@@ -18,6 +18,7 @@ export type BlogResponse = {
 };
 
 export type UserType = {
+  id: string,
   email: string;
   password: string;
   firstName: string;

@@ -1,5 +1,5 @@
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { BlogResponse, IBlog, ParamsRequest } from "../../types";
+import {  createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {  IBlog, ParamsRequest } from "../../types";
 import * as apiClient from "../../api-client";
 
 export type blogState = {
