@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
 import { fetchBlogs } from "../redux/reducers/blogSlice";
 import { IBlog } from "../types";
+import Blog from "../components/Blog";
 
 const HomePage = () => {
   const blogs = useSelector((state: RootState) => state.blog.blogs);
@@ -33,14 +34,9 @@ const HomePage = () => {
         <SearchBar handleSearch={handleSearch} />
         <FilterOptions handleFilter={handleFilter} />
       </div>
-      <div>
-        {blogs.map((blog: IBlog, index) => (
-          <div key={index} className=" m-5">
-            <h1 >{blog.title}</h1>
-            <p>{blog.genre}</p>
-            <p >{blog.description}</p>
-            <p >{blog.createdBy}</p>
-          </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        {blogs.map((blog: IBlog) => (
+         <Blog key= {blog.id} blog= {blog}/>
         ))}
       </div>
     </div>

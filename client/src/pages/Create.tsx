@@ -104,6 +104,7 @@ const Create = () => {
           <option value="history">History</option>
           <option value="love">Love</option>
           <option value="nature">Nature</option>
+          <option value="sports">Sport</option>
         </select>
 
         <button

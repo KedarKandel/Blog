@@ -6,7 +6,9 @@ export type BlogType = {
   description: string;
   comments?: CommentType[];
   likes?: number[];
-  genre: string
+  genre: string;
+  createdBy: string;
+  createdAt: Date;
 };
 
 export type CommentType = {
@@ -16,19 +18,24 @@ export type CommentType = {
   createdAt: Date;
 };
 
-const blogSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  description: { type: String, required: true },
-  comments: [
-    {
-      userId: { type: String },
-      content: { type: String },
-      createdAt: { type: Date, default: Date.now },
-    },
-  ],
-  likes: [String],
-  genre: String
-});
+const blogSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    comments: [
+      {
+        userId: { type: String },
+        content: { type: String },
+        createdAt: { type: Date, default: Date.now },
+      },
+    ],
+    likes: [String],
+    genre: { type: String, required: true },
+    createdBy: { type: String, required: true },
+    createdAt: { type: Date, default: Date.now },
+  },
+  { timestamps: true }
+);
 
-const Blog = mongoose.model<BlogType>("Blog", blogSchema)
-export default Blog
+const Blog = mongoose.model<BlogType>("Blog", blogSchema);
+export default Blog;

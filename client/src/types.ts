@@ -4,6 +4,7 @@ export type IBlog = {
   description: string;
   genre: string;
   createdBy: string;
+  createdAt: Date
 };
 export type ParamsRequest = {
   searchTerm: string;
