@@ -2,9 +2,8 @@ import express, { Request, Response, Router } from "express";
 
 import Blog from "../models/blog";
 import verifyToken from "../middleware/auth";
-import { ParamsRequest } from "../sharedTypes";
 
-const router: Router = express.Router();
+const router = express.Router();
 
 // Create a new blog
 router.post("/", verifyToken, async (req: Request, res: Response) => {
@@ -25,10 +24,8 @@ router.get("/", async (req: Request, res: Response) => {
   const filterOptions: string = filter as string;
   const pageNumber: number = parseInt(page as string) || 1;
   const pageSize: number = parseInt(limit as string) || 10;
-
+  const query: any = {};
   try {
-    const query = <ParamsRequest>{};
-
     if (searchTerm) query.searchTerm = searchTerm;
     if (filterOptions) query.filterOptions = filterOptions;
 

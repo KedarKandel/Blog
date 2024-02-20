@@ -4,9 +4,9 @@ export type BlogType = {
   _id: string;
   title: string;
   description: string;
-  imageUrl?: string
   comments?: CommentType[];
   likes?: number[];
+  genre: string
 };
 
 export type CommentType = {
@@ -27,7 +27,7 @@ const blogSchema = new mongoose.Schema({
     },
   ],
   likes: [String],
-  imageUrl: String
+  genre: String
 });
 
 const Blog = mongoose.model<BlogType>("Blog", blogSchema)

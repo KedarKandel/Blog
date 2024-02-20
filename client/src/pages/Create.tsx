@@ -13,12 +13,15 @@ const Create = () => {
   const [blog, setBlog] = useState<Partial<IBlog>>({
     title: "",
     description: "",
+    genre: "",
   });
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    setBlog({ ...blog, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setBlog({ ...blog, [name]: value });
+    console.log(blog);
   };
 
   // submit blog
@@ -28,7 +31,7 @@ const Create = () => {
     try {
       await apiClient.validateToken();
       await dispatch(createBlogAsync(blog as IBlog));
-      setBlog({ title: "", description: "" });
+      setBlog({ title: "", description: "", genre: "" });
       navigate("/");
       dispatch(
         showToast({ message: "New blog creation successful", type: "success" })
@@ -59,7 +62,7 @@ const Create = () => {
           onChange={handleChange}
         />
 
-        <label className="block mt-4 mb-2 text-gray-700" htmlFor="content">
+        <label className="block mt-4 mb-2 text-gray-700" htmlFor="description">
           Description
         </label>
         <textarea
@@ -73,11 +76,29 @@ const Create = () => {
           onChange={handleChange}
         />
 
+        <select
+          name="genre"
+          id="genre"
+          className="block appearance-none w-full bg-white border border-gray-300 hover:border-gray-400 px-4 py-2 rounded shadow leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          required
+          value={blog.genre}
+          onChange={handleChange}
+        >
+          <option value="" disabled>
+            Select Genre
+          </option>
+          <option value="science">Science</option>
+          <option value="technology">Technology</option>
+          <option value="history">History</option>
+          <option value="love">Love</option>
+          <option value="nature">Nature</option>
+        </select>
+
         <button
           className="mt-6 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
           type="submit"
         >
-          {1 ? "submitting..." : "Add Blog"}
+          submit
         </button>
       </form>
     </div>

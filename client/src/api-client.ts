@@ -61,7 +61,6 @@ export const validateToken = async () => {
 // add a blog
 
 export const createBlog = async (blog: IBlog) => {
-  console.log(blog);
   const response = await fetch(`${API_BASE_URL}/api/blogs/`, {
     method: "POST",
     credentials: "include",
@@ -78,21 +77,24 @@ export const createBlog = async (blog: IBlog) => {
 };
 
 export const fetchAllBlogs = async (params: ParamsRequest): Promise<BlogResponse> => {
-  let url = `${API_BASE_URL}/api/blogs/`;
+  const url = new URL(`${API_BASE_URL}/api/blogs/`);
 
   const { searchTerm, filterOptions } = params;
 
-  // If there are filter and search options, add them to the URL
+  // Add search term to URL if provided
   if (searchTerm) {
-    url += `?search=${encodeURIComponent(searchTerm)}`;
+    url.searchParams.append('search', searchTerm);
   }
+
+  // Add filter options to URL if provided
   if (filterOptions) {
-    const filterParams = new URLSearchParams(filterOptions).toString();
-    url += `${searchTerm ? "&" : "?"}${filterParams}`;
+    Object.entries(filterOptions).forEach(([key, value]) => {
+      url.searchParams.append(key, value);
+    });
   }
 
   try {
-    const response = await fetch(url, {
+    const response = await fetch(url.toString(), {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -102,10 +104,11 @@ export const fetchAllBlogs = async (params: ParamsRequest): Promise<BlogResponse
     if (!response.ok) {
       throw new Error(responseBody.message);
     }
-    console.log(responseBody)
+    console.log(responseBody);
     return responseBody;
   } catch (error) {
     console.error("Error fetching blogs:", error);
     throw error;
   }
 };
+
