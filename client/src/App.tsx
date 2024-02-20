@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "./redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "./redux/store";
 import Layout from "./pages/Layout";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
@@ -9,9 +9,19 @@ import Register from "./pages/Register";
 
 import Toast from "./components/Toast";
 import Create from "./pages/Create";
+import { useEffect } from "react";
+import { currentUserAsync } from "./redux/reducers/userSlice";
 
 export default function App() {
+  const dispatch = useDispatch<AppDispatch>();
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      dispatch(currentUserAsync());
+    }
+  }, [isLoggedIn]);
+
   return (
     <Router>
       <Routes>

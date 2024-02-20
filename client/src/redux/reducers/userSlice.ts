@@ -4,20 +4,30 @@ import { RegisterFormData } from "../../pages/Register";
 import { LoginFormData } from "../../pages/Login";
 
 import * as apiClient from "../../api-client";
+import { UserType } from "../../types";
 
 export type UserState = {
+  currentUser: UserType | null;
   isLoggedIn: boolean;
   loading: boolean;
   error: null | string;
 };
 
 const initialState: UserState = {
+  currentUser: null,
   isLoggedIn: false,
   loading: false,
   error: null,
 };
 
-// Create an async thunk for user registration
+// current user
+
+export const currentUserAsync = createAsyncThunk("user/currentUser", async () => {
+  const response = await apiClient.fetchCurrentUser();
+  return response;
+});
+
+// register
 export const registerUserAsync = createAsyncThunk(
   "user/register",
   async (formData: RegisterFormData) => {
@@ -25,11 +35,12 @@ export const registerUserAsync = createAsyncThunk(
     return response;
   }
 );
+
+// login
 export const loginUserAsync = createAsyncThunk(
   "user/login",
   async (loginData: LoginFormData) => {
     const response = await apiClient.login(loginData);
-
     return response;
   }
 );
@@ -72,12 +83,19 @@ const userSlice = createSlice({
       state.error = action.payload as string;
     });
 
+    // current user
+    builder.addCase(currentUserAsync.fulfilled, (state, action) => {
+      state.currentUser = action.payload;
+      state.loading = false;
+      state.isLoggedIn = true;
+    });
+
     //login
     builder.addCase(loginUserAsync.fulfilled, (state) => {
       state.loading = false;
       state.isLoggedIn = true;
     });
-
+    // logout
     builder.addCase(logoutUser.fulfilled, (state) => {
       state.loading = false;
       state.isLoggedIn = false;

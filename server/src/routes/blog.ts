@@ -8,8 +8,8 @@ const router = express.Router();
 // Create a new blog
 router.post("/", verifyToken, async (req: Request, res: Response) => {
   try {
-    const { title, description } = req.body;
-    const newBlog = new Blog({ title, description });
+    const { title, description, genre } = req.body;
+    const newBlog = new Blog({ title, description, genre });
     await newBlog.save();
     return res.status(201).json(newBlog);
   } catch (error) {

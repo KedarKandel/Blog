@@ -16,3 +16,10 @@ export type BlogResponse = {
   total: number;
   totalPages: number;
 };
+
+export type UserType = {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+};

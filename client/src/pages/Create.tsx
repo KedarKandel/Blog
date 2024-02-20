@@ -1,37 +1,49 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import { useDispatch } from "react-redux";
-import { IBlog } from "../types";
-import { AppDispatch } from "../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../redux/store";
 import { createBlogAsync } from "../redux/reducers/blogSlice";
 import * as apiClient from "../api-client";
 import { useNavigate } from "react-router-dom";
 import { showToast } from "../redux/reducers/toastSlice";
 
 const Create = () => {
+
+
+  const currentUser = useSelector((state: RootState)=>state.user.currentUser)
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const [blog, setBlog] = useState<Partial<IBlog>>({
-    title: "",
-    description: "",
-    genre: "",
-  });
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [genre, setGenre] = useState("");
+  const [createdBy, setCreatedBy] = useState(currentUser?.firstName || "");
+  
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setBlog({ ...blog, [name]: value });
-    console.log(blog);
+    if (name === "title") setTitle(value);
+    else if (name === "description") setDescription(value);
+    else if (name === "genre") setGenre(value);
+    else if (name === "createdBy") setCreatedBy(value);
   };
 
   // submit blog
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+  
     try {
       await apiClient.validateToken();
-      await dispatch(createBlogAsync(blog as IBlog));
-      setBlog({ title: "", description: "", genre: "" });
+      await dispatch(
+        createBlogAsync({
+          title: title,
+          description: description,
+          genre: genre,
+          createdBy: createdBy
+        })
+      );
+      setTitle("");
+      setDescription("");
+      setGenre("");
+      setCreatedBy(currentUser?.firstName || "");
       navigate("/");
       dispatch(
         showToast({ message: "New blog creation successful", type: "success" })
@@ -58,7 +70,7 @@ const Create = () => {
           name="title"
           placeholder="Enter title"
           required
-          value={blog.title}
+          value={title}
           onChange={handleChange}
         />
 
@@ -72,7 +84,7 @@ const Create = () => {
           placeholder="Enter content"
           rows={4}
           required
-          value={blog.description}
+          value={description}
           onChange={handleChange}
         />
 
@@ -81,7 +93,7 @@ const Create = () => {
           id="genre"
           className="block appearance-none w-full bg-white border border-gray-300 hover:border-gray-400 px-4 py-2 rounded shadow leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
           required
-          value={blog.genre}
+          value={genre}
           onChange={handleChange}
         >
           <option value="" disabled>

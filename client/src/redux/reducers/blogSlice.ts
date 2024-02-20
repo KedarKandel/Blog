@@ -22,7 +22,8 @@ const initialState: blogState = {
 // to continue from here
 export const createBlogAsync = createAsyncThunk(
   "blogs/create",
-  async (blog: IBlog) => {
+  async (blog: Partial<IBlog>) => {
+    console.log(blog)
     try {
       // If token is valid, proceed to create the blog
       const response = await apiClient.createBlog(blog);

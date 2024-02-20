@@ -1,8 +1,20 @@
 import { LoginFormData } from "./pages/Login";
 import { RegisterFormData } from "./pages/Register";
-import { BlogResponse, IBlog, ParamsRequest } from "./types";
+import { BlogResponse, IBlog, ParamsRequest, UserType } from "./types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+
+// fetch current user
+
+export const fetchCurrentUser = async (): Promise<UserType> => {
+  const response = await fetch(`${API_BASE_URL}/api/users/currentUser`, {
+    credentials: "include",
+  });
+  if (!response.ok) {
+    throw new Error("Error fetching user");
+  }
+  return response.json();
+};
 
 // register an user
 export const register = async (formData: RegisterFormData) => {
@@ -27,6 +39,7 @@ export const register = async (formData: RegisterFormData) => {
 export const login = async (loginData: LoginFormData) => {
   const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
     method: "POST",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -60,7 +73,7 @@ export const validateToken = async () => {
 
 // add a blog
 
-export const createBlog = async (blog: IBlog) => {
+export const createBlog = async (blog: Partial<IBlog>) => {
   const response = await fetch(`${API_BASE_URL}/api/blogs/`, {
     method: "POST",
     credentials: "include",
@@ -76,14 +89,16 @@ export const createBlog = async (blog: IBlog) => {
   return responseBody;
 };
 
-export const fetchAllBlogs = async (params: ParamsRequest): Promise<BlogResponse> => {
+export const fetchAllBlogs = async (
+  params: ParamsRequest
+): Promise<BlogResponse> => {
   const url = new URL(`${API_BASE_URL}/api/blogs/`);
 
   const { searchTerm, filterOptions } = params;
 
   // Add search term to URL if provided
   if (searchTerm) {
-    url.searchParams.append('search', searchTerm);
+    url.searchParams.append("search", searchTerm);
   }
 
   // Add filter options to URL if provided
@@ -111,4 +126,3 @@ export const fetchAllBlogs = async (params: ParamsRequest): Promise<BlogResponse
     throw error;
   }
 };
-
