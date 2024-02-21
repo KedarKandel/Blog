@@ -7,7 +7,8 @@ import mongoose from "mongoose";
 // routes
 import usersRoutes from "./routes/users";
 import authRoutes from "./routes/auth";
-import blogRoutes from "./routes/blog";
+import myBlogRoutes from "./routes/my-blogs"
+import blogRoutes from "./routes/blogs";
 import path from "path";
 
 //database connection
@@ -29,6 +30,7 @@ app.use(express.static(path.join(__dirname, "../../client/dist")));
 
 app.use("/api/users", usersRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/my-blogs", myBlogRoutes)
 app.use("/api/blogs", blogRoutes);
 
 

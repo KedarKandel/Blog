@@ -9,13 +9,13 @@ import { showToast } from "../redux/reducers/toastSlice";
 const Create = () => {
 
 
-  const currentUser = useSelector((state: RootState)=>state.user.currentUser)
+  const currentUserId = useSelector((state: RootState)=>state.user.currentUser?._id)
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [genre, setGenre] = useState("");
-  const [createdBy, setCreatedBy] = useState(currentUser?.firstName || "");
+  const [createdBy, setCreatedBy] = useState(currentUserId || "");
   
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -43,7 +43,7 @@ const Create = () => {
       setTitle("");
       setDescription("");
       setGenre("");
-      setCreatedBy(currentUser?.firstName || "");
+      setCreatedBy(currentUserId || "");
       navigate("/");
       dispatch(
         showToast({ message: "New blog creation successful", type: "success" })

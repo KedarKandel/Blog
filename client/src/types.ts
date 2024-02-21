@@ -1,27 +1,14 @@
-export type IBlog = {
-  id: number;
-  title: string;
-  description: string;
-  genre: string;
-  createdBy: string;
-  createdAt: Date
-};
-export type ParamsRequest = {
-  searchTerm: string;
-  filterOptions: string;
+import { BlogType } from "../../server/src/sharedTypes";
+
+export type SearchParams = {
+  searchTerm?: string;
+  filterOptions?: string;
+  page?: string;
 };
 
 export type BlogResponse = {
-  blogs: IBlog[];
+  blogs: BlogType[];
   currentPage: number;
   total: number;
   totalPages: number;
-};
-
-export type UserType = {
-  id: string,
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
 };

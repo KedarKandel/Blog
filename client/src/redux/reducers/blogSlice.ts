@@ -1,9 +1,10 @@
-import {  createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {  IBlog, ParamsRequest } from "../../types";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import * as apiClient from "../../api-client";
+import { BlogType } from "../../../../server/src/sharedTypes";
+import { BlogResponse } from "../../types";
 
 export type blogState = {
-  blogs: IBlog[];
+  blogs: BlogType[];
   currentPage: number;
   totalPages: number;
   total: number;
@@ -22,11 +23,9 @@ const initialState: blogState = {
 // to continue from here
 export const createBlogAsync = createAsyncThunk(
   "blogs/create",
-  async (blog: Partial<IBlog>) => {
-    console.log(blog)
+  async (blog: Partial<BlogType>) => {
     try {
-      // If token is valid, proceed to create the blog
-      const response = await apiClient.createBlog(blog);
+      const response = await apiClient.addMyBlog(blog);
       return response;
     } catch (error) {
       console.log(error);
@@ -34,55 +33,64 @@ export const createBlogAsync = createAsyncThunk(
   }
 );
 
-export const fetchBlogs = createAsyncThunk(
-  "blogs/fetchAll",
-  async (params: ParamsRequest) => {
-    try {
-      const response = await apiClient.fetchAllBlogs(params);
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
+export const fetchBlogs = createAsyncThunk("blogs/fetchAll", async () => {
+  try {
+    const response = await apiClient.getAllBlogs();
+    return response;
+  } catch (error) {
+    console.log(error);
   }
-);
+});
 
 const blogSlice = createSlice({
   name: "blog",
   initialState,
   reducers: {},
   extraReducers(builder) {
-    builder.addCase(createBlogAsync.fulfilled, (state, action) => {
-      state.blogs.push(action.payload);
-      state.error = null;
-      state.loading = false;
-    });
-    builder.addCase(fetchBlogs.fulfilled, (state, action) => {
-      const payload = action.payload; // Store action.payload in a variable
-      if (payload) {
-        const { blogs, currentPage, totalPages, total } = payload;
-        state.blogs = blogs;
-        state.currentPage = currentPage;
-        state.totalPages = totalPages;
-        state.total = total;
-        state.loading = false;
-        state.error = null;
-      }
-    });
-    builder.addCase(createBlogAsync.rejected, (state, action) => {
-      state.error = action.error.message || "Unknown error";
-      state.loading = false;
-    });
-    builder.addCase(fetchBlogs.rejected, (state, action) => {
-      state.error = action.error.message || "Unknown error";
-      state.loading = false;
-    });
     builder.addCase(createBlogAsync.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(fetchBlogs.pending, (state) => {
-      state.loading = true;
+    builder.addCase(createBlogAsync.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.blogs.push(action.payload);
+      }
       state.error = null;
+      state.loading = false;
+    });
+
+    builder.addCase(createBlogAsync.rejected, (state, action) => {
+      state.error = action.error.message || "Unknown error";
+      state.loading = false;
+    });
+
+    builder
+      .addCase(fetchBlogs.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchBlogs.fulfilled, (state, action) => {
+        const payload = action.payload as BlogResponse | BlogResponse[];
+        console.log(payload);
+        if (Array.isArray(payload)) {
+          const firstItem = payload[0];
+          state.blogs = firstItem.blogs;
+          state.currentPage = firstItem.currentPage;
+          state.totalPages = firstItem.totalPages;
+          state.total = firstItem.total;
+        } else {
+          state.blogs = payload.blogs;
+          state.currentPage = payload.currentPage;
+          state.totalPages = payload.totalPages;
+          state.total = payload.total;
+        }
+        state.loading = false;
+        state.error = null;
+      });
+
+    builder.addCase(fetchBlogs.rejected, (state, action) => {
+      state.error = action.error.message || "Unknown error";
+      state.loading = false;
     });
   },
 });

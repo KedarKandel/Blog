@@ -1,22 +1,7 @@
 import mongoose from "mongoose";
+import { BlogType } from "../sharedTypes";
 
-export type BlogType = {
-  _id: string;
-  title: string;
-  description: string;
-  comments?: CommentType[];
-  likes?: number[];
-  genre: string;
-  createdBy: string;
-  createdAt: Date;
-};
 
-export type CommentType = {
-  _id: string;
-  userId: string;
-  content: string;
-  createdAt: Date;
-};
 
 const blogSchema = new mongoose.Schema(
   {

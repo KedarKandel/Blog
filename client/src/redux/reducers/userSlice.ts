@@ -2,9 +2,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RegisterFormData } from "../../pages/Register";
 import { LoginFormData } from "../../pages/Login";
-
+import { UserType } from "../../../../server/src/sharedTypes";
 import * as apiClient from "../../api-client";
-import { UserType } from "../../types";
 
 export type UserState = {
   currentUser: UserType | null;
@@ -22,10 +21,13 @@ const initialState: UserState = {
 
 // current user
 
-export const currentUserAsync = createAsyncThunk("user/currentUser", async () => {
-  const response = await apiClient.fetchCurrentUser();
-  return response;
-});
+export const currentUserAsync = createAsyncThunk(
+  "user/currentUser",
+  async () => {
+    const response = await apiClient.fetchCurrentUser();
+    return response;
+  }
+);
 
 // register
 export const registerUserAsync = createAsyncThunk(

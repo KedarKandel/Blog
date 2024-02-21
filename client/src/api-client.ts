@@ -1,6 +1,7 @@
+import { BlogType, UserType } from "../../server/src/sharedTypes";
 import { LoginFormData } from "./pages/Login";
 import { RegisterFormData } from "./pages/Register";
-import { BlogResponse, IBlog, ParamsRequest, UserType } from "./types";
+import { BlogResponse, SearchParams } from "./types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
@@ -73,8 +74,8 @@ export const validateToken = async () => {
 
 // add a blog
 
-export const createBlog = async (blog: Partial<IBlog>) => {
-  const response = await fetch(`${API_BASE_URL}/api/blogs/`, {
+export const addMyBlog = async (blog: Partial<BlogType>): Promise<BlogType> => {
+  const response = await fetch(`${API_BASE_URL}/api/my-blogs/`, {
     method: "POST",
     credentials: "include",
     headers: {
@@ -89,40 +90,76 @@ export const createBlog = async (blog: Partial<IBlog>) => {
   return responseBody;
 };
 
-export const fetchAllBlogs = async (
-  params: ParamsRequest
-): Promise<BlogResponse> => {
-  const url = new URL(`${API_BASE_URL}/api/blogs/`);
-
-  const { searchTerm, filterOptions } = params;
-
-  // Add search term to URL if provided
-  if (searchTerm) {
-    url.searchParams.append("search", searchTerm);
+// fetch user's blogs
+export const fetchMyBlogs = async (): Promise<BlogType[]> => {
+  const response = await fetch(`${API_BASE_URL}/api/my-blogs`, {
+    credentials: "include",
+  });
+  if (!response.ok) {
+    throw new Error("Error fetching blogs");
   }
+  return response.json();
+};
 
-  // Add filter options to URL if provided
-  if (filterOptions) {
-    Object.entries(filterOptions).forEach(([key, value]) => {
-      url.searchParams.append(key, value);
-    });
+// fetch specific blog by user
+export const fetchMyBlogById = async (blogId: string): Promise<BlogType> => {
+  const response = await fetch(`${API_BASE_URL}/api/my-blogs/${blogId}`, {
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Error fetching blogs");
   }
+  return response.json();
+};
 
-  try {
-    const response = await fetch(url.toString(), {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const responseBody = await response.json();
-    if (!response.ok) {
-      throw new Error(responseBody.message);
+export const updateMyBlogById = async (blogFormData: FormData) => {
+  const response = await fetch(
+    `${API_BASE_URL}/api/my-blogs/${blogFormData.get("blogId")}`,
+    {
+      method: "PUT",
+      body: blogFormData,
+      credentials: "include",
     }
-    console.log(responseBody);
-    return responseBody;
-  } catch (error) {
-    console.error("Error fetching blogs:", error);
-    throw error;
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to update Hotel");
   }
+
+  return response.json();
+};
+
+// fetch all blogs
+
+export const getAllBlogs = async (): Promise<BlogResponse[]> => {
+  const response = await fetch(`${API_BASE_URL}/api/blogs`);
+  const responseBody = await response.json();
+  if (!response.ok) {
+    throw new Error("Error fetching blogs");
+  }
+  console.log(response)
+  return responseBody;
+};
+
+// fetch blogs with search and filter logic
+export const searchBlogs = async (
+  searchParams: SearchParams
+): Promise<BlogResponse> => {
+  const queryParams = new URLSearchParams();
+  queryParams.append("search", searchParams.searchTerm || "");
+  queryParams.append("filter", searchParams.filterOptions || "");
+  queryParams.append("page", searchParams.page || "");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/blogs/search?${queryParams}`
+  );
+
+  if (!response.ok) {
+    throw new Error("Error fetching hotels");
+  }
+
+  console.log(response);
+
+  return response.json();
 };
