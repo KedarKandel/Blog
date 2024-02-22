@@ -21,7 +21,7 @@ const SearchPage = () => {
   const [page, setPage] = useState<number>(
     useSelector((state: RootState) => state.blog.currentPage)
   );
-  const [filter, setFilter] = useState("latest");
+  const [filter, setFilter] = useState("");
   const dispatch = useDispatch<AppDispatch>();
   const handleSearch = (searchQuery: string) => {
     setSearchQuery(searchQuery);

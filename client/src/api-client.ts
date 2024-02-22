@@ -161,24 +161,4 @@ export const getAllBlogs = async (
   }
 };
 
-// fetch blogs with search and filter logic
-export const searchBlogs = async (
-  searchParams: SearchParams
-): Promise<BlogResponse> => {
-  const queryParams = new URLSearchParams();
-  queryParams.append("search", searchParams.searchTerm || "");
-  queryParams.append("filter", searchParams.filterOptions || "");
-  queryParams.append("page", searchParams.page || "");
 
-  const response = await fetch(
-    `${API_BASE_URL}/api/blogs/search?${queryParams}`
-  );
-
-  if (!response.ok) {
-    throw new Error("Error fetching hotels");
-  }
-
-  console.log(response);
-
-  return response.json();
-};

@@ -2,11 +2,16 @@
 
 A simple full-stack blog application built with React, TypeScript, Express, Node.js, MongoDB, Redux Toolkit, and Tailwind CSS.
 
+WORK IN PROGRESS
+Deployed on free render free service: server spins after 30+s 
+site: https://mern-blog-app-39y0.onrender.com
 
 ## Features
 - **User Authentication:** Secure registration and login using JSON Web Tokens.
 - **Blog Operations:** Write, like, and comment on blogs.
 - **Responsive Design:** User-friendly interface with Tailwind CSS.
+
+
 
 ## Getting Started
 

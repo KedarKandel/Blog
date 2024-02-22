@@ -32,7 +32,6 @@ router.get("/", async (req: Request, res: Response) => {
           query.genre = filter.toLowerCase();
           break;
         default:
-          // Handle invalid filter
           return res.status(400).json({ message: "Invalid filter" });
       }
     }
@@ -40,8 +39,6 @@ router.get("/", async (req: Request, res: Response) => {
     const totalCount = await Blog.countDocuments(query);
     const totalPages = Math.ceil(totalCount / perPage);
 
-
-    
     let sort: any = {};
     if (filter === "oldest") {
       // Sort by createdAt in ascending order (oldest first)
@@ -61,45 +58,11 @@ router.get("/", async (req: Request, res: Response) => {
       total: totalCount,
       totalPages: totalPages,
     });
-
-    console.log({
-      blogs,
-      currentPage: page,
-      total: totalCount,
-      totalPages: totalPages,
-    });
   } catch (error) {
     console.error("Error fetching blogs:", error);
     res.status(500).json({ message: "Error fetching blogs" });
   }
 });
-
-// router.get("/", async (req: Request, res: Response) => {
-//   console.log(req.query.page)
-//   try {
-//     const { page, searchQuery, filter } = req.query;
-//     // Pagination settings
-//     const perPage = 8;
-
-//     // Fetch blogs with pagination
-//     const totalCount = await Blog.countDocuments();
-//     const totalPages = Math.ceil(totalCount / perPage);
-//     const blogs = await Blog.find()
-//       .sort("-updatedAt")
-//       .skip((Number(page) - 1) * perPage)
-//       .limit(perPage);
-
-//     res.json({
-//       blogs,
-//       currentPage: page,
-//       total: totalCount,
-//       totalPages: totalPages,
-//     });
-//   } catch (error) {
-//     console.error("Error fetching blogs:", error);
-//     res.status(500).json({ message: "Error fetching blogs" });
-//   }
-// });
 
 // Read a single blog by ID
 router.get("/:id", async (req: Request, res: Response) => {

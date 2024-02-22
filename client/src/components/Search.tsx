@@ -18,15 +18,22 @@ const Search = ({ handleSearch }: Props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Search blogs..."
-        value={query}
-        onChange={handleChange}
-      />
-      <button type="submit">Search</button>
-    </form>
+    <form onSubmit={handleSubmit} className="flex">
+    <input
+      type="text"
+      placeholder="Search blogs..."
+      value={query}
+      onChange={handleChange}
+      className="appearance-none outline-none bg-white border px-4 py-2 rounded-l shadow focus:outline-none focus:shadow-outline"
+    />
+    <button
+      type="submit"
+      className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-r shadow"
+    >
+      Search
+    </button>
+  </form>
+  
   );
 };
 
