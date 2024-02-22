@@ -1,14 +1,14 @@
-// HomePage.js
 import { useState, useEffect } from "react";
-import SearchBar from "../components/Search";
-import FilterOptions from "../components/Filter";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
 import { fetchBlogs } from "../redux/reducers/blogSlice";
-
+import SearchBar from "../components/Search";
+import FilterOptions from "../components/Filter";
 import Blog from "../components/Blog";
 import Pagination from "../components/Pagination";
 import { BlogType } from "../../../server/src/sharedTypes";
+
+import { motion } from "framer-motion";
 
 const SearchPage = () => {
   const blogs = useSelector((state: RootState) => state.blog.blogs);
@@ -34,6 +34,7 @@ const SearchPage = () => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     dispatch(fetchBlogs({ page, searchQuery, filter }));
   }, [page, searchQuery, filter]);
 

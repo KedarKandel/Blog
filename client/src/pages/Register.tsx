@@ -50,37 +50,40 @@ const Register = () => {
   });
   return (
     <form
-      className=" container rounded-md shadow-lg p-2 xl:mx-80 flex flex-col"
+      className=" rounded-md shadow-lg p-2 xl:mx-80 flex flex-col text-blue-800"
       onSubmit={onSubmit}
     >
-      <h1 className="text-3xl mb-5 font-bold">Create An Account</h1>
+      <h1 className="text-2xl mb-5 font-bold text-center text-blue-800 shadow-sm p-2">Create An Account</h1>
       <div className="mb-4">
-        <label htmlFor="FirstName" className="block font-semibold">
-          First Name
-          <input
-            type="text"
-            placeholder="First Name"
-            className="mt-1 px-2 py-3 w-full rounded-md"
-            {...register("firstName", { required: "This field is required" })}
-          />
-          {errors.firstName && (
-            <span className="text-red-500">{errors.firstName.message}</span>
-          )}
-        </label>
-      </div>
-      <div className="mb-4">
-        <label htmlFor="LastName" className="block font-semibold">
-          Last Name
-          <input
-            type="text"
-            placeholder="Last Name"
-            className="mt-1 px-2 py-3  w-full rounded-md"
-            {...register("lastName", { required: "This field is required" })}
-          />
-          {errors.lastName && (
-            <span className="text-red-500 mt-1">{errors.lastName.message}</span>
-          )}
-        </label>
+        <div className="flex gap-2">
+          <label htmlFor="FirstName" className="block font-semibold">
+            First Name
+            <input
+              type="text"
+              placeholder="First Name"
+              className="mt-1 px-1 py-3 w-full rounded-md"
+              {...register("firstName", { required: "This field is required" })}
+            />
+            {errors.firstName && (
+              <span className="text-red-500">{errors.firstName.message}</span>
+            )}
+          </label>
+
+          <label htmlFor="LastName" className="block font-semibold">
+            Last Name
+            <input
+              type="text"
+              placeholder="Last Name"
+              className="mt-1 px-1 py-3 w-full rounded-md"
+              {...register("lastName", { required: "This field is required" })}
+            />
+            {errors.lastName && (
+              <span className="text-red-500 mt-1">
+                {errors.lastName.message}
+              </span>
+            )}
+          </label>
+        </div>
       </div>
       <div className="mb-4">
         <label htmlFor="email" className="block font-semibold">
@@ -88,7 +91,7 @@ const Register = () => {
           <input
             type="email"
             placeholder="Enter your email"
-            className="mt-1 px-2 py-3  w-full rounded-md"
+            className="mt-1 px-1 py-3 w-full rounded-md"
             {...register("email", { required: "This field is required" })}
           />
           {errors.email && (
@@ -102,7 +105,7 @@ const Register = () => {
           <input
             type="password"
             placeholder="Enter your password"
-            className="mt-1 px-2 py-3  w-full rounded-md"
+            className="mt-1 px-1 py-3 w-full rounded-md"
             {...register("password", {
               required: "This field is required",
               minLength: {
@@ -122,7 +125,7 @@ const Register = () => {
           <input
             type="password"
             placeholder="Confirm your password"
-            className="mt-1 px-2 py-3  w-full rounded-md"
+            className="mt-1 px-1 py-3 w-full rounded-md"
             {...register("confirmPassword", {
               validate: (value) => {
                 if (!value) {

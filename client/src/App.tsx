@@ -12,13 +12,11 @@ import Create from "./pages/Create";
 import SearchPage from "./pages/SearchPage";
 import Toast from "./components/Toast";
 
-
 export default function App() {
   const dispatch = useDispatch<AppDispatch>();
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
 
   useEffect(() => {
-    
     if (isLoggedIn) {
       dispatch(currentUserAsync());
     }
