@@ -13,26 +13,29 @@ import { BlogType } from "../../../server/src/sharedTypes";
 const SearchPage = () => {
   const blogs = useSelector((state: RootState) => state.blog.blogs);
 
+  console.log(blogs);
+
   const pages = useSelector((state: RootState) => state.blog.totalPages);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState<number>(
     useSelector((state: RootState) => state.blog.currentPage)
   );
-  const [selectedFilter, setSelectedFilter] = useState("latest");
+  const [filter, setFilter] = useState("latest");
   const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    dispatch(fetchBlogs());
-  }, [searchQuery, selectedFilter, dispatch]);
-
   const handleSearch = (searchQuery: string) => {
     setSearchQuery(searchQuery);
+    setFilter("");
   };
 
   const handleFilter = (filterQuery: string) => {
-    setSelectedFilter(filterQuery);
+    setFilter(filterQuery);
+    setSearchQuery("");
   };
+
+  useEffect(() => {
+    dispatch(fetchBlogs({ page, searchQuery, filter }));
+  }, [page, searchQuery, filter]);
 
   return (
     <div className="container mx-auto flex flex-col">
@@ -45,13 +48,16 @@ const SearchPage = () => {
           <Blog key={index} blog={blog} />
         ))}
       </div>
-      <div>
+
+      {blogs?.length > 0 ? (
         <Pagination
           page={page || 1}
           pages={pages || 1}
           onPageChange={(page) => setPage(page)}
         />
-      </div>
+      ) : (
+        <p className="self-center">No blogs to display</p>
+      )}
     </div>
   );
 };

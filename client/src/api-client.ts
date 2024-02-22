@@ -132,14 +132,33 @@ export const updateMyBlogById = async (blogFormData: FormData) => {
 
 // fetch all blogs
 
-export const getAllBlogs = async (): Promise<BlogResponse[]> => {
-  const response = await fetch(`${API_BASE_URL}/api/blogs`);
-  const responseBody = await response.json();
-  if (!response.ok) {
-    throw new Error("Error fetching blogs");
+export const getAllBlogs = async (
+  page: number,
+  searchQuery: string,
+  filter: string
+): Promise<BlogResponse> => {
+  const queryParams = new URLSearchParams();
+  queryParams.append("page", String(page));
+  if (searchQuery) {
+    queryParams.append("searchQuery", searchQuery);
   }
-  console.log(response)
-  return responseBody;
+  if (filter) {
+    queryParams.append("filter", filter);
+  }
+
+  const url = `${API_BASE_URL}/api/blogs?${queryParams}`;
+
+  try {
+    const response = await fetch(url);
+    const responseBody = await response.json();
+    if (!response.ok) {
+      throw new Error("Error fetching blogs");
+    }
+    return responseBody;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
 
 // fetch blogs with search and filter logic

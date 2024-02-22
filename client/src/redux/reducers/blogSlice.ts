@@ -33,14 +33,25 @@ export const createBlogAsync = createAsyncThunk(
   }
 );
 
-export const fetchBlogs = createAsyncThunk("blogs/fetchAll", async () => {
-  try {
-    const response = await apiClient.getAllBlogs();
-    return response;
-  } catch (error) {
-    console.log(error);
+export const fetchBlogs = createAsyncThunk(
+  "blogs/fetchAll",
+  async ({
+    page,
+    searchQuery,
+    filter,
+  }: {
+    page: number;
+    searchQuery: string;
+    filter: string;
+  }) => {
+    try {
+      const response = await apiClient.getAllBlogs(page, searchQuery, filter);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
   }
-});
+);
 
 const blogSlice = createSlice({
   name: "blog",
@@ -71,7 +82,7 @@ const blogSlice = createSlice({
       })
       .addCase(fetchBlogs.fulfilled, (state, action) => {
         const payload = action.payload as BlogResponse | BlogResponse[];
-        console.log(payload);
+
         if (Array.isArray(payload)) {
           const firstItem = payload[0];
           state.blogs = firstItem.blogs;

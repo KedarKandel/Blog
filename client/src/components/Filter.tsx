@@ -9,7 +9,10 @@ const FilterOptions = ({ handleFilter }: Props) => {
       <option value="oldest">Oldest</option>
       <option value="science">Science</option>
       <option value="nature">Nature</option>
+      <option value="love">Love</option>
       <option value="technology">Technology</option>
+      <option value="history">History</option>
+      <option value="sports">Sports</option>
     </select>
   );
 };
