@@ -35,6 +35,7 @@ export const editUserProfileAsync = createAsyncThunk(
   "user/editProfile",
   async (data: EditProfileData) => {
     const response = await apiClient.editUserProfile(data);
+    console.log(response)
     return response;
   }
 );
@@ -114,9 +115,7 @@ const userSlice = createSlice({
       state.isLoggedIn = false;
       state.error = null;
     });
-    builder.addCase(editUserProfileAsync.fulfilled, (state, action) => {
-      state.currentUser = action.payload;
-    });
+  
   },
 });
 

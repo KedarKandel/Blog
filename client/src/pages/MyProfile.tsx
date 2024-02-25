@@ -1,10 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
 import { useState } from "react";
-import { editUserProfileAsync } from "../redux/reducers/userSlice";
+import {  currentUserAsync, editUserProfileAsync } from "../redux/reducers/userSlice";
 import { EditProfileData } from "../types";
 import { showToast } from "../redux/reducers/toastSlice";
 import * as apiClient from "../api-client";
+
 
 const MyProfile = () => {
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
@@ -21,14 +22,15 @@ const MyProfile = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data: EditProfileData = {
-      firstName: currentUser?.firstName!,
-      lastName: currentUser?.lastName!,
+      firstName: editedFirstName,
+      lastName: editedLastName,
       email: currentUser?.email! || "",
       currentPassword,
       newPassword,
     };
     try {
-      const actionResult = await dispatch(editUserProfileAsync(data));
+      const actionResult:any = await dispatch(editUserProfileAsync(data));
+     
       if (editUserProfileAsync.rejected.match(actionResult)) {
         dispatch(
           showToast({
@@ -39,7 +41,8 @@ const MyProfile = () => {
           })
         );
       } else {
-        dispatch(showToast({ message: "Login successful", type: "success" }));
+        dispatch(showToast({ message: actionResult.payload.message as string, type: "success" }));
+       dispatch(currentUserAsync())
         await apiClient.validateToken();
       }
     } catch (error) {
@@ -52,6 +55,11 @@ const MyProfile = () => {
       console.error("An unexpected error occurred during login:", error);
     }
   };
+
+
+  // fetch current user after updating
+
+
 
   return (
     <div className="container mx-auto flex justify-center items-center">

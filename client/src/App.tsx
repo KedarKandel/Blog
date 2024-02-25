@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { AppDispatch, RootState } from "./redux/store";
-import { currentUserAsync } from "./redux/reducers/userSlice";
+import { currentUserAsync, editUserProfileAsync } from "./redux/reducers/userSlice";
 
 import Layout from "./pages/Layout";
 import NotFound from "./pages/NotFound";
@@ -12,6 +12,7 @@ import Create from "./pages/Create";
 import SearchPage from "./pages/SearchPage";
 import Toast from "./components/Toast";
 import MyProfile from "./pages/MyProfile";
+
 
 export default function App() {
   const dispatch = useDispatch<AppDispatch>();

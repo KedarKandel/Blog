@@ -39,9 +39,10 @@ router.post("/editProfile", [
   }),
   verifyToken,
   async (req: Request, res: Response) => {
-    const userId = req.userId;
     const { firstName, lastName, email, currentPassword, newPassword } =
       req.body;
+
+      console.log(req.body)
 
     try {
       let user = await User.findOne({ email });
@@ -58,15 +59,12 @@ router.post("/editProfile", [
         return res.status(400).json({ message: "Invalid current password" });
       }
 
-      // Update user information
       user.firstName = firstName;
       user.lastName = lastName;
-      user.email = email;
 
       // If a new password is provided, update the password
       if (newPassword) {
-        const hashedPassword = await bcrypt.hash(newPassword, 10);
-        user.password = hashedPassword;
+        user.password = newPassword;
       }
 
       await user.save();

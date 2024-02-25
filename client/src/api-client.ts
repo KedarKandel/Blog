@@ -18,7 +18,7 @@ export const fetchCurrentUser = async ():Promise<Partial<UserType>>=> {
   return response.json();
 };
 
-export const editUserProfile = async (data: EditProfileData):Promise<Partial<UserType>> => {
+export const editUserProfile = async (data: EditProfileData):Promise<string> => {
   const response = await fetch(`${API_BASE_URL}/api/users/editProfile`, {
     method:"POST",
     credentials:"include",
@@ -36,7 +36,7 @@ export const editUserProfile = async (data: EditProfileData):Promise<Partial<Use
 }
 
 // register an user
-export const register = async (formData: RegisterFormData):Promise<Partial<UserType>> => {
+export const register = async (formData: RegisterFormData):Promise<string> => {
   const response = await fetch(`${API_BASE_URL}/api/users/register`, {
     method: "POST",
     credentials: "include",
@@ -55,7 +55,7 @@ export const register = async (formData: RegisterFormData):Promise<Partial<UserT
 
 // login an user
 
-export const login = async (loginData: LoginFormData):Promise<Partial<UserType>> => {
+export const login = async (loginData: LoginFormData):Promise<string> => {
   const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
     method: "POST",
     credentials: "include",
