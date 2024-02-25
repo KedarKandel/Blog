@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import * as apiClient from "../../api-client";
-import { BlogType } from "../../../../server/src/sharedTypes";
-import { BlogResponse } from "../../types";
+import { BlogSearchResponse, BlogType } from "../../../../server/src/sharedTypes";
+
 
 export type blogState = {
   blogs: BlogType[];
@@ -81,7 +81,7 @@ const blogSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchBlogs.fulfilled, (state, action) => {
-        const payload = action.payload as BlogResponse | BlogResponse[];
+        const payload = action.payload as BlogSearchResponse | BlogSearchResponse[];
 
         if (Array.isArray(payload)) {
           const firstItem = payload[0];
