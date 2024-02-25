@@ -1,7 +1,7 @@
-import { BlogType, UserType } from "../../server/src/sharedTypes";
+import { BlogSearchResponse, BlogType, UserType } from "../../server/src/sharedTypes";
 import { LoginFormData } from "./pages/Login";
 import { RegisterFormData } from "./pages/Register";
-import { BlogResponse, SearchParams } from "./types";
+
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
@@ -136,7 +136,7 @@ export const getAllBlogs = async (
   page: number,
   searchQuery: string,
   filter: string
-): Promise<BlogResponse> => {
+): Promise<BlogSearchResponse> => {
   const queryParams = new URLSearchParams();
   queryParams.append("page", String(page));
   if (searchQuery) {

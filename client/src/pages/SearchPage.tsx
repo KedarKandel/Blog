@@ -8,7 +8,7 @@ import Blog from "../components/Blog";
 import Pagination from "../components/Pagination";
 import { BlogType } from "../../../server/src/sharedTypes";
 
-import { motion } from "framer-motion";
+
 
 const SearchPage = () => {
   const blogs = useSelector((state: RootState) => state.blog.blogs);
@@ -40,7 +40,7 @@ const SearchPage = () => {
 
   return (
     <div className="container mx-auto flex flex-col">
-      <div className="flex justify-between">
+      <div className=" flex flex-col gap-2 md:flex-row justify-between">
         <SearchBar handleSearch={handleSearch} />
         <FilterOptions handleFilter={handleFilter} />
       </div>

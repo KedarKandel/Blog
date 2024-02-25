@@ -7,7 +7,7 @@ type Props = {
 
 const Blog = ({ blog }: Props) => {
   return (
-    <div className=" flex flex-col m-5 p-6 border rounded-lg shadow-lg bg-white hover:bg-gray-100 cursor-pointer transition-all">
+    <div className=" flex flex-col my-3 md:my-5 p-5 border rounded-lg shadow-lg bg-white hover:bg-gray-100 cursor-pointer transition-all">
       <h1 className="text-2xl font-bold text-center mb-4 text-gray-800">
         {blog.title}
       </h1>

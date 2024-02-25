@@ -6,7 +6,7 @@ const FilterOptions = ({ handleFilter }: Props) => {
   return (
     <select
       onChange={(e) => handleFilter(e.target.value)}
-      className="appearance-none bg-blue-500 border border-gray-400 hover:border-gray-500 px-4 py-2 rounded shadow focus:outline-none focus:shadow-outline text-white font-semibold cursor-pointer"
+      className=" max-w-max appearance-none bg-blue-600 hover:border-gray-500 px-4 py-2 rounded shadow focus:outline-none focus:shadow-outline text-white font-semibold cursor-pointer"
     >
       <option value="" disabled>
         Filters

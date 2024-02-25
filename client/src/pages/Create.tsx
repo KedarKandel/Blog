@@ -6,19 +6,22 @@ import * as apiClient from "../api-client";
 import { useNavigate } from "react-router-dom";
 import { showToast } from "../redux/reducers/toastSlice";
 
+
+
 const Create = () => {
-
-
-  const currentUserId = useSelector((state: RootState)=>state.user.currentUser?._id)
+  const currentUserId = useSelector(
+    (state: RootState) => state.user.currentUser?._id
+  );
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [genre, setGenre] = useState("");
   const [createdBy, setCreatedBy] = useState(currentUserId || "");
-  
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     if (name === "title") setTitle(value);
     else if (name === "description") setDescription(value);
@@ -29,7 +32,7 @@ const Create = () => {
   // submit blog
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
+
     try {
       await apiClient.validateToken();
       await dispatch(
@@ -37,7 +40,7 @@ const Create = () => {
           title: title,
           description: description,
           genre: genre,
-          createdBy: createdBy
+          createdBy: createdBy,
         })
       );
       setTitle("");
@@ -57,7 +60,7 @@ const Create = () => {
   return (
     <div className=" flex flex-1 items-center justify-center">
       <form
-        className=" p-8 rounded-md shadow-2xl max-w-md w-full"
+        className="p-8 rounded-md shadow-2xl max-w-md w-full"
         onSubmit={handleSubmit}
       >
         <label className="block mb-2 text-gray-700" htmlFor="title">

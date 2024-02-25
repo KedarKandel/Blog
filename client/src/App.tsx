@@ -11,10 +11,12 @@ import Register from "./pages/Register";
 import Create from "./pages/Create";
 import SearchPage from "./pages/SearchPage";
 import Toast from "./components/Toast";
+import MyProfile from "./pages/MyProfile";
 
 export default function App() {
   const dispatch = useDispatch<AppDispatch>();
-  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
+   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
+  // const isLoggedIn = true;
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -32,6 +34,7 @@ export default function App() {
           {isLoggedIn && (
             <>
               <Route path="create" element={<Create />} />
+              <Route path="my-profile" element={<MyProfile />} />
             </>
           )}
 

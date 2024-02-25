@@ -1,4 +1,4 @@
-import { BlogType } from "../../server/src/sharedTypes";
+
 
 export type SearchParams = {
   searchTerm?: string;
@@ -6,9 +6,4 @@ export type SearchParams = {
   page?: string;
 };
 
-export type BlogResponse = {
-  blogs: BlogType[];
-  currentPage: number;
-  total: number;
-  totalPages: number;
-};
+

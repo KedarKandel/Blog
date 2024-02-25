@@ -28,7 +28,7 @@ router.get("/", async (req: Request, res: Response) => {
         case "history":
         case "love":
         case "nature":
-        case "sport":
+        case "sports":
           query.genre = filter.toLowerCase();
           break;
         default:

@@ -24,7 +24,7 @@ const Search = ({ handleSearch }: Props) => {
       placeholder="Search blogs..."
       value={query}
       onChange={handleChange}
-      className="appearance-none outline-none bg-white border px-4 py-2 rounded-l shadow focus:outline-none focus:shadow-outline"
+      className=" appearance-none outline-none bg-white border px-4 py-2 rounded-l shadow focus:outline-none focus:shadow-outline"
     />
     <button
       type="submit"
