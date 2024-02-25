@@ -27,7 +27,6 @@ const Register = () => {
   const navigate = useNavigate();
   const onSubmit = handleSubmit(async (data) => {
     const actionResult = await dispatch(registerUserAsync(data));
-    console.log(actionResult);
 
     if (registerUserAsync.rejected.match(actionResult)) {
       dispatch(
@@ -53,7 +52,9 @@ const Register = () => {
       className=" rounded-md shadow-lg p-2 xl:mx-80 flex flex-col text-blue-800"
       onSubmit={onSubmit}
     >
-      <h1 className="text-2xl mb-5 font-bold text-center text-blue-800 shadow-sm p-2">Create An Account</h1>
+      <h1 className="text-2xl mb-5 font-bold text-center text-blue-800 shadow-sm p-2">
+        Create An Account
+      </h1>
       <div className="mb-4">
         <div className="flex gap-2">
           <label htmlFor="FirstName" className="block font-semibold">

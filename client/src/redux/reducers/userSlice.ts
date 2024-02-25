@@ -4,9 +4,11 @@ import { RegisterFormData } from "../../pages/Register";
 import { LoginFormData } from "../../pages/Login";
 import { UserType } from "../../../../server/src/sharedTypes";
 import * as apiClient from "../../api-client";
+import { EditProfileData } from "../../types";
+
 
 export type UserState = {
-  currentUser: UserType | null;
+  currentUser: Partial<UserType> | null;
   isLoggedIn: boolean;
   loading: boolean;
   error: null | string;
@@ -25,6 +27,14 @@ export const currentUserAsync = createAsyncThunk(
   "user/currentUser",
   async () => {
     const response = await apiClient.fetchCurrentUser();
+    return response;
+  }
+);
+
+export const editUserProfileAsync = createAsyncThunk(
+  "user/editProfile",
+  async (data: EditProfileData) => {
+    const response = await apiClient.editUserProfile(data);
     return response;
   }
 );
@@ -60,9 +70,10 @@ const userSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    registerSuccess: (state, action: PayloadAction<boolean>) => {
+    registerSuccess: (state, action) => {
       state.loading = false;
-      state.isLoggedIn = action.payload;
+      state.isLoggedIn = true;
+      state.currentUser = action.payload;
     },
     registerFailure: (state, action: PayloadAction<string>) => {
       state.loading = false;
@@ -102,6 +113,9 @@ const userSlice = createSlice({
       state.loading = false;
       state.isLoggedIn = false;
       state.error = null;
+    });
+    builder.addCase(editUserProfileAsync.fulfilled, (state, action) => {
+      state.currentUser = action.payload;
     });
   },
 });

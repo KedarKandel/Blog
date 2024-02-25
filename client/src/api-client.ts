@@ -1,13 +1,14 @@
 import { BlogSearchResponse, BlogType, UserType } from "../../server/src/sharedTypes";
 import { LoginFormData } from "./pages/Login";
 import { RegisterFormData } from "./pages/Register";
+import { EditProfileData } from "./types";
 
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 // fetch current user
 
-export const fetchCurrentUser = async (): Promise<UserType> => {
+export const fetchCurrentUser = async ():Promise<Partial<UserType>>=> {
   const response = await fetch(`${API_BASE_URL}/api/users/currentUser`, {
     credentials: "include",
   });
@@ -17,8 +18,25 @@ export const fetchCurrentUser = async (): Promise<UserType> => {
   return response.json();
 };
 
+export const editUserProfile = async (data: EditProfileData):Promise<Partial<UserType>> => {
+  const response = await fetch(`${API_BASE_URL}/api/users/editProfile`, {
+    method:"POST",
+    credentials:"include",
+    headers:{
+      "Content-Type":"application/json",
+    },
+    body: JSON.stringify(data)
+  })
+  const responseBody = await response.json()
+  if(!response.ok){
+    throw new Error(responseBody.message)
+  }
+  console.log(responseBody)
+  return responseBody
+}
+
 // register an user
-export const register = async (formData: RegisterFormData) => {
+export const register = async (formData: RegisterFormData):Promise<Partial<UserType>> => {
   const response = await fetch(`${API_BASE_URL}/api/users/register`, {
     method: "POST",
     credentials: "include",
@@ -37,7 +55,7 @@ export const register = async (formData: RegisterFormData) => {
 
 // login an user
 
-export const login = async (loginData: LoginFormData) => {
+export const login = async (loginData: LoginFormData):Promise<Partial<UserType>> => {
   const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
     method: "POST",
     credentials: "include",

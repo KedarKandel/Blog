@@ -9,12 +9,17 @@ router.get("/", async (req: Request, res: Response) => {
     const perPage = 8;
     let query: any = {};
 
-    // Apply search logic
+   //search logic
     if (searchQuery) {
-      query.title = { $regex: searchQuery, $options: "i" };
+      query.$or = [
+        { title: { $regex: searchQuery, $options: "i" } },
+        { description: { $regex: searchQuery, $options: "i" } },
+        { genre: { $regex: searchQuery, $options: "i" } },
+        { createdBy: { $regex: searchQuery, $options: "i" } },
+      ];
     }
 
-    // Apply filter logic
+    // filter logic
     if (filter) {
       switch (filter) {
         case "latest":
