@@ -22,6 +22,7 @@ const Header = () => {
           {isLoggedIn ? (
             <div className="hidden md:flex items-center gap-8 text-white text-2xl">
               <Link to="/create">Create</Link>
+              <Link to="/my-blogs">My blogs</Link>
               <Link to="/my-profile">Profile</Link>
               <button
                 onClick={handleLogout}

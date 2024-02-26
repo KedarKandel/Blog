@@ -8,13 +8,8 @@ import Blog from "../components/Blog";
 import Pagination from "../components/Pagination";
 import { BlogType } from "../../../server/src/sharedTypes";
 
-
-
 const SearchPage = () => {
   const blogs = useSelector((state: RootState) => state.blog.blogs);
-
-  console.log(blogs);
-
   const pages = useSelector((state: RootState) => state.blog.totalPages);
 
   const [searchQuery, setSearchQuery] = useState("");

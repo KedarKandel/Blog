@@ -6,9 +6,10 @@ import User from "../models/user";
 
 // Create a new blog
 router.post("/", verifyToken, async (req: Request, res: Response) => {
+  const userId= req.userId
   try {
     const { title, description, genre } = req.body;
-    const user = await User.findById(req.userId);
+    const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -16,7 +17,7 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
     const { firstName, lastName } = user;
     const createdByFullName = `${firstName} ${lastName}`;
 
-    const newBlog = new Blog({ title, description, genre, createdBy: createdByFullName });
+    const newBlog = new Blog({ title, description, genre, createdBy: createdByFullName, userId });
     await newBlog.save();
     return res.status(201).json(newBlog);
   } catch (error) {

@@ -1,7 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import * as apiClient from "../../api-client";
-import { BlogSearchResponse, BlogType } from "../../../../server/src/sharedTypes";
-
+import {
+  BlogSearchResponse,
+  BlogType,
+} from "../../../../server/src/sharedTypes";
 
 export type blogState = {
   blogs: BlogType[];
@@ -20,7 +22,8 @@ const initialState: blogState = {
   loading: false,
   error: null,
 };
-// to continue from here
+
+// thunk api to create a new blog
 export const createBlogAsync = createAsyncThunk(
   "blogs/create",
   async (blog: Partial<BlogType>) => {
@@ -33,6 +36,7 @@ export const createBlogAsync = createAsyncThunk(
   }
 );
 
+// thunk API to fetch all blogs
 export const fetchBlogs = createAsyncThunk(
   "blogs/fetchAll",
   async ({
@@ -50,6 +54,16 @@ export const fetchBlogs = createAsyncThunk(
     } catch (error) {
       console.log(error);
     }
+  }
+);
+
+// thunk API to fetch blogs by the current user
+
+export const fetchUserBlogsAsync = createAsyncThunk(
+  "blogs/usersBlogs",
+  async () => {
+    const response = await apiClient.fetchMyBlogs();
+    return response;
   }
 );
 
@@ -81,7 +95,9 @@ const blogSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchBlogs.fulfilled, (state, action) => {
-        const payload = action.payload as BlogSearchResponse | BlogSearchResponse[];
+        const payload = action.payload as
+          | BlogSearchResponse
+          | BlogSearchResponse[];
 
         if (Array.isArray(payload)) {
           const firstItem = payload[0];
@@ -103,6 +119,20 @@ const blogSlice = createSlice({
       state.error = action.error.message || "Unknown error";
       state.loading = false;
     });
+    builder
+      .addCase(fetchUserBlogsAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchUserBlogsAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.blogs = action.payload;
+      })
+      .addCase(fetchUserBlogsAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to fetch blogs";
+      });
   },
 });
 

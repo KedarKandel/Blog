@@ -18,6 +18,8 @@ export const fetchCurrentUser = async ():Promise<Partial<UserType>>=> {
   return response.json();
 };
 
+
+//edit user info
 export const editUserProfile = async (data: EditProfileData):Promise<string> => {
   const response = await fetch(`${API_BASE_URL}/api/users/editProfile`, {
     method:"POST",
@@ -72,6 +74,7 @@ export const login = async (loginData: LoginFormData):Promise<string> => {
   return responseBody;
 };
 
+// logout user 
 export const logout = async () => {
   await fetch(`${API_BASE_URL}/api/auth/logout`, {
     method: "POST",
@@ -116,6 +119,7 @@ export const fetchMyBlogs = async (): Promise<BlogType[]> => {
   if (!response.ok) {
     throw new Error("Error fetching blogs");
   }
+  console.log(response)
   return response.json();
 };
 
