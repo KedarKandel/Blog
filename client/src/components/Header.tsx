@@ -1,17 +1,20 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { AppDispatch, RootState } from "../redux/store";
-import { logoutUser } from "../redux/reducers/userSlice";
+import { logoutUserAsync } from "../redux/reducers/userSlice";
 import { validateToken } from "../api-client";
+import { showToast } from "../redux/reducers/toastSlice";
 
 const Header = () => {
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleLogout = async () => {
-    await dispatch(logoutUser());
-    navigate("/")
-    
+    await dispatch(logoutUserAsync());
+    dispatch(
+      showToast({ message: "Logged out successfully", type: "success" })
+    );
+    navigate("/");
   };
   return (
     <div className="bg-blue-800 py-6">

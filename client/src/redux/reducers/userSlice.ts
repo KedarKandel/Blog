@@ -58,7 +58,7 @@ export const loginUserAsync = createAsyncThunk(
   }
 );
 
-export const logoutUser = createAsyncThunk("user/logout", async () => {
+export const logoutUserAsync = createAsyncThunk("user/logout", async () => {
   const response = await apiClient.logout();
   return response;
 });
@@ -110,7 +110,7 @@ const userSlice = createSlice({
       state.isLoggedIn = true;
     });
     // logout
-    builder.addCase(logoutUser.fulfilled, (state) => {
+    builder.addCase(logoutUserAsync.fulfilled, (state) => {
       state.loading = false;
       state.isLoggedIn = false;
       state.error = null;

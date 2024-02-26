@@ -1,11 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
 import { useState } from "react";
-import {  currentUserAsync, editUserProfileAsync } from "../redux/reducers/userSlice";
+import {
+  currentUserAsync,
+  editUserProfileAsync,
+} from "../redux/reducers/userSlice";
 import { EditProfileData } from "../types";
 import { showToast } from "../redux/reducers/toastSlice";
 import * as apiClient from "../api-client";
-
 
 const MyProfile = () => {
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
@@ -29,8 +31,8 @@ const MyProfile = () => {
       newPassword,
     };
     try {
-      const actionResult:any = await dispatch(editUserProfileAsync(data));
-     
+      const actionResult: any = await dispatch(editUserProfileAsync(data));
+
       if (editUserProfileAsync.rejected.match(actionResult)) {
         dispatch(
           showToast({
@@ -41,8 +43,14 @@ const MyProfile = () => {
           })
         );
       } else {
-        dispatch(showToast({ message: actionResult.payload.message as string, type: "success" }));
-       dispatch(currentUserAsync())
+        dispatch(currentUserAsync());
+        dispatch(
+          showToast({
+            message: actionResult.payload.message as string,
+            type: "success",
+          })
+        );
+
         await apiClient.validateToken();
       }
     } catch (error) {
@@ -56,10 +64,7 @@ const MyProfile = () => {
     }
   };
 
-
   // fetch current user after updating
-
-
 
   return (
     <div className="container mx-auto flex justify-center items-center">
