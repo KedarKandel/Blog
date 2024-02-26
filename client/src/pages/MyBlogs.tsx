@@ -8,7 +8,6 @@ const MyBlogs = () => {
   const dispatch = useDispatch<AppDispatch>();
   const userId = useSelector((state: RootState) => state.user.currentUser?._id);
   const blogs = useSelector((state: RootState) => state.blog.blogs);
-  console.log(blogs)
 
   useEffect(() => {
     if (userId) {

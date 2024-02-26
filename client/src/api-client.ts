@@ -33,7 +33,7 @@ export const editUserProfile = async (data: EditProfileData):Promise<string> => 
   if(!response.ok){
     throw new Error(responseBody.message)
   }
-  console.log(responseBody)
+  
   return responseBody
 }
 
@@ -119,7 +119,7 @@ export const fetchMyBlogs = async (): Promise<BlogType[]> => {
   if (!response.ok) {
     throw new Error("Error fetching blogs");
   }
-  console.log(response)
+ 
   return response.json();
 };
 
