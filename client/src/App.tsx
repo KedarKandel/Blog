@@ -13,6 +13,7 @@ import SearchPage from "./pages/SearchPage";
 import Toast from "./components/Toast";
 import MyProfile from "./pages/MyProfile";
 import MyBlogs from "./pages/MyBlogs";
+import BlogPage from "./pages/BlogPage";
 
 export default function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -31,6 +32,9 @@ export default function App() {
           <Route index element={<SearchPage />} />
           <Route path="sign-in" element={<Login />} />
           <Route path="register" element={<Register />} />
+          <Route path="/blogs/:id" element={<BlogPage />} />
+
+          {/* protected routes*/}
           {isLoggedIn && (
             <>
               <Route path="create" element={<Create />} />

@@ -82,4 +82,12 @@ router.get("/:id", async (req: Request, res: Response) => {
   }
 });
 
+// POST route to like a blog
+router.post('/api/blog/like/:id', async (req: Request, res: Response) => {
+  const { id } = req.params;
+ const userId = req.userId;
+
+ 
+});
+
 export default router;

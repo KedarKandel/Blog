@@ -58,11 +58,29 @@ export const fetchBlogs = createAsyncThunk(
 );
 
 // thunk API to fetch blogs by the current user
-
 export const fetchUserBlogsAsync = createAsyncThunk(
   "blogs/usersBlogs",
   async () => {
     const response = await apiClient.fetchMyBlogs();
+    return response;
+  }
+);
+
+// thunk api to like a blog
+
+export const likeBlogAsync = createAsyncThunk(
+  "blog/like",
+  async (blogId: string) => {
+    const response = await apiClient.likeBlog(blogId);
+    return response;
+  }
+);
+
+//thunk api to fetch blog by id
+export const fetchBlogByIdAsync = createAsyncThunk(
+  "blog/id",
+  async (blogId: string) => {
+    const response = await apiClient.getBlogById(blogId);
     return response;
   }
 );

@@ -1,14 +1,17 @@
-import { BlogSearchResponse, BlogType, UserType } from "../../server/src/sharedTypes";
+import {
+  BlogSearchResponse,
+  BlogType,
+  UserType,
+} from "../../server/src/sharedTypes";
 import { LoginFormData } from "./pages/Login";
 import { RegisterFormData } from "./pages/Register";
 import { EditProfileData } from "./types";
-
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 // fetch current user
 
-export const fetchCurrentUser = async ():Promise<Partial<UserType>>=> {
+export const fetchCurrentUser = async (): Promise<Partial<UserType>> => {
   const response = await fetch(`${API_BASE_URL}/api/users/currentUser`, {
     credentials: "include",
   });
@@ -18,27 +21,28 @@ export const fetchCurrentUser = async ():Promise<Partial<UserType>>=> {
   return response.json();
 };
 
-
 //edit user info
-export const editUserProfile = async (data: EditProfileData):Promise<string> => {
+export const editUserProfile = async (
+  data: EditProfileData
+): Promise<string> => {
   const response = await fetch(`${API_BASE_URL}/api/users/editProfile`, {
-    method:"POST",
-    credentials:"include",
-    headers:{
-      "Content-Type":"application/json",
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(data)
-  })
-  const responseBody = await response.json()
-  if(!response.ok){
-    throw new Error(responseBody.message)
+    body: JSON.stringify(data),
+  });
+  const responseBody = await response.json();
+  if (!response.ok) {
+    throw new Error(responseBody.message);
   }
-  
-  return responseBody
-}
+
+  return responseBody;
+};
 
 // register an user
-export const register = async (formData: RegisterFormData):Promise<string> => {
+export const register = async (formData: RegisterFormData): Promise<string> => {
   const response = await fetch(`${API_BASE_URL}/api/users/register`, {
     method: "POST",
     credentials: "include",
@@ -57,7 +61,7 @@ export const register = async (formData: RegisterFormData):Promise<string> => {
 
 // login an user
 
-export const login = async (loginData: LoginFormData):Promise<string> => {
+export const login = async (loginData: LoginFormData): Promise<string> => {
   const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
     method: "POST",
     credentials: "include",
@@ -74,7 +78,7 @@ export const login = async (loginData: LoginFormData):Promise<string> => {
   return responseBody;
 };
 
-// logout user 
+// logout user
 export const logout = async () => {
   await fetch(`${API_BASE_URL}/api/auth/logout`, {
     method: "POST",
@@ -119,7 +123,7 @@ export const fetchMyBlogs = async (): Promise<BlogType[]> => {
   if (!response.ok) {
     throw new Error("Error fetching blogs");
   }
- 
+
   return response.json();
 };
 
@@ -135,6 +139,7 @@ export const fetchMyBlogById = async (blogId: string): Promise<BlogType> => {
   return response.json();
 };
 
+// update the blog
 export const updateMyBlogById = async (blogFormData: FormData) => {
   const response = await fetch(
     `${API_BASE_URL}/api/my-blogs/${blogFormData.get("blogId")}`,
@@ -183,4 +188,33 @@ export const getAllBlogs = async (
   }
 };
 
+// get blog by id
 
+export const getBlogById = async (blogId: string): Promise<BlogType> => {
+  const response = await fetch(`${API_BASE_URL}/api/blogs/${blogId}`);
+  if (!response.ok) {
+    throw new Error("Error fetching blogs");
+  }
+
+  return response.json();
+};
+
+// like a blog
+export const likeBlog = async (blogId: string): Promise<BlogType> => {
+  const response = await fetch(`${API_BASE_URL}/api/blogs/${blogId}`);
+  if (!response.ok) {
+    throw new Error("Error fetching blogs");
+  }
+
+  return response.json();
+};
+
+// like a blog
+export const commentBlog = async (blogId: string): Promise<BlogType> => {
+  const response = await fetch(`${API_BASE_URL}/api/blogs/${blogId}`);
+  if (!response.ok) {
+    throw new Error("Error fetching blogs");
+  }
+
+  return response.json();
+};

@@ -11,7 +11,7 @@ export type BlogType = {
   title: string;
   description: string;
   comments?: CommentType[];
-  likes?: number[];
+  likes?: string[];
   genre: string;
   createdBy: string;
   createdAt: Date;
