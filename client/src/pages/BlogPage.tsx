@@ -20,8 +20,6 @@ const BlogPage = () => {
     }
   }, [dispatch, id, currentBlog]);
 
- 
-
   // separating paragraphs
   const MAX_WORDS_PER_PARAGRAPH = 250;
   const descriptionParagraphs = splitTextIntoParagraphs(
@@ -69,6 +67,7 @@ const BlogPage = () => {
       <div className="flex justify-between items-center text-lg text-gray-600 mb-4">
         <div className="relative" onClick={handleLike}>
           <Heart
+            fill={`${isLiked ? "red" : ""}`}
             className={`inline-block mr-1 cursor-pointer ${
               isLiked ? "text-red-500" : ""
             }`}
