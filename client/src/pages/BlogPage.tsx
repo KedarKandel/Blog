@@ -15,10 +15,10 @@ const BlogPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!currentBlog && id) {
+    if (id) {
       dispatch(fetchBlogByIdAsync(id));
     }
-  }, [dispatch, id, currentBlog]);
+  }, [dispatch, id]);
 
   // separating paragraphs
   const MAX_WORDS_PER_PARAGRAPH = 250;
@@ -67,7 +67,7 @@ const BlogPage = () => {
       <div className="flex justify-between items-center text-lg text-gray-600 mb-4">
         <div className="relative" onClick={handleLike}>
           <Heart
-            fill={`${isLiked ? "red" : ""}`}
+            fill={`${isLiked ? "red" : "white"}`}
             className={`inline-block mr-1 cursor-pointer ${
               isLiked ? "text-red-500" : ""
             }`}
