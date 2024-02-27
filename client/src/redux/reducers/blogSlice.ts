@@ -70,9 +70,16 @@ export const fetchUserBlogsAsync = createAsyncThunk(
 
 export const likeBlogAsync = createAsyncThunk(
   "blog/like",
-  async (blogId: string) => {
-    const response = await apiClient.likeBlog(blogId);
-    return response;
+  async ({ blogId }: { blogId: string }) => {
+    try {
+      // Assuming you're calling the API with these arguments
+      const response = await apiClient.likeBlog(blogId);
+      console.log(response)
+      return response;
+    } catch (error) {
+      // Handle errors, such as network errors or invalid responses
+      throw new Error("Failed to like the blog");
+    }
   }
 );
 
@@ -151,6 +158,21 @@ const blogSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "Failed to fetch blogs";
       });
+    builder.addCase(likeBlogAsync.fulfilled, (state, action) => {
+      const { blogId, userId, isLiked } = action.payload;
+      state.blogs = state.blogs.map((blog) => {
+        if (blog._id === blogId) {
+          if (isLiked) {
+            // If the blog was liked, add the user ID to the likes array
+            blog.likes = [...blog?.likes!, userId];
+          } else {
+            // If the blog was unliked, remove the user ID from the likes array
+            blog.likes = blog?.likes?.filter((id) => id !== userId);
+          }
+        }
+        return blog;
+      });
+    });
   },
 });
 

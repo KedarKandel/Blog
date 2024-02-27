@@ -17,17 +17,17 @@ const Blog = ({ blog }: Props) => {
       <p className="text-sm text-center font-semibold text-gray-600 mb-2">
         {blog.genre}
       </p>
-      <p className=" flex-1 text-sm text-gray-700 mb-4">
+      <p className=" flex-1 text-sm text-left text-gray-700 mb-4">
         {truncateDescription(blog.description)}
       </p>
       <div className="flex justify-between items-center text-lg text-gray-600">
       <div className="relative">
         <Heart className="inline-block mr-1" fill="red" />
-        <span className=" text-1xl text-blue-900 font-bold rounded-full flex justify-center items-center absolute -top-2 -right-1">{blog.likes?.length || "1"}</span>
+        <span className=" text-1xl text-blue-900 font-bold rounded-full flex justify-center items-center absolute -top-2 -right-2">{blog.likes?.length}</span>
       </div>
       <div className="relative">
         <MessageCircleMore className="inline-block mr-1" />
-        <span className=" text-1xl text-blue-900 font-bold rounded-full  flex justify-center items-center absolute -top-2 -right-1">{blog.comments?.length || "2" }</span>
+        <span className=" text-1xl text-blue-900 font-bold rounded-full  flex justify-center items-center absolute -top-2 -right-2">{blog.comments?.length}</span>
       </div>
     </div>
       <div className="flex justify-between items-center text-lg text-gray-600">

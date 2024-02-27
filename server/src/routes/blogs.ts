@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import Blog from "../models/blog";
+import verifyToken from "../middleware/auth";
 
 const router = express.Router();
 
@@ -9,7 +10,7 @@ router.get("/", async (req: Request, res: Response) => {
     const perPage = 8;
     let query: any = {};
 
-   //search logic
+    //search logic
     if (searchQuery) {
       query.$or = [
         { title: { $regex: searchQuery, $options: "i" } },
@@ -82,12 +83,37 @@ router.get("/:id", async (req: Request, res: Response) => {
   }
 });
 
-// POST route to like a blog
-router.post('/api/blog/like/:id', async (req: Request, res: Response) => {
-  const { id } = req.params;
- const userId = req.userId;
+router.post("/:blogId/like", verifyToken, async (req: Request, res: Response) => {
+  const { blogId } = req.params;
+  const userId = req.userId;
+  try {
+    const blog = await Blog.findById(blogId);
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
 
- 
+    // Initialize the likes array if it's not already initialized
+    if (!blog.likes) {
+      blog.likes = [];
+    }
+
+    // Check if the user has already liked the blog
+    if (blog.likes.includes(userId)) {
+      return res.status(400).json({ message: "Blog already liked by user" });
+    }
+
+    // Add the user ID to the likes array
+    blog.likes.push(userId);
+    
+    // Save the updated blog
+    await blog.save();
+console.log("updt", blog)
+    return res.status(200).json({ blogId, userId, isLiked: true });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error", error });
+  }
 });
+
 
 export default router;
