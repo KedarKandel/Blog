@@ -4,31 +4,39 @@ import { MessageCircleMore } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
 import { splitTextIntoParagraphs } from "../utils/utils";
-import { likeBlogAsync } from "../redux/reducers/blogSlice";
-
-// separating paragraphs
-const MAX_WORDS_PER_PARAGRAPH = 250;
+import { fetchBlogByIdAsync, likeBlogAsync } from "../redux/reducers/blogSlice";
+import { useEffect } from "react";
 
 const BlogPage = () => {
   const { id } = useParams<string>();
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
-  const blogs = useSelector((state: RootState) => state.blog.blogs);
-  const blog = blogs.find((blog) => blog._id === id);
-
+  const currentBlog = useSelector((state: RootState) => state.blog.currentBlog);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!currentBlog && id) {
+      dispatch(fetchBlogByIdAsync(id));
+    }
+  }, [dispatch, id, currentBlog]);
+
+ 
+
+  // separating paragraphs
+  const MAX_WORDS_PER_PARAGRAPH = 250;
   const descriptionParagraphs = splitTextIntoParagraphs(
-    blog?.description!,
+    currentBlog?.description! || "",
     MAX_WORDS_PER_PARAGRAPH
   );
 
-  if (!blog) {
+  if (!currentBlog) {
     return <div>Loading...</div>; // Handle case where blog is not found
   }
 
   // Check if the user has already liked the blog
   const isLiked =
-    Array.isArray(blog?.likes) && blog.likes.includes(currentUser?._id || "");
+    Array.isArray(currentBlog?.likes) &&
+    currentBlog.likes.includes(currentUser?._id || "");
   const handleLike = async () => {
     if (!currentUser) {
       navigate("/sign-in");
@@ -37,7 +45,7 @@ const BlogPage = () => {
 
     // Dispatch the likeBlogAsync action if the user has not already liked the blog
     if (!isLiked) {
-      await dispatch(likeBlogAsync({ blogId: blog._id }));
+      await dispatch(likeBlogAsync({ blogId: currentBlog._id }));
     }
   };
 
@@ -48,10 +56,10 @@ const BlogPage = () => {
   return (
     <div className="my-3 md:my-5 p-5 border rounded-lg shadow-lg bg-white">
       <h1 className="text-2xl font-bold text-center mb-4 text-gray-800">
-        {blog.title}
+        {currentBlog.title}
       </h1>
       <p className="text-sm text-center font-semibold text-blue-600 mb-2">
-        {blog.genre.toLocaleUpperCase()}
+        {currentBlog.genre.toLocaleUpperCase()}
       </p>
       {descriptionParagraphs?.map((paragraph, index) => (
         <p key={index} className="text-md font-bold text-gray-600 mb-4">
@@ -65,22 +73,25 @@ const BlogPage = () => {
               isLiked ? "text-red-500" : ""
             }`}
           />
-          <span className="text-blue-900 font-bold">{blog.likes?.length}</span>
+          <span className="text-blue-900 font-bold">
+            {currentBlog.likes?.length}
+          </span>
         </div>
 
         <div className="relative" onClick={handleComment}>
           <MessageCircleMore className="inline-block mr-1 cursor-pointer" />
           <span className="text-blue-900 font-bold">
-            {blog.comments?.length}
+            {currentBlog.comments?.length}
           </span>
         </div>
       </div>
       <div className="flex justify-between items-center text-lg text-gray-600">
         <p className="flex text-sm items-center gap-1">
-          By: <span className="text-sm text-blue-800">{blog.createdBy}</span>
+          By:{" "}
+          <span className="text-sm text-blue-800">{currentBlog.createdBy}</span>
         </p>
         <p className="text-sm text-blue-800">
-          Last Updated: {new Date(blog.createdAt).toLocaleDateString()}
+          Last Updated: {new Date(currentBlog.createdAt).toLocaleDateString()}
         </p>
       </div>
     </div>

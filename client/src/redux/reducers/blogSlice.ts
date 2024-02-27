@@ -9,6 +9,7 @@ export type blogState = {
   blogs: BlogType[];
   currentPage: number;
   totalPages: number;
+  currentBlog?: BlogType 
   total: number;
   loading: boolean;
   error: string | null;
@@ -173,6 +174,11 @@ const blogSlice = createSlice({
         return blog;
       });
     });
+    builder.addCase(fetchBlogByIdAsync.fulfilled, (state,action)=>{
+      state.loading = false;
+      state.error = null;
+      state.currentBlog = action.payload;
+    })
   },
 });
 
