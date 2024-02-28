@@ -58,12 +58,14 @@ const Create = () => {
   };
 
   return (
-    <div className=" flex flex-1 items-center justify-center">
+    <div className=" flex  flex-1 items-center justify-center">
+     
       <form
         className="p-8 rounded-md shadow-2xl max-w-md w-full"
         onSubmit={handleSubmit}
       >
-        <label className="block mb-2 text-gray-700" htmlFor="title">
+         <h1 className=" font-bold text-2xl text-blue-600 text-center">WRITE A BLOG</h1>
+        <label className="block mb-2 text-gray-700 font-semibold" htmlFor="title">
           Title
         </label>
         <input
@@ -77,7 +79,7 @@ const Create = () => {
           onChange={handleChange}
         />
 
-        <label className="block mt-4 mb-2 text-gray-700" htmlFor="description">
+        <label className="block mt-4 mb-2 text-gray-700 font-semibold" htmlFor="description">
           Description
         </label>
         <textarea
@@ -94,7 +96,7 @@ const Create = () => {
         <select
           name="genre"
           id="genre"
-          className="block appearance-none w-full bg-white border border-gray-300 hover:border-gray-400 px-4 py-2 rounded shadow leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          className="block appearance-none font-semibold w-full bg-white border border-gray-300 hover:border-gray-400 px-4 py-2 rounded shadow leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
           required
           value={genre}
           onChange={handleChange}
@@ -114,7 +116,7 @@ const Create = () => {
           className="mt-6 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
           type="submit"
         >
-          submit
+          create
         </button>
       </form>
     </div>

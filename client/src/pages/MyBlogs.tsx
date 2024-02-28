@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchUserBlogsAsync } from "../redux/reducers/blogSlice";
 import { AppDispatch, RootState } from "../redux/store";
 import { BlogType } from "../../../server/src/sharedTypes";
+import MyBlog from "../components/MyBlog";
 
 const MyBlogs = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -15,11 +16,31 @@ const MyBlogs = () => {
     }
   }, [dispatch, userId]);
 
+  // delete
+  const handleDelete = () => {};
+
+  const handleEdit = () => {};
+
   return (
-    <div>
-      {blogs.map((b: BlogType) => (
-        <div key={b._id}>{b.title}</div>
+    <div className="flex flex-col">
+      <div className="flex flex-col gap-2 text-2xl mb-5">
+        <h1 className="">
+          REFLECTION OF YOUR{" "}
+          <span className="text-blue-400 font-semibold">CREATIVITY</span> HERE
+        </h1>
+        <h1 className="text-blue-600 "> You have posted 40 blogs already.</h1>
+      </div>
+      <div className="border border-blue-300">
+      {blogs.map((blog: BlogType) => (
+        <MyBlog
+          key={blog._id}
+          blog={blog}
+          onDelete={handleDelete}
+          onEdit={handleEdit}
+        />
       ))}
+      </div>
+     
     </div>
   );
 };
