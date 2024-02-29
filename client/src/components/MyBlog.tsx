@@ -12,7 +12,7 @@ const BlogItem = ({ blog, onEdit, onDelete }: Props) => {
       <div className="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-6 py-2">
         <div className="flex-1">
           <div className="text-md font-medium text-gray-900">
-            Title: {blog.title}
+            Title:<span className="text-red-500 ms-1">{blog.title}</span>
           </div>
           <div className="text-md text-gray-500">Genre: {blog.genre}</div>
         </div>
@@ -31,20 +31,19 @@ const BlogItem = ({ blog, onEdit, onDelete }: Props) => {
         <p className="text-lg text-gray-500">Text: {blog.description}</p>
       </div>
       <div className="flex md:justify-end justify-center px-4 sm:px-6 py-2">
-      <button
-        onClick={onEdit}
-        className="text-gray-200 hover:text-white bg-blue-800 rounded-md p-2"
-      >
-        Edit
-      </button>
-      <button
-        onClick={onDelete}
-        className="text-gray-200 bg-red-600 hover:text-white rounded-md p-2 ml-2"
-      >
-        Delete
-      </button>
+        <button
+          onClick={onEdit}
+          className="text-gray-200 hover:text-white bg-blue-800 rounded-md p-2"
+        >
+          Edit
+        </button>
+        <button
+          onClick={onDelete}
+          className="text-gray-200 bg-red-600 hover:text-white rounded-md p-2 ml-2"
+        >
+          Delete
+        </button>
       </div>
-     
     </div>
   );
 };

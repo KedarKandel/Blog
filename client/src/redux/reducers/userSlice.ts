@@ -16,6 +16,7 @@ export type UserState = {
 
 const initialState: UserState = {
   currentUser: null,
+ 
   isLoggedIn: false,
   loading: false,
   error: null,
