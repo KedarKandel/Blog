@@ -11,9 +11,9 @@ import Register from "./pages/Register";
 import Create from "./pages/Create";
 import SearchPage from "./pages/SearchPage";
 import Toast from "./components/Toast";
-import MyProfile from "./pages/MyProfile";
 import MyBlogs from "./pages/MyBlogs";
 import BlogPage from "./pages/BlogPage";
+import MyAccount from "./pages/MyAccount";
 
 export default function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -38,7 +38,7 @@ export default function App() {
           {isLoggedIn && (
             <>
               <Route path="create" element={<Create />} />
-              <Route path="my-profile" element={<MyProfile />} />
+              <Route path="my-account" element={<MyAccount />} />
               <Route path="my-blogs" element={<MyBlogs />} />
             </>
           )}

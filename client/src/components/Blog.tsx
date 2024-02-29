@@ -23,7 +23,7 @@ const Blog = ({ blog }: Props) => {
       <div className="flex justify-between items-center text-lg text-gray-600">
       <div className="relative">
         <Heart className="inline-block mr-1" fill="red" />
-        <span className=" text-1xl text-blue-900 font-bold rounded-full flex justify-center items-center absolute -top-2 -right-2">{blog.likes?.length}</span>
+        <span className=" text-1xl text-blue-900 font-bold rounded-full flex justify-center items-center absolute -top-2 -right-2 ">{blog.likes?.length}</span>
       </div>
       <div className="relative">
         <MessageCircleMore className="inline-block mr-1" />

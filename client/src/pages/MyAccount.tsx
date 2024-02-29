@@ -9,7 +9,7 @@ import { EditProfileData } from "../types";
 import { showToast } from "../redux/reducers/toastSlice";
 import * as apiClient from "../api-client";
 
-const MyProfile = () => {
+const MyAccount = () => {
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -138,4 +138,4 @@ const MyProfile = () => {
   );
 };
 
-export default MyProfile;
+export default MyAccount;
