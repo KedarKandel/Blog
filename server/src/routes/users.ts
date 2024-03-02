@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import { check, validationResult } from "express-validator";
 import User from "../models/user";
 import verifyToken from "../middleware/auth";
+import Blog from "../models/blog";
 
 const router = express.Router();
 
@@ -42,8 +43,6 @@ router.post("/editProfile", [
     const { firstName, lastName, email, currentPassword, newPassword } =
       req.body;
 
-      console.log(req.body)
-
     try {
       let user = await User.findOne({ email });
       if (!user) {
@@ -59,6 +58,7 @@ router.post("/editProfile", [
         return res.status(400).json({ message: "Invalid current password" });
       }
 
+      
       user.firstName = firstName;
       user.lastName = lastName;
 
@@ -68,6 +68,14 @@ router.post("/editProfile", [
       }
 
       await user.save();
+      // Find blogs created by the user
+      const blogsToUpdate = await Blog.find({ userId: user._id });
+
+      // Update createdBy field in each blog
+      for (let blog of blogsToUpdate) {
+        blog.createdBy = `${firstName} ${lastName}`;
+        await blog.save();
+      }
       const token = jwt.sign(
         { userId: user.id },
         process.env.JWT_SECRET_KEY as string,

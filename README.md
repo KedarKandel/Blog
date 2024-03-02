@@ -6,6 +6,11 @@ WORK IN PROGRESS
 Deployed on free render free service: server spins after 30+s 
 site: https://mern-blog-app-39y0.onrender.com
 
+// test account which can be used to login straight.
+email: {test@test.com}
+password: Test+User123
+
+
 ## Features
 - **User Authentication:** Secure registration and login using JSON Web Tokens.
 - **Blog Operations:** Write, like, and comment on blogs.

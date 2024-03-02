@@ -12,7 +12,7 @@ const BlogItem = ({ blog, onEdit, onDelete }: Props) => {
       <div className="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-6 py-2">
         <div className="flex-1">
           <div className="text-md font-medium text-gray-900">
-            Title:<span className="text-red-500 ms-1">{blog.title}</span>
+            Title:<span className="text-red-500 ms-1 mb-2">{blog.title}</span>
           </div>
           <div className="text-md text-gray-500">Genre: {blog.genre}</div>
         </div>
