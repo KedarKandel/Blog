@@ -68,7 +68,9 @@ router.post("/editProfile", [
       }
 
       await user.save();
-      // Find blogs created by the user
+
+      // Need to update the blog's created by filed when the profile is updated. 
+      //Find blogs created by the user
       const blogsToUpdate = await Blog.find({ userId: user._id });
 
       // Update createdBy field in each blog
