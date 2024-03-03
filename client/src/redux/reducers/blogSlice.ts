@@ -9,7 +9,7 @@ export type blogState = {
   blogs: BlogType[];
   currentPage: number;
   totalPages: number;
-  currentBlog?: BlogType 
+  currentBlog?: BlogType;
   total: number;
   loading: boolean;
   error: string | null;
@@ -58,32 +58,6 @@ export const fetchBlogs = createAsyncThunk(
   }
 );
 
-// thunk API to fetch blogs by the current user
-export const fetchUserBlogsAsync = createAsyncThunk(
-  "blogs/usersBlogs",
-  async () => {
-    const response = await apiClient.fetchMyBlogs();
-    return response;
-  }
-);
-
-// thunk api to like a blog
-
-export const likeBlogAsync = createAsyncThunk(
-  "blog/like",
-  async ({ blogId }: { blogId: string }) => {
-    try {
-      // Assuming you're calling the API with these arguments
-      const response = await apiClient.likeBlog(blogId);
-      console.log(response)
-      return response;
-    } catch (error) {
-      // Handle errors, such as network errors or invalid responses
-      throw new Error("Failed to like the blog");
-    }
-  }
-);
-
 //thunk api to fetch blog by id
 export const fetchBlogByIdAsync = createAsyncThunk(
   "blog/id",
@@ -93,27 +67,53 @@ export const fetchBlogByIdAsync = createAsyncThunk(
   }
 );
 
+// thunk API to fetch blogs by the current user
+export const fetchUserBlogsAsync = createAsyncThunk(
+  "blogs/usersBlogs",
+  async () => {
+    const response = await apiClient.fetchMyBlogs();
+    return response;
+  }
+);
+
+// thunk api to like/unlike a blog
+export const likeBlogAsync = createAsyncThunk(
+  "blog/like",
+  async ({ blogId }: { blogId: string }) => {
+    try {
+      const response = await apiClient.likeBlog(blogId);
+    
+      return response;
+    } catch (error) {
+      throw new Error("Failed to like the blog");
+    }
+  }
+);
+
+
+
 const blogSlice = createSlice({
   name: "blog",
   initialState,
   reducers: {},
   extraReducers(builder) {
-    builder.addCase(createBlogAsync.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-    });
-    builder.addCase(createBlogAsync.fulfilled, (state, action) => {
-      if (action.payload) {
-        state.blogs.push(action.payload);
-      }
-      state.error = null;
-      state.loading = false;
-    });
+    builder
+      .addCase(createBlogAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(createBlogAsync.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.blogs.push(action.payload);
+        }
+        state.error = null;
+        state.loading = false;
+      })
 
-    builder.addCase(createBlogAsync.rejected, (state, action) => {
-      state.error = action.error.message || "Unknown error";
-      state.loading = false;
-    });
+      .addCase(createBlogAsync.rejected, (state, action) => {
+        state.error = action.error.message || "Unknown error";
+        state.loading = false;
+      });
 
     builder
       .addCase(fetchBlogs.pending, (state) => {
@@ -139,12 +139,12 @@ const blogSlice = createSlice({
         }
         state.loading = false;
         state.error = null;
+      })
+      .addCase(fetchBlogs.rejected, (state, action) => {
+        state.error = action.error.message || "Unknown error";
+        state.loading = false;
       });
 
-    builder.addCase(fetchBlogs.rejected, (state, action) => {
-      state.error = action.error.message || "Unknown error";
-      state.loading = false;
-    });
     builder
       .addCase(fetchUserBlogsAsync.pending, (state) => {
         state.loading = true;
@@ -159,26 +159,50 @@ const blogSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "Failed to fetch blogs";
       });
-    builder.addCase(likeBlogAsync.fulfilled, (state, action) => {
-      const { blogId, userId, isLiked } = action.payload;
-      state.blogs = state.blogs.map((blog) => {
-        if (blog._id === blogId) {
+
+    builder
+      .addCase(likeBlogAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(likeBlogAsync.fulfilled, (state, action) => {
+        const { blogId, userId, isLiked } = action.payload;
+        if (state.currentBlog?._id === blogId) {
+          const updatedCurrentBlog = { ...state.currentBlog, isLiked };
           if (isLiked) {
-            // If the blog was liked, add the user ID to the likes array
-            blog.likes = [...blog?.likes!, userId];
+            updatedCurrentBlog.likes = [
+              ...(updatedCurrentBlog.likes || []),
+              userId,
+            ];
           } else {
-            // If the blog was unliked, remove the user ID from the likes array
-            blog.likes = blog?.likes?.filter((id) => id !== userId);
+            updatedCurrentBlog.likes = (updatedCurrentBlog.likes || []).filter(
+              (id) => id !== userId
+            );
           }
+          state.currentBlog = updatedCurrentBlog;
         }
-        return blog;
+      })
+
+      .addCase(likeBlogAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Could not like the blog";
       });
-    });
-    builder.addCase(fetchBlogByIdAsync.fulfilled, (state,action)=>{
-      state.loading = false;
-      state.error = null;
-      state.currentBlog = action.payload;
-    })
+
+    builder
+      .addCase(fetchBlogByIdAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+
+      .addCase(fetchBlogByIdAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.currentBlog = action.payload;
+      })
+      .addCase(fetchBlogByIdAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to fetch the blog";
+      });
   },
 });
 

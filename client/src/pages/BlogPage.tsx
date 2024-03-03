@@ -35,16 +35,14 @@ const BlogPage = () => {
   const isLiked =
     Array.isArray(currentBlog?.likes) &&
     currentBlog.likes.includes(currentUser?._id || "");
+
+
   const handleLike = async () => {
     if (!currentUser) {
       navigate("/sign-in");
       return;
     }
-
-    // Dispatch the likeBlogAsync action if the user has not already liked the blog
-    if (!isLiked) {
-      await dispatch(likeBlogAsync({ blogId: currentBlog._id }));
-    }
+    await dispatch(likeBlogAsync({ blogId: currentBlog._id }));
   };
 
   const handleComment = () => {

@@ -203,25 +203,22 @@ export const getBlogById = async (blogId: string): Promise<BlogType> => {
 export const likeBlog = async (
   blogId: string
 ): Promise<{ blogId: string; userId: string; isLiked: boolean }> => {
-  console.log(blogId)
   const response = await fetch(`${API_BASE_URL}/api/blogs/${blogId}/like`, {
-    method: "POST", // or 'PUT' if appropriate
+    method: "POST",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
-   
   });
 
   if (!response.ok) {
     throw new Error("Error liking the blog");
   }
-  console.log(response);
 
   return response.json();
 };
 
-// like a blog
+// comment a blog
 export const commentBlog = async (blogId: string): Promise<BlogType> => {
   const response = await fetch(`${API_BASE_URL}/api/blogs/${blogId}`);
   if (!response.ok) {

@@ -83,37 +83,42 @@ router.get("/:id", async (req: Request, res: Response) => {
   }
 });
 
-router.post("/:blogId/like", verifyToken, async (req: Request, res: Response) => {
-  const { blogId } = req.params;
-  const userId = req.userId;
-  try {
-    const blog = await Blog.findById(blogId);
-    if (!blog) {
-      return res.status(404).json({ message: "Blog not found" });
-    }
+// like or unlike a blog
+router.post(
+  "/:blogId/like",
+  verifyToken,
+  async (req: Request, res: Response) => {
+    const { blogId } = req.params;
+    const userId = req.userId;
+    try {
+      const blog = await Blog.findById(blogId);
+      if (!blog) {
+        return res.status(404).json({ message: "Blog not found" });
+      }
 
-    // Initialize the likes array if it's not already initialized
-    if (!blog.likes) {
-      blog.likes = [];
-    }
+      // Initialize the likes array
+      if (!blog.likes) {
+        blog.likes = [];
+      }
+      // Check if the user has already liked the blog
+      const alreadyLikedIndex = blog.likes.indexOf(userId);
+      if (alreadyLikedIndex !== -1) {
+        // If the user has already liked the blog, remove their like
+        blog.likes.splice(alreadyLikedIndex, 1);
+      } else {
+        blog.likes.push(userId);
+      }
 
-    // Check if the user has already liked the blog
-    if (blog.likes.includes(userId)) {
-      return res.status(400).json({ message: "Blog already liked by user" });
-    }
+      await blog.save();
 
-    // Add the user ID to the likes array
-    blog.likes.push(userId);
-    
-    // Save the updated blog
-    await blog.save();
-console.log("updt", blog)
-    return res.status(200).json({ blogId, userId, isLiked: true });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Internal server error", error });
+      const isLiked = blog.likes.includes(userId);
+
+      return res.status(200).json({ blogId, userId, isLiked });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Internal server error", error });
+    }
   }
-});
-
+);
 
 export default router;
