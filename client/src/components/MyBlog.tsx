@@ -1,12 +1,14 @@
 import { BlogType } from "../../../server/src/sharedTypes";
+import { NotebookPen } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 
 type Props = {
   blog: BlogType;
-  onEdit: () => void;
-  onDelete: () => void;
+  onEdit: (id:string) => void;
+  onDelete: (id: string) => void;
 };
 
-const BlogItem = ({ blog, onEdit, onDelete }: Props) => {
+const MyBlog = ({ blog, onEdit, onDelete }: Props) => {
   return (
     <div className="border-b border-gray-300 py-4">
       <div className="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-6 py-2">
@@ -30,17 +32,19 @@ const BlogItem = ({ blog, onEdit, onDelete }: Props) => {
       <div className="px-4 sm:px-6 py-2">
         <p className="text-lg text-gray-500">Text: {blog.description}</p>
       </div>
-      <div className="flex md:justify-end justify-center px-4 sm:px-6 py-2">
+      <div className="flex  justify-between px-4 sm:px-6 py-2 mt-3 ">
         <button
-          onClick={onEdit}
-          className="text-gray-200 hover:text-white bg-blue-800 rounded-md p-2"
+          onClick={()=>onEdit(blog._id)}
+          className="flex items-center gap-1 text-gray-200 hover:text-white bg-blue-800 rounded-md p-2"
         >
+          <NotebookPen fill="blue"/>
           Edit
         </button>
         <button
-          onClick={onDelete}
-          className="text-gray-200 bg-red-600 hover:text-white rounded-md p-2 ml-2"
+          onClick={()=>onDelete(blog._id)}
+          className="flex items-center text-gray-200 bg-red-600 hover:text-white rounded-md p-2 ml-2"
         >
+          <Trash2 fill="red"/>
           Delete
         </button>
       </div>
@@ -48,4 +52,4 @@ const BlogItem = ({ blog, onEdit, onDelete }: Props) => {
   );
 };
 
-export default BlogItem;
+export default MyBlog;

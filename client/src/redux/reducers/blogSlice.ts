@@ -37,6 +37,21 @@ export const createBlogAsync = createAsyncThunk(
   }
 );
 
+// Thunk api to delete the blog
+
+export const deleteBlogAsync = createAsyncThunk(
+  "blog/delete",
+  async (blogId: string) => {
+    try {
+      const response = await apiClient.deleteMyBlog(blogId);
+      console.log(response)
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 // thunk API to fetch all blogs
 export const fetchBlogs = createAsyncThunk(
   "blogs/fetchAll",
@@ -82,15 +97,13 @@ export const likeBlogAsync = createAsyncThunk(
   async ({ blogId }: { blogId: string }) => {
     try {
       const response = await apiClient.likeBlog(blogId);
-    
+
       return response;
     } catch (error) {
       throw new Error("Failed to like the blog");
     }
   }
 );
-
-
 
 const blogSlice = createSlice({
   name: "blog",
@@ -202,6 +215,18 @@ const blogSlice = createSlice({
       .addCase(fetchBlogByIdAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to fetch the blog";
+      });
+
+    builder
+      .addCase(deleteBlogAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteBlogAsync.fulfilled, (state, action) => {
+        const blog = action.payload;
+        state.loading = false;
+        state.error = null;
+        state.blogs = state.blogs.filter((b) => b._id !== blog?._id);
       });
   },
 });

@@ -19,7 +19,7 @@ const Toast = () => {
 
   return (
     <div
-      className={`fixed top-5 right-5 flex items-center text-white p-2 rounded-md transition-opacity duration-300 ease-in-out ${
+      className={`fixed top-5 right-5 z-50 flex items-center text-white p-2 rounded-md transition-opacity duration-300 ease-in-out ${
         message
           ? "opacity-100 pointer-events-auto"
           : "opacity-0 pointer-events-none"

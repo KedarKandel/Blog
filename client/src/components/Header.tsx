@@ -96,7 +96,7 @@ const Header = () => {
           {/* Hamburger menu icon */}
           <button
             onClick={handleMenuClick}
-            className="md:hidden fixed top-10 right-10 z-50 bg-blue-800 shadow-sm rounded text-white text-2xl"
+            className="md:hidden fixed top-10 right-10 z-40 bg-blue-800 shadow-sm rounded text-white text-2xl"
           >
             {isMenuOpen ? <X size="32px" /> : <Menu size="32px" />}
           </button>

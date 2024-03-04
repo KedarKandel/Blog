@@ -153,12 +153,25 @@ export const updateMyBlogById = async (blogFormData: FormData) => {
   if (!response.ok) {
     throw new Error("Failed to update Hotel");
   }
+  return response.json();
+};
+
+// Delete my blog
+
+export const deleteMyBlog = async (blogId: string): Promise<BlogType> => {
+  const response = await fetch(`${API_BASE_URL}/api/my-blogs/${blogId}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete the blog");
+  }
 
   return response.json();
 };
 
 // fetch all blogs
-
 export const getAllBlogs = async (
   page: number,
   searchQuery: string,
@@ -189,7 +202,6 @@ export const getAllBlogs = async (
 };
 
 // get blog by id
-
 export const getBlogById = async (blogId: string): Promise<BlogType> => {
   const response = await fetch(`${API_BASE_URL}/api/blogs/${blogId}`);
   if (!response.ok) {
@@ -214,7 +226,6 @@ export const likeBlog = async (
   if (!response.ok) {
     throw new Error("Error liking the blog");
   }
-
   return response.json();
 };
 
