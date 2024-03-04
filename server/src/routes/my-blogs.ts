@@ -36,7 +36,9 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
 
 router.get("/", verifyToken, async (req: Request, res: Response) => {
   try {
-    const blogs = await Blog.find({ userId: req.userId });
+    const blogs = await Blog.find({ userId: req.userId }).sort({
+      createdAt: -1,
+    });
     res.status(200).json(blogs);
   } catch (error) {
     res.status(500).json({ message: "Error fetching blogs" });
@@ -62,32 +64,28 @@ router.put("/:id", verifyToken, async (req: Request, res: Response) => {
 });
 
 // Delete a blog by ID
-router.delete(
-  "/:id",
-  verifyToken,
-  async (req: Request, res: Response) => {
-    const blogId = req.params.id;
-    const userId = req.userId;
-    try {
-      const blog = await Blog.findById(blogId);
-      if (!blog) {
-        return res.status(404).json({ error: "Blog not found" });
-      }
-
-      // Check if the authenticated user created the blog
-      if (blog.userId !== userId) {
-        return res
-          .status(403)
-          .json({ error: "Unauthorized: You cannot delete this blog" });
-      }
-
-      // If the user created the blog, proceed with deletion
-      const deletedBlog = await Blog.findByIdAndDelete(blogId);
-      return res.json(deletedBlog);
-    } catch (error) {
-      return res.status(500).json({ error: "Internal server error" });
+router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
+  const blogId = req.params.id;
+  const userId = req.userId;
+  try {
+    const blog = await Blog.findById(blogId);
+    if (!blog) {
+      return res.status(404).json({ error: "Blog not found" });
     }
+
+    // Check if the authenticated user created the blog
+    if (blog.userId !== userId) {
+      return res
+        .status(403)
+        .json({ error: "Unauthorized: You cannot delete this blog" });
+    }
+
+    // If the user created the blog, proceed with deletion
+    const deletedBlog = await Blog.findByIdAndDelete(blogId);
+    return res.json(deletedBlog);
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
   }
-);
+});
 
 export default router;
