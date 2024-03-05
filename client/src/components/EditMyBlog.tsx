@@ -5,7 +5,6 @@ import { AppDispatch } from "../redux/store";
 import { updateBlogAsync } from "../redux/reducers/blogSlice";
 import { showToast } from "../redux/reducers/toastSlice";
 
-
 type Props = {
   blog: BlogType | null;
   setIsEditBlog: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,7 +18,6 @@ const EditMyBlog = ({ blog, setIsEditBlog }: Props) => {
   });
 
   const dispatch = useDispatch<AppDispatch>();
- 
 
   const handleChange = async (
     e:
@@ -34,8 +32,6 @@ const EditMyBlog = ({ blog, setIsEditBlog }: Props) => {
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-
-   
     e.preventDefault();
     try {
       if (blog) {
@@ -52,9 +48,11 @@ const EditMyBlog = ({ blog, setIsEditBlog }: Props) => {
               type: "error",
             })
           );
-        }else{
-          dispatch(showToast({message:"Blog updated successfully", type:"success"}))
-          setIsEditBlog(false)
+        } else {
+          dispatch(
+            showToast({ message: "Blog updated successfully", type: "success" })
+          );
+          setIsEditBlog(false);
         }
       }
     } catch (error) {
@@ -78,7 +76,6 @@ const EditMyBlog = ({ blog, setIsEditBlog }: Props) => {
           autoFocus
           value={updatedBlog.title}
           onChange={handleChange}
-          
         />
       </label>
 
@@ -92,11 +89,9 @@ const EditMyBlog = ({ blog, setIsEditBlog }: Props) => {
           id="description"
           name="description"
           placeholder="Enter content"
-         
           rows={12}
           value={updatedBlog.description}
           onChange={handleChange}
-
         />
       </label>
 
