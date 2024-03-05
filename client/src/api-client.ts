@@ -125,12 +125,20 @@ export const updateMyBlogById = async (
     body: JSON.stringify(updateBlogData),
   });
 
+  const responseBody = await response.json();
   if (!response.ok) {
-    throw new Error("Failed to update Hotel");
+    let errorMessage = "";
+    if (Array.isArray(responseBody.message)) {
+      errorMessage = responseBody.message
+        .map((error: any) => error.msg)
+        .join(", ");
+    } else {
+      errorMessage = responseBody.message;
+    }
+    throw new Error(errorMessage);
   }
-  return response.json();
+  return responseBody;
 };
-
 
 // Delete my blog
 export const deleteMyBlog = async (blogId: string): Promise<BlogType> => {
@@ -144,7 +152,6 @@ export const deleteMyBlog = async (blogId: string): Promise<BlogType> => {
   }
   return response.json();
 };
-
 
 // fetch user's blogs
 export const fetchMyBlogs = async (): Promise<BlogType[]> => {
@@ -169,8 +176,6 @@ export const fetchMyBlogById = async (blogId: string): Promise<BlogType> => {
   }
   return response.json();
 };
-
-
 
 // fetch all blogs
 export const getAllBlogs = async (

@@ -32,7 +32,7 @@ export const createBlogAsync = createAsyncThunk(
       const response = await apiClient.addMyBlog(blog);
       return response;
     } catch (error) {
-      console.log(error);
+      throw new Error("err" + error);
     }
   }
 );
@@ -46,12 +46,8 @@ export const updateBlogAsync = createAsyncThunk(
     blogId: string;
     updatedBlog: Partial<BlogType>;
   }) => {
-    try {
-      const response = await apiClient.updateMyBlogById(blogId, updatedBlog);
-      return response;
-    } catch (error) {
-      throw new Error("Failed to update blog: " + error);
-    }
+    const response = await apiClient.updateMyBlogById(blogId, updatedBlog);
+    return response;
   }
 );
 
@@ -64,7 +60,7 @@ export const deleteBlogAsync = createAsyncThunk(
       console.log(response);
       return response;
     } catch (error) {
-      console.log(error);
+      throw new Error("err" + error);
     }
   }
 );
@@ -85,7 +81,7 @@ export const fetchBlogs = createAsyncThunk(
       const response = await apiClient.getAllBlogs(page, searchQuery, filter);
       return response;
     } catch (error) {
-      console.log(error);
+      throw new Error("err" + error);
     }
   }
 );
@@ -255,7 +251,7 @@ const blogSlice = createSlice({
       .addCase(updateBlogAsync.fulfilled, (state, action) => {
         const updatedBlog = action.payload;
         state.blogs = state.blogs.map((blog) => {
-          if (blog._id === updatedBlog._id) {
+          if (blog._id === updatedBlog?._id) {
             return { ...blog, ...updatedBlog };
           }
           return blog;

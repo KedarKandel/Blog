@@ -19,7 +19,7 @@ const EditMyBlog = ({ blog, setIsEditBlog }: Props) => {
   });
 
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate()
+ 
 
   const handleChange = async (
     e:
@@ -34,6 +34,8 @@ const EditMyBlog = ({ blog, setIsEditBlog }: Props) => {
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+
+   
     e.preventDefault();
     try {
       if (blog) {
