@@ -10,7 +10,6 @@ import { EditProfileData } from "./types";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 // fetch current user
-
 export const fetchCurrentUser = async (): Promise<Partial<UserType>> => {
   const response = await fetch(`${API_BASE_URL}/api/users/currentUser`, {
     credentials: "include",
@@ -21,7 +20,7 @@ export const fetchCurrentUser = async (): Promise<Partial<UserType>> => {
   return response.json();
 };
 
-//edit user info
+//edit user information
 export const editUserProfile = async (
   data: EditProfileData
 ): Promise<string> => {
@@ -60,7 +59,6 @@ export const register = async (formData: RegisterFormData): Promise<string> => {
 };
 
 // login an user
-
 export const login = async (loginData: LoginFormData): Promise<string> => {
   const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
     method: "POST",
@@ -86,7 +84,6 @@ export const logout = async () => {
 };
 
 // validate token
-
 export const validateToken = async () => {
   const response = await fetch(`${API_BASE_URL}/api/auth/validate-token`, {
     credentials: "include",
@@ -97,8 +94,7 @@ export const validateToken = async () => {
   return response.json;
 };
 
-// add a blog
-
+// add a new blog
 export const addMyBlog = async (blog: Partial<BlogType>): Promise<BlogType> => {
   const response = await fetch(`${API_BASE_URL}/api/my-blogs/`, {
     method: "POST",
@@ -114,6 +110,41 @@ export const addMyBlog = async (blog: Partial<BlogType>): Promise<BlogType> => {
   }
   return responseBody;
 };
+
+// update the blog
+export const updateMyBlogById = async (
+  blogId: string,
+  updateBlogData: Partial<BlogType>
+): Promise<BlogType> => {
+  const response = await fetch(`${API_BASE_URL}/api/my-blogs/${blogId}`, {
+    method: "PUT",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(updateBlogData),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to update Hotel");
+  }
+  return response.json();
+};
+
+
+// Delete my blog
+export const deleteMyBlog = async (blogId: string): Promise<BlogType> => {
+  const response = await fetch(`${API_BASE_URL}/api/my-blogs/${blogId}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete the blog");
+  }
+  return response.json();
+};
+
 
 // fetch user's blogs
 export const fetchMyBlogs = async (): Promise<BlogType[]> => {
@@ -139,37 +170,7 @@ export const fetchMyBlogById = async (blogId: string): Promise<BlogType> => {
   return response.json();
 };
 
-// update the blog
-export const updateMyBlogById = async (blogFormData: FormData) => {
-  const response = await fetch(
-    `${API_BASE_URL}/api/my-blogs/${blogFormData.get("blogId")}`,
-    {
-      method: "PUT",
-      body: blogFormData,
-      credentials: "include",
-    }
-  );
 
-  if (!response.ok) {
-    throw new Error("Failed to update Hotel");
-  }
-  return response.json();
-};
-
-// Delete my blog
-
-export const deleteMyBlog = async (blogId: string): Promise<BlogType> => {
-  const response = await fetch(`${API_BASE_URL}/api/my-blogs/${blogId}`, {
-    method: "DELETE",
-    credentials: "include",
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to delete the blog");
-  }
-
-  return response.json();
-};
 
 // fetch all blogs
 export const getAllBlogs = async (

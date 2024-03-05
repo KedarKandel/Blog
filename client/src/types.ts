@@ -1,3 +1,5 @@
+
+
 export type SearchParams = {
   searchTerm?: string;
   filterOptions?: string;
@@ -11,3 +13,5 @@ export type EditProfileData = {
   currentPassword: string;
   newPassword: string;
 };
+
+

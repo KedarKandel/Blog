@@ -1,6 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Heart, Trash2 } from "lucide-react";
-import { MessageCircleMore } from "lucide-react";
+import { Heart, MessageCircleMore } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
 import { splitTextIntoParagraphs } from "../utils/utils";
@@ -66,7 +65,7 @@ const BlogPage = () => {
         })
       );
     } else {
-      navigate("/")
+      navigate("/");
       dispatch(
         showToast({ message: "Blog deleted successfully", type: "success" })
       );
@@ -76,12 +75,12 @@ const BlogPage = () => {
   };
 
   return (
-    <div className="flex flex-col my-3 md:my-5 p-5 border rounded-lg shadow-lg bg-white">
+    <div className=" container mx-auto flex flex-col my-3 md:my-5 p-5 border rounded-lg shadow-lg bg-white">
       <h1 className="text-2xl font-bold text-center mb-4 text-gray-800">
         {currentBlog.title}
       </h1>
       <p className="text-sm text-center font-semibold text-blue-600 mb-2">
-        {currentBlog.genre.toLocaleUpperCase()}
+        Genre:- {currentBlog.genre.toLocaleUpperCase()}
       </p>
       {descriptionParagraphs?.map((paragraph, index) => (
         <p key={index} className=" flex-1 text-md font-bold text-gray-600 mb-4">
@@ -112,9 +111,9 @@ const BlogPage = () => {
         {currentUser?._id === currentBlog.userId ? (
           <button
             onClick={() => handleDelete(id!)}
-            className=" flex items-center  text-white font-bold"
+            className=" flex items-center bg-gray-200 px-2 py-1 rounded-sm  font-bold text-red-600 text-sm"
           >
-            <Trash2 fill="red" size="40px" className=" justify-end" />
+            Delete this blog permanently
           </button>
         ) : (
           ""

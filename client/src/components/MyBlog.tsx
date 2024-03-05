@@ -1,10 +1,10 @@
 import { BlogType } from "../../../server/src/sharedTypes";
-import { NotebookPen } from 'lucide-react';
-import { Trash2 } from 'lucide-react';
+import { NotebookPen } from "lucide-react";
+import { Trash2 } from "lucide-react";
 
 type Props = {
   blog: BlogType;
-  onEdit: (id:string) => void;
+  onEdit: (id: string) => void;
   onDelete: (id: string) => void;
 };
 
@@ -34,17 +34,17 @@ const MyBlog = ({ blog, onEdit, onDelete }: Props) => {
       </div>
       <div className="flex  justify-between px-4 sm:px-6 py-2 mt-3 ">
         <button
-          onClick={()=>onEdit(blog._id)}
+          onClick={() => onEdit(blog._id)}
           className="flex items-center gap-1 text-gray-200 hover:text-white bg-blue-800 rounded-md p-2"
         >
-          <NotebookPen fill="blue"/>
+          <NotebookPen fill="blue" />
           Edit
         </button>
         <button
-          onClick={()=>onDelete(blog._id)}
+          onClick={() => onDelete(blog._id)}
           className="flex items-center text-gray-200 bg-red-600 hover:text-white rounded-md p-2 ml-2"
         >
-          <Trash2 fill="red"/>
+          <Trash2 fill="red"  />
           Delete
         </button>
       </div>

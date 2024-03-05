@@ -6,8 +6,6 @@ import * as apiClient from "../api-client";
 import { useNavigate } from "react-router-dom";
 import { showToast } from "../redux/reducers/toastSlice";
 
-
-
 const Create = () => {
   const currentUserId = useSelector(
     (state: RootState) => state.user.currentUser?._id
@@ -33,6 +31,10 @@ const Create = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (description.length < 100) {
+      alert("Description must be at least 100 characters long");
+      return;
+    }
     try {
       await apiClient.validateToken();
       await dispatch(
@@ -59,13 +61,17 @@ const Create = () => {
 
   return (
     <div className=" flex  flex-1 items-center justify-center">
-     
       <form
         className="p-8 rounded-md shadow-2xl max-w-md w-full"
         onSubmit={handleSubmit}
       >
-         <h1 className=" font-bold text-2xl text-blue-600 text-center">WRITE A BLOG</h1>
-        <label className="block mb-2 text-gray-700 font-semibold" htmlFor="title">
+        <h1 className=" font-bold text-2xl text-blue-600 text-center">
+          WRITE A BLOG
+        </h1>
+        <label
+          className="block mb-2 text-gray-700 font-semibold"
+          htmlFor="title"
+        >
           Title
         </label>
         <input
@@ -76,10 +82,14 @@ const Create = () => {
           placeholder="Enter title"
           required
           value={title}
+          minLength={3}
           onChange={handleChange}
         />
 
-        <label className="block mt-4 mb-2 text-gray-700 font-semibold" htmlFor="description">
+        <label
+          className="block mt-4 mb-2 text-gray-700 font-semibold"
+          htmlFor="description"
+        >
           Description
         </label>
         <textarea
@@ -87,6 +97,7 @@ const Create = () => {
           id="description"
           name="description"
           placeholder="Enter content"
+          minLength={100}
           rows={8}
           required
           value={description}

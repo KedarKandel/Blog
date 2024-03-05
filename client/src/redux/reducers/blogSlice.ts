@@ -37,14 +37,31 @@ export const createBlogAsync = createAsyncThunk(
   }
 );
 
-// Thunk api to delete the blog
+export const updateBlogAsync = createAsyncThunk(
+  "blogs/update",
+  async ({
+    blogId,
+    updatedBlog,
+  }: {
+    blogId: string;
+    updatedBlog: Partial<BlogType>;
+  }) => {
+    try {
+      const response = await apiClient.updateMyBlogById(blogId, updatedBlog);
+      return response;
+    } catch (error) {
+      throw new Error("Failed to update blog: " + error);
+    }
+  }
+);
 
+// Thunk api to delete the blog
 export const deleteBlogAsync = createAsyncThunk(
   "blog/delete",
   async (blogId: string) => {
     try {
       const response = await apiClient.deleteMyBlog(blogId);
-      console.log(response)
+      console.log(response);
       return response;
     } catch (error) {
       console.log(error);
@@ -208,8 +225,6 @@ const blogSlice = createSlice({
       })
 
       .addCase(fetchBlogByIdAsync.fulfilled, (state, action) => {
-        state.loading = false;
-        state.error = null;
         state.currentBlog = action.payload;
       })
       .addCase(fetchBlogByIdAsync.rejected, (state, action) => {
@@ -224,9 +239,31 @@ const blogSlice = createSlice({
       })
       .addCase(deleteBlogAsync.fulfilled, (state, action) => {
         const blog = action.payload;
-        state.loading = false;
-        state.error = null;
         state.blogs = state.blogs.filter((b) => b._id !== blog?._id);
+      })
+      .addCase(deleteBlogAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to delete the blog";
+      });
+
+    builder
+      .addCase(updateBlogAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+
+      .addCase(updateBlogAsync.fulfilled, (state, action) => {
+        const updatedBlog = action.payload;
+        state.blogs = state.blogs.map((blog) => {
+          if (blog._id === updatedBlog._id) {
+            return { ...blog, ...updatedBlog };
+          }
+          return blog;
+        });
+      })
+      .addCase(updateBlogAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to update the blog";
       });
   },
 });

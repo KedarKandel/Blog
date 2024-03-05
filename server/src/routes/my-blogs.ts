@@ -3,34 +3,53 @@ import verifyToken from "../middleware/auth";
 const router = express.Router();
 import Blog from "../models/blog";
 import User from "../models/user";
+import { check, validationResult } from "express-validator";
 
 // Create a new blog
-router.post("/", verifyToken, async (req: Request, res: Response) => {
-  const userId = req.userId;
-  try {
-    const { title, description, genre } = req.body;
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
+router.post(
+  "/",
+  verifyToken,
+  [
+    check("title", "Title is required").isLength({ min: 3 }),
+    check(
+      "description",
+      "Description is required and length should be atleast 100 characters"
+    ).isLength({ min: 100 }),
+    check("genre", "Genre is required"),
+  ],
+  async (req: Request, res: Response) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ message: errors.array() });
     }
 
-    const { firstName, lastName } = user;
-    const createdByFullName = `${firstName} ${lastName}`;
+    const userId = req.userId;
+    try {
+      const { title, description, genre } = req.body;
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
 
-    const newBlog = new Blog({
-      title,
-      description,
-      genre,
-      createdBy: createdByFullName,
-      userId,
-    });
-    await newBlog.save();
-    return res.status(201).json(newBlog);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Internal server error" });
+      const { firstName, lastName } = user;
+      const createdByFullName = `${firstName} ${lastName}`;
+
+      const newBlog = new Blog({
+        title,
+        description,
+        genre,
+        createdBy: createdByFullName,
+        userId,
+      });
+      await newBlog.save();
+      return res.status(201).json(newBlog);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
   }
-});
+);
 
 // get all blogs by user
 
@@ -46,22 +65,43 @@ router.get("/", verifyToken, async (req: Request, res: Response) => {
 });
 
 // Update a blog by ID
-router.put("/:id", verifyToken, async (req: Request, res: Response) => {
-  try {
-    const { title, description, genre } = req.body;
-    const updatedBlog = await Blog.findByIdAndUpdate(
-      req.params.id,
-      { title, description, genre },
-      { new: true }
-    );
-    if (!updatedBlog) {
-      return res.status(404).json({ message: "Blog not found" });
+router.put(
+  "/:id",
+  verifyToken,
+  [
+    check("title", "Title is required").isLength({ min: 3 }),
+    check(
+      "description",
+      "Description is required and length should be atleast 100 characters"
+    ).isLength({ min: 100 }),
+    check("genre", "Genre is required"),
+  ],
+  async (req: Request, res: Response) => {
+    // check for erros
+
+    console.log(req.body)
+    const errors = validationResult(req);
+    console.log(errors)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ message: errors.array() });
     }
-    return res.json(updatedBlog);
-  } catch (error) {
-    return res.status(500).json({ message: "Internal server error" });
+
+    try {
+      const { title, description, genre } = req.body;
+      const updatedBlog = await Blog.findByIdAndUpdate(
+        req.params.id,
+        { title, description, genre },
+        { new: true }
+      );
+      if (!updatedBlog) {
+        return res.status(404).json({ message: "Blog not found" });
+      }
+      return res.json(updatedBlog);
+    } catch (error) {
+      return res.status(500).json({ message: "Internal server error" });
+    }
   }
-});
+);
 
 // Delete a blog by ID
 router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
