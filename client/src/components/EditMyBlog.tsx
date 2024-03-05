@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
 import { updateBlogAsync } from "../redux/reducers/blogSlice";
 import { showToast } from "../redux/reducers/toastSlice";
-import { useNavigate } from "react-router-dom";
+
 
 type Props = {
   blog: BlogType | null;
@@ -75,8 +75,10 @@ const EditMyBlog = ({ blog, setIsEditBlog }: Props) => {
           id="title"
           name="title"
           placeholder="Enter title"
+          autoFocus
           value={updatedBlog.title}
           onChange={handleChange}
+          
         />
       </label>
 
@@ -90,9 +92,11 @@ const EditMyBlog = ({ blog, setIsEditBlog }: Props) => {
           id="description"
           name="description"
           placeholder="Enter content"
-          rows={8}
+         
+          rows={12}
           value={updatedBlog.description}
           onChange={handleChange}
+
         />
       </label>
 
