@@ -138,6 +138,7 @@ const [showConfirmation, setShowConfirmation] = useState(false);
       </div>
       {showConfirmation && (
         <ConfirmDelete
+        blog={currentBlog}
           handleDelete={() => handleDelete(currentBlog._id)} // Pass handleDelete function
           setShowConfirmation={setShowConfirmation} // Pass setShowConfirmation function
         />

@@ -13,7 +13,7 @@ type Props = {
 
 const MyBlog = ({ blog, onEdit, onDelete }: Props) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
-  
+
   const confirmDelete = () => {
     setShowConfirmation(true); // Show confirmation dialog
   };
@@ -75,6 +75,7 @@ const MyBlog = ({ blog, onEdit, onDelete }: Props) => {
       {/* Confirmation dialog */}
       {showConfirmation && (
         <ConfirmDelete
+          blog={blog}
           handleDelete={handleDelete}
           setShowConfirmation={setShowConfirmation}
         />
