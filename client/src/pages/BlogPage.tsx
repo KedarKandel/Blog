@@ -111,7 +111,7 @@ const BlogPage = () => {
         {currentUser?._id === currentBlog.userId ? (
           <button
             onClick={() => handleDelete(id!)}
-            className=" flex items-center bg-gray-200 px-2 py-1 rounded-sm  font-bold text-red-600 text-sm"
+            className=" flex items-center bg-gray-200 px-2 py-1 rounded-sm  font-bold text-red-600 text-xs md:text-sm"
           >
             Delete this blog permanently
           </button>
@@ -125,7 +125,7 @@ const BlogPage = () => {
           <span className="text-sm text-blue-800">{currentBlog.createdBy}</span>
         </p>
         <p className="text-sm text-blue-800">
-          Last Updated: {new Date(currentBlog.createdAt).toLocaleDateString()}
+          Last Updated: {new Date(currentBlog.updatedAt).toLocaleDateString()}
         </p>
       </div>
     </div>

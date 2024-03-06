@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 import { BlogType } from "../sharedTypes";
 
-
-
 const blogSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
@@ -17,8 +15,7 @@ const blogSchema = new mongoose.Schema(
     likes: [String],
     genre: { type: String, required: true },
     createdBy: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now },
-    userId: {type: String, required: true}
+    userId: { type: String, required: true },
   },
   { timestamps: true }
 );

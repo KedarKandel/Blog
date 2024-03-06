@@ -11,8 +11,8 @@ type Props = {
 const MyBlog = ({ blog, onEdit, onDelete }: Props) => {
   return (
     <div className="border-b border-gray-300 py-4">
-      <div className="flex flex-col md:flex-row items-center justify-between px-4 sm:px-6 py-2">
-        <div>
+      <div className="flex flex-col  md:flex-row items-center justify-between px-4 sm:px-6 py-2">
+        <div className="flex flex-col sm:justify-start">
           <p className="text-md font-medium text-gray-900 mb-1">
             Title:<span className="text-red-500 ms-1 ">{blog.title}</span>
           </p>
@@ -20,10 +20,10 @@ const MyBlog = ({ blog, onEdit, onDelete }: Props) => {
         </div>
 
         <p className="text-md text-gray-500">
-          Last Updated: {new Date(blog.createdAt).toLocaleDateString()}
+          Last Updated: {new Date(blog.updatedAt).toLocaleDateString()}
         </p>
 
-        <p className="text-md text-gray-500">
+        <p className=" text-md text-gray-500">
           Like count: {blog.likes?.length}
         </p>
       </div>

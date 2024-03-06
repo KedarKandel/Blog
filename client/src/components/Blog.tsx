@@ -37,12 +37,12 @@ const Blog = ({ blog }: Props) => {
           </span>
         </div>
       </div>
-      <div className="flex justify-between items-center text-lg text-gray-600">
+      <div className="flex justify-between items-center text-lg text-gray-600 mt-1">
         <p className="flex text-sm items-center gap-1">
           By: <span className="text-sm text-blue-800">{blog.createdBy}</span>
         </p>
-        <p className="text-sm text-blue-800">
-          {new Date(blog.createdAt).toLocaleDateString()}
+        <p className=" text-sm text-blue-800">
+         {new Date(blog.createdAt).toLocaleDateString()}
         </p>
       </div>
     </Link>

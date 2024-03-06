@@ -15,6 +15,7 @@ export type BlogType = {
   genre: string;
   createdBy: string;
   createdAt: Date;
+  updatedAt: Date
   userId: string
 };
 
