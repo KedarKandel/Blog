@@ -8,11 +8,12 @@ import {
   fetchBlogByIdAsync,
   likeBlogAsync,
 } from "../redux/reducers/blogSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { showToast } from "../redux/reducers/toastSlice";
 import * as apiClient from "../api-client";
 
 import { Undo2 } from "lucide-react";
+import ConfirmDelete from "../components/ConfirmDelete";
 
 const BlogPage = () => {
   const { id } = useParams<string>();
@@ -20,6 +21,9 @@ const BlogPage = () => {
   const currentBlog = useSelector((state: RootState) => state.blog.currentBlog);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+
+//delete confirmation
+const [showConfirmation, setShowConfirmation] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -56,7 +60,6 @@ const BlogPage = () => {
   };
 
   // allow delete if user has created the blog
-
   const handleDelete = async (id: string) => {
     const actionResult = await dispatch(deleteBlogAsync(id));
     if (deleteBlogAsync.rejected.match(actionResult)) {
@@ -115,7 +118,7 @@ const BlogPage = () => {
         </div>
         {currentUser?._id === currentBlog.userId ? (
           <button
-            onClick={() => handleDelete(id!)}
+          onClick={() => setShowConfirmation(true)}
             className=" flex items-center bg-gray-200 px-2 py-1 rounded-sm  font-bold text-red-600 text-xs md:text-sm"
           >
             Delete this blog permanently
@@ -133,6 +136,12 @@ const BlogPage = () => {
           Last Updated: {new Date(currentBlog.updatedAt).toLocaleDateString()}
         </p>
       </div>
+      {showConfirmation && (
+        <ConfirmDelete
+          handleDelete={() => handleDelete(currentBlog._id)} // Pass handleDelete function
+          setShowConfirmation={setShowConfirmation} // Pass setShowConfirmation function
+        />
+      )}
     </div>
   );
 };

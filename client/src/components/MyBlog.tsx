@@ -2,6 +2,8 @@ import { BlogType } from "../../../server/src/sharedTypes";
 import { NotebookPen } from "lucide-react";
 import { Trash2 } from "lucide-react";
 import { splitTextIntoParagraphs } from "../utils/utils";
+import { useState } from "react";
+import ConfirmDelete from "./ConfirmDelete";
 
 type Props = {
   blog: BlogType;
@@ -10,6 +12,17 @@ type Props = {
 };
 
 const MyBlog = ({ blog, onEdit, onDelete }: Props) => {
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  
+  const confirmDelete = () => {
+    setShowConfirmation(true); // Show confirmation dialog
+  };
+
+  const handleDelete = () => {
+    onDelete(blog._id);
+    setShowConfirmation(false);
+  };
+
   // separating paragraphs
   const MAX_WORDS_PER_PARAGRAPH = 100;
   const descriptionParagraphs = splitTextIntoParagraphs(
@@ -51,13 +64,21 @@ const MyBlog = ({ blog, onEdit, onDelete }: Props) => {
           Edit
         </button>
         <button
-          onClick={() => onDelete(blog._id)}
+          onClick={confirmDelete}
           className="flex items-center text-gray-200 bg-red-600 hover:text-white rounded-md p-2 ml-2"
         >
           <Trash2 fill="red" />
           Delete
         </button>
       </div>
+
+      {/* Confirmation dialog */}
+      {showConfirmation && (
+        <ConfirmDelete
+          handleDelete={handleDelete}
+          setShowConfirmation={setShowConfirmation}
+        />
+      )}
     </div>
   );
 };
