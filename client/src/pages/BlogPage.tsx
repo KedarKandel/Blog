@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Heart, MessageCircleMore } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
@@ -11,6 +11,8 @@ import {
 import { useEffect } from "react";
 import { showToast } from "../redux/reducers/toastSlice";
 import * as apiClient from "../api-client";
+
+import { Undo2 } from "lucide-react";
 
 const BlogPage = () => {
   const { id } = useParams<string>();
@@ -75,7 +77,10 @@ const BlogPage = () => {
   };
 
   return (
-    <div className=" container mx-auto flex flex-col my-3 md:my-5 p-5 border rounded-lg shadow-lg bg-white">
+    <div className=" relative container mx-auto flex flex-col my-3 md:my-5 p-5 border rounded-lg shadow-lg bg-white">
+      <Link to={"/"} className="text-blue-600 font-bold">
+        <Undo2 size={"30px"} />
+      </Link>
       <h1 className="text-2xl font-bold text-center mb-4 text-gray-800">
         {currentBlog.title}
       </h1>
