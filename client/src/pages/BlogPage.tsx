@@ -28,7 +28,7 @@ const BlogPage = () => {
   }, [dispatch, id]);
 
   // separating paragraphs
-  const MAX_WORDS_PER_PARAGRAPH = 250;
+  const MAX_WORDS_PER_PARAGRAPH =100;
   const descriptionParagraphs = splitTextIntoParagraphs(
     currentBlog?.description! || "",
     MAX_WORDS_PER_PARAGRAPH
@@ -77,7 +77,7 @@ const BlogPage = () => {
   };
 
   return (
-    <div className=" relative container mx-auto flex flex-col my-3 md:my-5 p-5 border rounded-lg shadow-lg bg-white">
+    <div className="container mx-auto flex flex-col my-3 md:my-5 p-5 border rounded-lg shadow-lg bg-white">
       <Link to={"/"} className="text-blue-600 font-bold">
         <Undo2 size={"30px"} />
       </Link>

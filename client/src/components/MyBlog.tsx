@@ -1,6 +1,7 @@
 import { BlogType } from "../../../server/src/sharedTypes";
 import { NotebookPen } from "lucide-react";
 import { Trash2 } from "lucide-react";
+import { splitTextIntoParagraphs } from "../utils/utils";
 
 type Props = {
   blog: BlogType;
@@ -9,6 +10,13 @@ type Props = {
 };
 
 const MyBlog = ({ blog, onEdit, onDelete }: Props) => {
+  // separating paragraphs
+  const MAX_WORDS_PER_PARAGRAPH = 100;
+  const descriptionParagraphs = splitTextIntoParagraphs(
+    blog?.description! || "",
+    MAX_WORDS_PER_PARAGRAPH
+  );
+
   return (
     <div className="border-b border-gray-300 py-4">
       <div className="flex flex-col  md:flex-row items-center justify-between px-4 sm:px-6 py-2">
@@ -28,9 +36,11 @@ const MyBlog = ({ blog, onEdit, onDelete }: Props) => {
         </p>
       </div>
 
-      <p className="px-4 sm:px-6 py-2 text-lg text-gray-500">
-        Text: {blog.description}
-      </p>
+      {descriptionParagraphs?.map((paragraph, index) => (
+        <p key={index} className="px-4 sm:px-6 py-2 text-lg text-gray-500">
+          {paragraph}
+        </p>
+      ))}
 
       <div className="flex  justify-between px-4 sm:px-6 py-2 mt-3 ">
         <button
