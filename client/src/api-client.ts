@@ -106,7 +106,15 @@ export const addMyBlog = async (blog: Partial<BlogType>): Promise<BlogType> => {
   });
   const responseBody = await response.json();
   if (!response.ok) {
-    throw new Error(responseBody.message);
+    let errorMessage = "";
+    if (Array.isArray(responseBody.message)) {
+      errorMessage = responseBody.message
+        .map((error: any) => error.msg)
+        .join(", ");
+    } else {
+      errorMessage = responseBody.message;
+    }
+    throw new Error(errorMessage);
   }
   return responseBody;
 };

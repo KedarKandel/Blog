@@ -31,13 +31,9 @@ const Create = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (description.length < 100) {
-      alert("Description must be at least 100 characters long");
-      return;
-    }
     try {
       await apiClient.validateToken();
-      await dispatch(
+      const actionResult = await dispatch(
         createBlogAsync({
           title: title,
           description: description,
@@ -45,17 +41,31 @@ const Create = () => {
           createdBy: createdBy,
         })
       );
-      setTitle("");
-      setDescription("");
-      setGenre("");
-      setCreatedBy(currentUserId || "");
-      navigate("/");
-      dispatch(
-        showToast({ message: "New blog creation successful", type: "success" })
-      );
+
+      if (createBlogAsync.rejected.match(actionResult)) {
+        dispatch(
+          showToast({
+            message:
+              actionResult.error.message || "An error occurred while updating.",
+            type: "error",
+          })
+        );
+      } else {
+        setTitle("");
+        setDescription("");
+        setGenre("");
+        setCreatedBy(currentUserId || "");
+        navigate("/");
+        dispatch(
+          showToast({
+            message: "New blog creation successful",
+            type: "success",
+          })
+        );
+      }
     } catch (error) {
-      console.error("Error while validating token:", error);
-      dispatch(showToast({ message: "Error adding blog", type: "error" }));
+      console.error( error);
+      
     }
   };
 

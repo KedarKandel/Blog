@@ -28,12 +28,8 @@ const initialState: blogState = {
 export const createBlogAsync = createAsyncThunk(
   "blogs/create",
   async (blog: Partial<BlogType>) => {
-    try {
-      const response = await apiClient.addMyBlog(blog);
-      return response;
-    } catch (error) {
-      throw new Error("err" + error);
-    }
+    const response = await apiClient.addMyBlog(blog);
+    return response;
   }
 );
 
