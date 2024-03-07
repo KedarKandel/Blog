@@ -35,38 +35,38 @@ const Header = () => {
           isMenuOpen ? "visible" : "invisible"
         } md:hidden`}
       >
-        <h1 className=" text-2xl font-serif p-9 text-white text-left" onClick={handleMenuClick}>
-          <Link to="/">StoryHub</Link>
+        <h1 className=" text-3xl font-serif p-9 text-yellow-500 text-left" onClick={handleMenuClick}>
+          <Link to="/">ExpressEcho</Link>
         </h1>
 
         {/* Menu links */}
-        <div className="flex flex-col h-full justify-center items-center text-white">
+        <div className="flex flex-col h-full justify-center items-center text-yellow-400">
           {isLoggedIn ? (
             <>
               <Link
                 to="/create"
-                className="my-3 text-xl font-serif"
+                className="my-3 text-xl font-serif text-yellow-400"
                 onClick={handleMenuClick}
               >
                 Create
               </Link>
               <Link
                 to="/my-blogs"
-                className="my-3 text-xl font-serif"
+                className="my-3 text-xl font-serif "
                 onClick={handleMenuClick}
               >
                 My blogs
               </Link>
               <Link
                 to="/my-account"
-                className="my-3 text-xl font-serif"
+                className="my-3 text-xl font-serif "
                 onClick={handleMenuClick}
               >
                 Account
               </Link>
               <button
                 onClick={handleLogout}
-                className="bg-white text-blue-600 font-serif px-3 py-1 rounded-sm text-lg font-bold hover:bg-gray-200 my-2"
+                className="bg-white text-blue-600 font-serif px-3 py-1 rounded-sm text-md font-bold hover:bg-gray-200 my-2"
               >
                 Log out
               </button>
@@ -88,9 +88,9 @@ const Header = () => {
         <div className="container mx-auto flex justify-between items-center">
           <Link
             to={"/"}
-            className="text-2xl text-white font-bold tracking-tight"
+            className="text-2xl text-yellow-400 font-bold tracking-tight"
           >
-           StoryHub
+          ExpressEcho
           </Link>
 
           {/* Hamburger menu icon */}
@@ -104,13 +104,13 @@ const Header = () => {
           <span className="space-x-2 hidden md:flex">
             {/* Links */}
             {isLoggedIn ? (
-              <div className="hidden md:flex items-center gap-8 text-white text-2xl">
+              <div className="hidden md:flex items-center gap-8 text-xl text-yellow-100">
                 <Link to="/create">Create</Link>
                 <Link to="/my-blogs">My blogs</Link>
                 <Link to="/my-account">Account</Link>
                 <button
                   onClick={handleLogout}
-                  className="bg-white flex items-center text-blue-600 px-3 py-1 rounded-sm text-lg font-bold hover:bg-gray-200"
+                  className="bg-white flex items-center text-blue-600 px-2 py-1 rounded-sm text-md font-bold hover:bg-gray-200"
                 >
                   Log out
                 </button>
