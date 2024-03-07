@@ -10,11 +10,12 @@ import {
 } from "../redux/reducers/blogSlice";
 import { useEffect, useState } from "react";
 import { showToast } from "../redux/reducers/toastSlice";
-import * as apiClient from "../api-client";
+
 
 import { ArrowLeftCircle } from "lucide-react";
 import { User } from "lucide-react";
 import ConfirmDelete from "../components/ConfirmDelete";
+import Comment from "../components/Comment";
 
 const BlogPage = () => {
   const { id } = useParams<string>();
@@ -75,8 +76,6 @@ const BlogPage = () => {
       dispatch(
         showToast({ message: "Blog deleted successfully", type: "success" })
       );
-      // validating token for safety reason again
-      await apiClient.validateToken();
     }
   };
 
@@ -97,7 +96,7 @@ const BlogPage = () => {
         </p>
       ))}
 
-      <div className="flex  items-center  justify-between mb-4 py-1 bg-yellow-100">
+      <div className="flex  items-center  justify-between mb-4 p-1 bg-yellow-100 rounded-md">
         <p className="flex items-center text-sm gap-1 mb-2 md:mb-0">
           <User className="text-blue-800" />
           <span className="text-xs md:text-sm text-blue-700">
@@ -141,15 +140,8 @@ const BlogPage = () => {
           ""
         )}
       </div>
-      <div className="flex flex-col  text-lg text-gray-600 mt-2 mb-2 gap-2">
-        <input
-          type="text"
-          placeholder="Comment here..."
-          className="px-4 py-3 outline-none rounded-md border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-        />
-        <button className="bg-blue-700 text-sm max-w-max rounded-md text-white px-2 py-1">Comment</button>
-      </div>
 
+      <Comment />
       <div>section for displaying comments</div>
       {showConfirmation && (
         <ConfirmDelete
