@@ -13,6 +13,7 @@ import { showToast } from "../redux/reducers/toastSlice";
 import * as apiClient from "../api-client";
 
 import { Undo2 } from "lucide-react";
+import { CircleUserRound } from "lucide-react";
 import ConfirmDelete from "../components/ConfirmDelete";
 
 const BlogPage = () => {
@@ -22,8 +23,8 @@ const BlogPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-//delete confirmation
-const [showConfirmation, setShowConfirmation] = useState(false);
+  //delete confirmation
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -32,7 +33,7 @@ const [showConfirmation, setShowConfirmation] = useState(false);
   }, [dispatch, id]);
 
   // separating paragraphs
-  const MAX_WORDS_PER_PARAGRAPH =100;
+  const MAX_WORDS_PER_PARAGRAPH = 100;
   const descriptionParagraphs = splitTextIntoParagraphs(
     currentBlog?.description! || "",
     MAX_WORDS_PER_PARAGRAPH
@@ -118,7 +119,7 @@ const [showConfirmation, setShowConfirmation] = useState(false);
         </div>
         {currentUser?._id === currentBlog.userId ? (
           <button
-          onClick={() => setShowConfirmation(true)}
+            onClick={() => setShowConfirmation(true)}
             className=" flex items-center bg-gray-200 px-2 py-1 rounded-sm  font-bold text-red-600 text-xs md:text-sm"
           >
             Delete this blog permanently
@@ -128,17 +129,28 @@ const [showConfirmation, setShowConfirmation] = useState(false);
         )}
       </div>
       <div className=" flex justify-between items-center text-lg text-gray-600">
-        <p className="flex text-sm items-center gap-1">
-          By:{" "}
-          <span className="text-sm text-blue-800">{currentBlog.createdBy}</span>
-        </p>
-        <p className="text-sm text-blue-800">
-          Last Updated: {new Date(currentBlog.updatedAt).toLocaleDateString()}
-        </p>
+        <input
+          type="text"
+          placeholder="Comment here..."
+          className="flex-1 px-4 py-3 mt-2 mb-5 me-5 outline-none rounded-md border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+        />
+
+        <div className="flex flex-col items-center justify-center">
+          <p className="flex text-sm items-center gap-1">
+            <CircleUserRound />
+            <span className="text-xs text.xs md:text-sm text-blue-800">
+              {currentBlog.createdBy}
+            </span>
+          </p>
+          <p className="text-xs md:text-sm text-blue-800">
+            Updated: {new Date(currentBlog.updatedAt).toLocaleDateString()}
+          </p>
+        </div>
       </div>
+      <div>section for displaying comments</div>
       {showConfirmation && (
         <ConfirmDelete
-        blog={currentBlog}
+          blog={currentBlog}
           handleDelete={() => handleDelete(currentBlog._id)} // Pass handleDelete function
           setShowConfirmation={setShowConfirmation} // Pass setShowConfirmation function
         />

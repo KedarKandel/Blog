@@ -75,7 +75,7 @@ const Header = () => {
             <Link
               onClick={handleMenuClick}
               to={"/sign-in"}
-              className="flex items-center bg-white text-blue-500 rounded  px-3 py-1 font-bold hover:bg-gray-200"
+              className="flex items-center bg-white text-blue-500 text-md rounded  px-3 py-1 font-bold hover:bg-gray-200"
             >
               Log In
             </Link>
@@ -110,7 +110,7 @@ const Header = () => {
                 <Link to="/my-account">Account</Link>
                 <button
                   onClick={handleLogout}
-                  className="bg-white flex items-center text-blue-600 px-2 py-1 rounded-sm text-md font-bold hover:bg-gray-200"
+                  className="bg-white flex items-center text-blue-600 px-2 py-1 rounded-sm text-sm font-bold hover:bg-gray-200"
                 >
                   Log out
                 </button>
