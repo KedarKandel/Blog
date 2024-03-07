@@ -11,7 +11,6 @@ import {
 import { useEffect, useState } from "react";
 import { showToast } from "../redux/reducers/toastSlice";
 
-
 import { ArrowLeftCircle } from "lucide-react";
 import { User } from "lucide-react";
 import ConfirmDelete from "../components/ConfirmDelete";
@@ -19,6 +18,7 @@ import Comment from "../components/Comment";
 
 const BlogPage = () => {
   const { id } = useParams<string>();
+  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
   const currentBlog = useSelector((state: RootState) => state.blog.currentBlog);
   const dispatch = useDispatch<AppDispatch>();
@@ -50,7 +50,7 @@ const BlogPage = () => {
     currentBlog.likes.includes(currentUser?._id || "");
 
   const handleLike = async () => {
-    if (!currentUser) {
+    if (!isLoggedIn && !currentUser) {
       navigate("/sign-in");
       return;
     }

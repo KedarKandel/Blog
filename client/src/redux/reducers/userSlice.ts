@@ -114,6 +114,7 @@ const userSlice = createSlice({
       state.loading = false;
       state.isLoggedIn = false;
       state.error = null;
+      state.currentUser= null
     });
   
   },
