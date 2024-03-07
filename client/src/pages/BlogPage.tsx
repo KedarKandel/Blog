@@ -12,8 +12,8 @@ import { useEffect, useState } from "react";
 import { showToast } from "../redux/reducers/toastSlice";
 import * as apiClient from "../api-client";
 
-import { Undo2 } from "lucide-react";
-import { CircleUserRound } from "lucide-react";
+import { ArrowLeftCircle } from "lucide-react";
+import { User } from "lucide-react";
 import ConfirmDelete from "../components/ConfirmDelete";
 
 const BlogPage = () => {
@@ -82,10 +82,10 @@ const BlogPage = () => {
 
   return (
     <div className="container mx-auto flex flex-col my-3 md:my-5 p-5 border rounded-lg shadow-lg bg-white">
-      <Link to={"/"} className="text-blue-600 font-bold">
-        <Undo2 size={"30px"} />
+      <Link to={"/"} className="text-blue-800 font-bold">
+        <ArrowLeftCircle size={"35px"} />
       </Link>
-      <h1 className="text-2xl font-bold text-center mb-4 text-gray-800">
+      <h1 className="text-2xl font-bold text-center mb-4 text-blue-800">
         {currentBlog.title}
       </h1>
       <p className="text-sm text-center font-semibold text-blue-600 mb-2">
@@ -96,6 +96,19 @@ const BlogPage = () => {
           {paragraph}
         </p>
       ))}
+
+      <div className="flex  items-center  justify-between mb-4 py-1 bg-yellow-100">
+        <p className="flex items-center text-sm gap-1 mb-2 md:mb-0">
+          <User className="text-blue-800" />
+          <span className="text-xs md:text-sm text-blue-700">
+            {currentBlog.createdBy}
+          </span>
+        </p>
+        <p className="flex items-center text-sm md:text-sm text-blue-700">
+          Last Updated: {new Date(currentBlog.updatedAt).toLocaleDateString()}
+        </p>
+      </div>
+
       <div className="flex justify-between items-center text-lg text-gray-600 mb-4">
         <div className=" flex gap-5">
           <div className="relative" onClick={handleLike}>
@@ -128,25 +141,15 @@ const BlogPage = () => {
           ""
         )}
       </div>
-      <div className=" flex justify-between items-center text-lg text-gray-600">
+      <div className="flex flex-col  text-lg text-gray-600 mt-2 mb-2 gap-2">
         <input
           type="text"
           placeholder="Comment here..."
-          className="flex-1 px-4 py-3 mt-2 mb-5 me-5 outline-none rounded-md border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+          className="px-4 py-3 outline-none rounded-md border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
         />
-
-        <div className="flex flex-col items-center justify-center">
-          <p className="flex text-sm items-center gap-1">
-            <CircleUserRound />
-            <span className="text-xs text.xs md:text-sm text-blue-800">
-              {currentBlog.createdBy}
-            </span>
-          </p>
-          <p className="text-xs md:text-sm text-blue-800">
-            Updated: {new Date(currentBlog.updatedAt).toLocaleDateString()}
-          </p>
-        </div>
+        <button className="bg-blue-700 text-sm max-w-max rounded-md text-white px-2 py-1">Comment</button>
       </div>
+
       <div>section for displaying comments</div>
       {showConfirmation && (
         <ConfirmDelete
