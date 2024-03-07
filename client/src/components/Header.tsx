@@ -36,7 +36,7 @@ const Header = () => {
         } md:hidden`}
       >
         <h1 className=" text-2xl font-serif p-9 text-white text-left" onClick={handleMenuClick}>
-          <Link to="/">EternaThoughts</Link>
+          <Link to="/">StoryHub</Link>
         </h1>
 
         {/* Menu links */}
@@ -90,7 +90,7 @@ const Header = () => {
             to={"/"}
             className="text-2xl text-white font-bold tracking-tight"
           >
-            EternaThoughts
+           StoryHub
           </Link>
 
           {/* Hamburger menu icon */}
