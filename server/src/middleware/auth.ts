@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 
-// entend express Request type
+// extend express Request type
 declare global {
   namespace Express {
     interface Request {

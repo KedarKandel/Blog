@@ -69,9 +69,9 @@ const Create = () => {
   };
 
   return (
-    <div className=" flex  flex-1 items-center justify-center">
+    <div className="flex items-center justify-center container mx-auto">
       <form
-        className="p-8 rounded-md shadow-2xl max-w-md w-full"
+        className=" container mx-auto p-3 md:p-8 rounded-md shadow-2xl "
         onSubmit={handleSubmit}
       >
         <h1 className=" font-bold text-2xl text-blue-600 text-center">
@@ -107,7 +107,7 @@ const Create = () => {
           name="description"
           placeholder="Enter content"
           minLength={100}
-          rows={8}
+          rows={10}
           required
           value={description}
           onChange={handleChange}
@@ -116,7 +116,7 @@ const Create = () => {
         <select
           name="genre"
           id="genre"
-          className="block appearance-none font-semibold w-full bg-white border border-gray-300 hover:border-gray-400 px-4 py-2 rounded shadow leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          className="block appearance-none font-semibold max-w-max bg-white border border-gray-300 hover:border-gray-400 px-4 py-2 rounded shadow leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
           required
           value={genre}
           onChange={handleChange}

@@ -58,7 +58,7 @@ const BlogPage = () => {
   };
 
   const handleComment = () => {
-    // Implement logic for commenting on the blog
+    // Implement logic for commenting on the blog  
   };
 
   // allow delete if user has created the blog
