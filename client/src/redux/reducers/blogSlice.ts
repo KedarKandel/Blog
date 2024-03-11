@@ -106,11 +106,20 @@ export const likeBlogAsync = createAsyncThunk(
   async ({ blogId }: { blogId: string }) => {
     try {
       const response = await apiClient.likeBlog(blogId);
-
       return response;
     } catch (error) {
       throw new Error("Failed to like the blog");
     }
+  }
+);
+
+//thunk api for commenting  a blog
+
+export const commentBlogAsync = createAsyncThunk(
+  "blog/comment",
+  async ({ blogId, content }: { blogId: string; content: string }) => {
+    const response = await apiClient.commentBlog(blogId, content);
+    return response;
   }
 );
 
@@ -125,9 +134,7 @@ const blogSlice = createSlice({
         state.error = null;
       })
       .addCase(createBlogAsync.fulfilled, (state, action) => {
-        if (action.payload) {
-          state.blogs.push(action.payload);
-        }
+        state.blogs.push(action.payload);
         state.error = null;
         state.loading = false;
       })
@@ -256,6 +263,32 @@ const blogSlice = createSlice({
       .addCase(updateBlogAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to update the blog";
+      });
+    builder
+      .addCase(commentBlogAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(commentBlogAsync.fulfilled, (state, action) => {
+        const updatedBlog = action.payload;
+
+        // Find the index of the updated blog in the blogs array
+        const index = state.blogs.findIndex(
+          (blog) => blog._id === updatedBlog._id
+        );
+
+        // If the blog is found, update its comments
+        if (index !== -1) {
+          state.blogs[index].comments = updatedBlog.comments;
+        }
+
+        state.loading = false;
+        state.error = null;
+      })
+
+      .addCase(commentBlogAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to comment on the blog";
       });
   },
 });

@@ -58,7 +58,7 @@ const BlogPage = () => {
   };
 
   const handleComment = () => {
-    // Implement logic for commenting on the blog  
+    // Implement logic for commenting on the blog
   };
 
   // allow delete if user has created the blog
@@ -140,9 +140,18 @@ const BlogPage = () => {
           ""
         )}
       </div>
+      {currentUser && isLoggedIn && <Comment blogId={currentBlog?._id} />}
 
-      <Comment />
-      <div>section for displaying comments</div>
+      <div>
+        {currentBlog.comments?.map((cmt) => (
+          <div key={cmt._id} className="flex gap-3 shadow-lg mt-3">
+            <h1>{cmt._id}</h1>
+            <h2>{cmt.content}</h2>
+            <h2>{cmt.userId}</h2>
+          </div>
+        ))}
+      </div>
+
       {showConfirmation && (
         <ConfirmDelete
           blog={currentBlog}

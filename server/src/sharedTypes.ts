@@ -1,3 +1,5 @@
+
+
 export type UserType = {
   _id: string;
   email: string;
@@ -15,8 +17,8 @@ export type BlogType = {
   genre: string;
   createdBy: string;
   createdAt: Date;
-  updatedAt: Date
-  userId: string
+  updatedAt: Date;
+  userId: string;
 };
 
 export type CommentType = {
@@ -24,18 +26,19 @@ export type CommentType = {
   userId: string;
   content: string;
   createdAt: Date;
+  likes?: string[];
+  replies?: CommentType[];
 };
 
-  export type SearchParams = {
-    searchTerm?: string;
-    filterOption?: string;
-    page?: string
-  };
+export type SearchParams = {
+  searchTerm?: string;
+  filterOption?: string;
+  page?: string;
+};
 
-  export type BlogSearchResponse = {
-    blogs: BlogType[];
-    currentPage: number;
-    total: number;
-    totalPages: number;
-  };
-
+export type BlogSearchResponse = {
+  blogs: BlogType[];
+  currentPage: number;
+  total: number;
+  totalPages: number;
+};

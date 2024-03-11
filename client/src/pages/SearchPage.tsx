@@ -11,6 +11,7 @@ import { BlogType } from "../../../server/src/sharedTypes";
 const SearchPage = () => {
   const blogs = useSelector((state: RootState) => state.blog.blogs);
   const pages = useSelector((state: RootState) => state.blog.totalPages);
+  
 
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState<number>(

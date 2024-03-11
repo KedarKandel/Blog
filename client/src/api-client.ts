@@ -244,11 +244,25 @@ export const likeBlog = async (
 };
 
 // comment a blog
-export const commentBlog = async (blogId: string): Promise<BlogType> => {
-  const response = await fetch(`${API_BASE_URL}/api/blogs/${blogId}`);
+export const commentBlog = async (
+  blogId: string,
+  content: string
+): Promise<BlogType> => {
+  
+  const response = await fetch(`${API_BASE_URL}/api/blogs/${blogId}/comment`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ content }), // Send the comment content in the request body
+  });
+
+  const responseBody = await response.json();
+
   if (!response.ok) {
-    throw new Error("Error fetching blogs");
+    throw new Error(responseBody.message);
   }
 
-  return response.json();
+  return responseBody;
 };
