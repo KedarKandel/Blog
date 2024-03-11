@@ -8,6 +8,7 @@ import {
 import { EditProfileData } from "../types";
 import { showToast } from "../redux/reducers/toastSlice";
 import * as apiClient from "../api-client";
+import { Link } from "react-router-dom";
 
 const MyAccount = () => {
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
@@ -30,6 +31,7 @@ const MyAccount = () => {
       currentPassword,
       newPassword,
     };
+
     try {
       const actionResult: any = await dispatch(editUserProfileAsync(data));
 
@@ -50,7 +52,6 @@ const MyAccount = () => {
             type: "success",
           })
         );
-
         await apiClient.validateToken();
       }
     } catch (error) {
@@ -72,27 +73,19 @@ const MyAccount = () => {
         <h1 className=" text-3xl mb-3 font-bold text-blue-600 text-center underline ">
           Edit Profile
         </h1>
-        <form
-          className="text-blue-600 font-mono w-full md:p-5"
-          onSubmit={handleSubmit}
-        >
+        <form className="text-blue-600 w-full md:p-5" onSubmit={handleSubmit}>
           <div className="md:flex items-center w-full gap-4">
-            <label
-              htmlFor="firstName"
-              className=" flex flex-1 flex-col font-mono"
-            >
+            <label htmlFor="firstName" className=" flex flex-1 flex-col">
               First Name
               <input
                 type="text"
                 value={editedFirstName}
+                autoFocus
                 onChange={(e) => setEditedFirstName(e.target.value)}
                 className=" font-bold p-4"
               />
             </label>
-            <label
-              htmlFor="lastName"
-              className="flex flex-1 flex-col font-mono"
-            >
+            <label htmlFor="lastName" className="flex flex-1 flex-col">
               Last Name
               <input
                 type="text"
@@ -102,8 +95,8 @@ const MyAccount = () => {
               />
             </label>
           </div>
-          <label htmlFor="Username" className="flex flex-col font-mono">
-            Username
+          <label htmlFor="Username" className="flex flex-col">
+            Username*
             <input
               type="email"
               value={currentUser?.email}
@@ -111,7 +104,7 @@ const MyAccount = () => {
               className=" font-bold p-4"
             />
           </label>
-          <label htmlFor="currentPassword" className="flex flex-col font-mono">
+          <label htmlFor="currentPassword" className="flex flex-col">
             Current Password
             <input
               type="password"
@@ -120,7 +113,7 @@ const MyAccount = () => {
               onChange={(e) => setCurrentPassword(e.target.value)}
             />
           </label>
-          <label htmlFor="Newpassword" className="flex flex-col font-mono">
+          <label htmlFor="Newpassword" className="flex flex-col">
             New Password
             <input
               type="password"
@@ -129,9 +122,17 @@ const MyAccount = () => {
               onChange={(e) => setNewPassword(e.target.value)}
             />
           </label>
-          <button className="flex items-center py-2 px-1 mt-3 bg-blue-600 text-white text-lg rounded-md font-bold">
-            Save Changes
-          </button>
+          <div className="flex justify-between">
+            <button className="flex items-center py-2 px-3 mt-3 bg-blue-600 text-white text-lg rounded-md font-bold">
+              Save
+            </button>
+            <Link to={"/"} 
+              type="button"
+              className="flex items-center py-2 px-3 mt-3 bg-red-500 text-white text-lg rounded-md font-bold"
+            >
+              Cancel
+            </Link>
+          </div>
         </form>
       </div>
     </div>
