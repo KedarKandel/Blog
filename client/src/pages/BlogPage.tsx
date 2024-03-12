@@ -2,7 +2,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Heart, MessageCircleMore } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
-import { splitTextIntoParagraphs } from "../utils/utils";
+import { splitTextIntoParagraphs } from "../utils/utility";
 import {
   deleteBlogAsync,
   fetchBlogByIdAsync,
@@ -32,7 +32,6 @@ const BlogPage = () => {
 
   //delete confirmation
   const [showConfirmation, setShowConfirmation] = useState(false);
-
   useEffect(() => {
     if (id) {
       dispatch(fetchBlogByIdAsync(id));

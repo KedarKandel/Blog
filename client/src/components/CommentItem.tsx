@@ -44,19 +44,22 @@ const CommentItem = ({ comment, userId, blogId }: Props) => {
 
   return (
     <div className="flex flex-col gap-2 p-3 border-t-2">
-      {/* <button onClick={handleLike}>Like</button>
-          <button onClick={handleReply}>Reply</button> */}
       <div className="flex flex-col gap-1">
-        <div className="flex items-center">
-          <User size={16} />
-          <span>{comment.userName}</span>
+        <div className="flex items-center gap-1 text-sm">
+          <User size={16} className="text-blue-600" />
+          <span >{comment.userName}</span>
         </div>
 
         <p className="text-blue-600">{comment.content}</p>
 
-        <div className="flex  items-center justify-end gap-2 text-blue-900">
+        <div className="flex  items-center justify-between gap-2 text-blue-900">
+          <div className="flex  gap-4 font-extrabold">
+            <button>Like</button>
+            <button>Reply</button>
+          </div>
+
           {userId === comment.userId ? (
-            <button onClick={handleCommentDelete}>Delete</button>
+            <button className="" onClick={handleCommentDelete}>Delete</button>
           ) : (
             ""
           )}

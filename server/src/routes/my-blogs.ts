@@ -4,6 +4,7 @@ import Blog from "../models/blog";
 import User from "../models/user";
 import { check, validationResult } from "express-validator";
 import { v4 as uuidv4 } from "uuid";
+
 const router = express.Router();
 // Create a new blog
 router.post(
@@ -159,19 +160,18 @@ router.post(
         return res.status(404).json({ error: "User not found" });
       }
       const { firstName, lastName } = user;
-
-      blog?.comments?.push({
+      const newComment = {
         _id: uuidv4(),
         userName: `${firstName}${lastName}`,
         userId,
         content,
         createdAt: new Date(),
-      });
+      };
 
-      // Save the updated blog
+      blog?.comments?.unshift(newComment);
       await blog.save();
-
-      // Return the updated blog with the new comment
+      // Sort the comments array in descending order based on createdAt
+      blog?.comments?.sort((a: any, b: any) => b.createdAt - a.createdAt);
       res.status(201).json(blog);
     } catch (error) {
       console.error("Error adding comment:", error);
