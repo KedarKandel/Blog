@@ -15,6 +15,7 @@ import { ArrowLeftCircle } from "lucide-react";
 import { User } from "lucide-react";
 import ConfirmDelete from "../components/ConfirmDelete";
 import Comment from "../components/Comment";
+import { CommentType } from "../../../server/src/sharedTypes";
 
 const BlogPage = () => {
   const { id } = useParams<string>();
@@ -23,6 +24,10 @@ const BlogPage = () => {
   const currentBlog = useSelector((state: RootState) => state.blog.currentBlog);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  //comments
+  const [comments, setComments] = useState<CommentType[]>(
+    currentBlog?.comments || []
+  );
 
   //delete confirmation
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -31,7 +36,7 @@ const BlogPage = () => {
     if (id) {
       dispatch(fetchBlogByIdAsync(id));
     }
-  }, [dispatch, id]);
+  }, [dispatch, id, comments]);
 
   // separating paragraphs
   const MAX_WORDS_PER_PARAGRAPH = 100;
@@ -55,10 +60,6 @@ const BlogPage = () => {
       return;
     }
     await dispatch(likeBlogAsync({ blogId: currentBlog._id }));
-  };
-
-  const handleComment = () => {
-    // Implement logic for commenting on the blog
   };
 
   // allow delete if user has created the blog
@@ -122,7 +123,7 @@ const BlogPage = () => {
             </span>
           </div>
 
-          <div className="relative" onClick={handleComment}>
+          <div className="relative">
             <MessageCircleMore className="inline-block mr-1 cursor-pointer" />
             <span className="text-blue-900 font-bold">
               {currentBlog.comments?.length}
@@ -140,10 +141,12 @@ const BlogPage = () => {
           ""
         )}
       </div>
-      {currentUser && isLoggedIn && <Comment blogId={currentBlog?._id} />}
+      {currentUser && isLoggedIn && (
+        <Comment blogId={id!} setComments={setComments} />
+      )}
 
       <div>
-        {currentBlog.comments?.map((cmt) => (
+        {comments?.map((cmt) => (
           <div key={cmt._id} className="flex gap-3 shadow-lg mt-3">
             <h1>{cmt._id}</h1>
             <h2>{cmt.content}</h2>

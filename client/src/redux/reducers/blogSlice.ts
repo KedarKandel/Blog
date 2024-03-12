@@ -53,7 +53,6 @@ export const deleteBlogAsync = createAsyncThunk(
   async (blogId: string) => {
     try {
       const response = await apiClient.deleteMyBlog(blogId);
-      console.log(response);
       return response;
     } catch (error) {
       throw new Error("err" + error);

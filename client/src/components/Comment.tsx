@@ -2,31 +2,36 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
 import { commentBlogAsync } from "../redux/reducers/blogSlice";
 import { useState } from "react";
+import { BlogType, CommentType } from "../../../server/src/sharedTypes";
 
 type Props = {
   blogId: string;
+  setComments: React.Dispatch<React.SetStateAction<CommentType[]>>;
 };
 
-const Comment = ({ blogId }: Props) => {
+const Comment = ({ blogId, setComments }: Props) => {
   const dispatch = useDispatch<AppDispatch>();
   const [commentContent, setCommentContent] = useState("");
 
   const handleSubmitComment = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      
-      await dispatch(commentBlogAsync({ blogId, content: commentContent }));
+      const response = await dispatch(
+        commentBlogAsync({ blogId, content: commentContent })
+      );
+
+      const newBlog: BlogType = response.payload as BlogType;
+      setComments(newBlog.comments || []);
       setCommentContent("");
     } catch (error) {
       console.error("Failed to post comment:", error);
-      // Handle any error that occurs during comment submission
     }
   };
 
   const handleCommentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Update the comment content as the user types
     setCommentContent(e.target.value);
   };
+
   return (
     <form
       onSubmit={handleSubmitComment}
