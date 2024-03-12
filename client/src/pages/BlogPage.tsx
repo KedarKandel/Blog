@@ -141,13 +141,14 @@ const BlogPage = () => {
           ""
         )}
       </div>
+      {currentUser ? "" : <Link to={"/sign-in"} className="mb-3 text-sm text-red-600">Sign In to like and comment</Link>}
       {currentUser && isLoggedIn && (
         <CommentForm blogId={id!} setComments={setComments} />
       )}
 
       <div className="flex flex-col">
         {currentBlog?.comments?.map((cmt) => (
-          <CommentItem key={cmt._id} comment={cmt} userId= {currentUser?._id} blogId= {currentBlog?._id} />
+          <CommentItem key={cmt._id} comment={cmt} user= {currentUser} blogId= {currentBlog?._id} />
         ))}
       </div>
 
