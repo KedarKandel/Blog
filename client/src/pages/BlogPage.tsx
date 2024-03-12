@@ -14,8 +14,9 @@ import { showToast } from "../redux/reducers/toastSlice";
 import { ArrowLeftCircle } from "lucide-react";
 import { User } from "lucide-react";
 import ConfirmDelete from "../components/ConfirmDelete";
-import Comment from "../components/Comment";
 import { CommentType } from "../../../server/src/sharedTypes";
+import CommentItem from "../components/CommentItem";
+import CommentForm from "../components/CommentForm";
 
 const BlogPage = () => {
   const { id } = useParams<string>();
@@ -86,10 +87,10 @@ const BlogPage = () => {
         <ArrowLeftCircle size={"35px"} />
       </Link>
       <h1 className="text-2xl font-bold text-center mb-4 text-blue-800">
-        {currentBlog.title}
+        {currentBlog?.title}
       </h1>
       <p className="text-sm text-center font-semibold text-blue-600 mb-2">
-        Genre:- {currentBlog.genre.toLocaleUpperCase()}
+        Genre:-  { currentBlog?.genre.toLocaleLowerCase()}
       </p>
       {descriptionParagraphs?.map((paragraph, index) => (
         <p key={index} className=" flex-1 text-md font-bold text-gray-600 mb-4">
@@ -101,11 +102,11 @@ const BlogPage = () => {
         <p className="flex items-center text-sm gap-1 mb-2 md:mb-0">
           <User className="text-blue-800" />
           <span className="text-xs md:text-sm text-blue-700">
-            {currentBlog.createdBy}
+            {currentBlog?.createdBy}
           </span>
         </p>
         <p className="flex items-center text-sm md:text-sm text-blue-700">
-          Last Updated: {new Date(currentBlog.updatedAt).toLocaleDateString()}
+          Last Updated: {new Date(currentBlog?.updatedAt).toLocaleDateString()}
         </p>
       </div>
 
@@ -119,18 +120,18 @@ const BlogPage = () => {
               }`}
             />
             <span className="text-blue-900 font-bold">
-              {currentBlog.likes?.length}
+              {currentBlog?.likes?.length}
             </span>
           </div>
 
           <div className="relative">
             <MessageCircleMore className="inline-block mr-1 cursor-pointer" />
             <span className="text-blue-900 font-bold">
-              {currentBlog.comments?.length}
+              {currentBlog?.comments?.length}
             </span>
           </div>
         </div>
-        {currentUser?._id === currentBlog.userId ? (
+        {currentUser?._id === currentBlog?.userId ? (
           <button
             onClick={() => setShowConfirmation(true)}
             className=" flex items-center bg-gray-200 px-2 py-1 rounded-sm  font-bold text-red-600 text-xs md:text-sm"
@@ -142,23 +143,19 @@ const BlogPage = () => {
         )}
       </div>
       {currentUser && isLoggedIn && (
-        <Comment blogId={id!} setComments={setComments} />
+        <CommentForm blogId={id!} setComments={setComments} />
       )}
 
-      <div>
-        {comments?.map((cmt) => (
-          <div key={cmt._id} className="flex gap-3 shadow-lg mt-3">
-            <h1>{cmt._id}</h1>
-            <h2>{cmt.content}</h2>
-            <h2>{cmt.userId}</h2>
-          </div>
+      <div className="flex flex-col">
+        {currentBlog?.comments?.map((cmt) => (
+          <CommentItem key={cmt._id} comment={cmt} userId= {currentUser?._id} blogId= {currentBlog?._id} />
         ))}
       </div>
 
       {showConfirmation && (
         <ConfirmDelete
           blog={currentBlog}
-          handleDelete={() => handleDelete(currentBlog._id)} // Pass handleDelete function
+          handleDelete={() => handleDelete(currentBlog?._id)} // Pass handleDelete function
           setShowConfirmation={setShowConfirmation} // Pass setShowConfirmation function
         />
       )}

@@ -1,10 +1,10 @@
 import express, { Request, Response } from "express";
 import verifyToken from "../middleware/auth";
-const router = express.Router();
 import Blog from "../models/blog";
 import User from "../models/user";
 import { check, validationResult } from "express-validator";
-
+import { v4 as uuidv4 } from "uuid";
+const router = express.Router();
 // Create a new blog
 router.post(
   "/",
@@ -18,7 +18,6 @@ router.post(
     check("genre", "Genre is required"),
   ],
   async (req: Request, res: Response) => {
-    
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ message: errors.array() });
@@ -124,5 +123,109 @@ router.delete("/:id", verifyToken, async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 });
+
+// POST /api/blogs/:blogId/comment
+router.post(
+  "/:blogId/comment",
+  [
+    check("blogId", "BlogId is required").isLength({ min: 3 }),
+    check(
+      "content",
+      "content is required and length should be atleast 1 characters"
+    ).isLength({ min: 1 }),
+    check("userId", "UserId is required"),
+  ],
+  verifyToken,
+
+  async (req: Request, res: Response) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ message: errors.array() });
+    }
+    try {
+      const { blogId } = req.params;
+      const userId = req.userId;
+      const { content } = req.body;
+
+      const blog = await Blog.findById(blogId);
+
+      if (!blog) {
+        return res.status(404).json({ message: "Blog not found" });
+      }
+
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      const { firstName, lastName } = user;
+
+      blog?.comments?.push({
+        _id: uuidv4(),
+        userName: `${firstName}${lastName}`,
+        userId,
+        content,
+        createdAt: new Date(),
+      });
+
+      // Save the updated blog
+      await blog.save();
+
+      // Return the updated blog with the new comment
+      res.status(201).json(blog);
+    } catch (error) {
+      console.error("Error adding comment:", error);
+      res.status(500).json({ message: "Server error" });
+    }
+  }
+);
+
+// DELETE /api/blogs/:blogId/comment/:commentId
+router.delete(
+  "/:blogId/comment/:commentId",
+  verifyToken,
+  async (req: Request, res: Response) => {
+    const userId = req.userId;
+    const { blogId, commentId } = req.params;
+
+    try {
+      // Find the blog by ID
+      const blog = await Blog.findById(blogId);
+      if (!blog) {
+        return res.status(404).json({ message: "Blog not found" });
+      }
+
+      // Find the index of the comment to delete
+      const commentIndex = blog?.comments?.findIndex(
+        (comment) => comment._id === commentId
+      );
+      if (commentIndex === -1) {
+        return res.status(404).json({ message: "Comment not found" });
+      }
+
+      // Check if the user owns the comment
+      if (
+        blog?.comments &&
+        typeof commentIndex === "number" &&
+        blog.comments[commentIndex]?.userId !== userId
+      ) {
+        return res
+          .status(403)
+          .json({ message: "You are not authorized to delete this comment" });
+      }
+
+      // Remove the comment from the comments array
+      if (typeof commentIndex === "number") {
+        blog?.comments?.splice(commentIndex, 1);
+      }
+      // Save the updated blog
+      await blog.save();
+      res.status(200).json(blog);
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+      res.status(500).json({ message: "Server error" });
+    }
+  }
+);
 
 export default router;

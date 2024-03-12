@@ -33,6 +33,7 @@ export const createBlogAsync = createAsyncThunk(
   }
 );
 
+//thunk API to update the blog
 export const updateBlogAsync = createAsyncThunk(
   "blogs/update",
   async ({
@@ -113,11 +114,21 @@ export const likeBlogAsync = createAsyncThunk(
 );
 
 //thunk api for commenting  a blog
-
 export const commentBlogAsync = createAsyncThunk(
   "blog/comment",
   async ({ blogId, content }: { blogId: string; content: string }) => {
     const response = await apiClient.commentBlog(blogId, content);
+    return response;
+  }
+);
+
+// thunk API to delete a comment
+
+export const deleteCommentAsync = createAsyncThunk(
+  "blog/deleteComment",
+  async ({ commentId, blogId }: { commentId: string; blogId: string }) => {
+    const response = await apiClient.deleteMyComment(commentId, blogId);
+    console.log(response)
     return response;
   }
 );
@@ -288,6 +299,21 @@ const blogSlice = createSlice({
       .addCase(commentBlogAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to comment on the blog";
+      });
+
+    builder
+      .addCase(deleteCommentAsync.pending, (state) => {
+        state.loading = true;
+      })
+
+      .addCase(deleteCommentAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.currentBlog = action.payload;
+      })
+
+      .addCase(deleteCommentAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to delete the comment";
       });
   },
 });

@@ -24,6 +24,7 @@ export type BlogType = {
 export type CommentType = {
   _id: string;
   userId: string;
+  userName: string;
   content: string;
   createdAt: Date;
   likes?: string[];

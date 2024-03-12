@@ -1,8 +1,7 @@
 import express, { Request, Response } from "express";
 import Blog from "../models/blog";
 import verifyToken from "../middleware/auth";
-import { check, validationResult } from "express-validator";
-import { v4 as uuidv4 } from "uuid";
+
 
 const router = express.Router();
 
@@ -123,53 +122,11 @@ router.post(
   }
 );
 
-// POST /api/blogs/:blogId/comment
-router.post(
-  "/:blogId/comment",
-  [
-    check("blogId", "BlogId is required").isLength({ min: 3 }),
-    check(
-      "content",
-      "content is required and length should be atleast 1 characters"
-    ).isLength({ min: 1 }),
-    check("userId", "UserId is required"),
-  ],
-  verifyToken,
 
-  async (req: Request, res: Response) => {
-    const errors = validationResult(req);
 
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ message: errors.array() });
-    }
-    try {
-      const { blogId } = req.params;
-      const userId = req.userId;
-      const { content } = req.body;
-
-      const blog = await Blog.findById(blogId);
-
-      if (!blog) {
-        return res.status(404).json({ message: "Blog not found" });
-      }
-
-      blog?.comments?.push({
-        _id: uuidv4(),
-        userId,
-        content,
-        createdAt: new Date(),
-      });
-
-      // Save the updated blog
-      await blog.save();
-
-      // Return the updated blog with the new comment
-      res.status(201).json(blog);
-    } catch (error) {
-      console.error("Error adding comment:", error);
-      res.status(500).json({ message: "Server error" });
-    }
-  }
-);
+router.post("/:id", verifyToken, (req: Request, RES: Response) => {
+  const userId = req.userId;
+  const commentId = req.params;
+});
 
 export default router;

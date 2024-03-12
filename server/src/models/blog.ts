@@ -7,6 +7,7 @@ interface ExtendedComment extends Document, Omit<CommentType, "_id"> {}
 const commentSchema: Schema<ExtendedComment> = new mongoose.Schema({
   _id: { type: String, default: uuidv4 },
   userId: { type: String },
+  userName:{type: String},
   content: { type: String },
   createdAt: { type: Date, default: Date.now },
   likes: [{ type: String }],

@@ -9,7 +9,7 @@ type Props = {
   setComments: React.Dispatch<React.SetStateAction<CommentType[]>>;
 };
 
-const Comment = ({ blogId, setComments }: Props) => {
+const CommentForm = ({ blogId, setComments }: Props) => {
   const dispatch = useDispatch<AppDispatch>();
   const [commentContent, setCommentContent] = useState("");
 
@@ -51,4 +51,4 @@ const Comment = ({ blogId, setComments }: Props) => {
   );
 };
 
-export default Comment;
+export default CommentForm;
