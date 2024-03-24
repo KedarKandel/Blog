@@ -50,7 +50,7 @@ const CommentItem = ({ comment, user, blogId }: Props) => {
 
   const handleCommentLike = async () => {
     if (!user) {
-      navigate("/sign-in");
+       navigate("/sign-in");
       return;
     }
     await dispatch(likeCommentAsync({ blogId, commentId }));
@@ -69,27 +69,21 @@ const CommentItem = ({ comment, user, blogId }: Props) => {
 
         <div className="flex  items-center justify-between gap-2 text-blue-900">
           <div className="flex  gap-4 ">
-            {user ? (
-              <>
-                <Link
-                  to="#"
-                  onClick={handleCommentLike}
-                  className={
-                    user && user._id && comment.likes?.includes(user._id)
-                      ? "font-bold text-blue-500"
-                      : ""
-                  }
-                >
-                  Like
-                </Link>
+            <Link
+              to={user ? "#": "/sign-in"}
+              onClick={handleCommentLike}
+              className={
+                user && user._id && comment.likes?.includes(user._id)
+                  ? "font-bold text-blue-500"
+                  : "text-gray-800"
+              }
+            >
+              Like
+            </Link>
 
-                <span className="flex items-center justify-center gap-1">
-                  <ThumbsUp /> {comment.likes?.length}
-                </span>
-              </>
-            ) : (
-              ""
-            )}
+            <span className="flex items-center justify-center gap-1">
+              <ThumbsUp /> {comment.likes?.length}
+            </span>
           </div>
 
           {user?._id === comment.userId ? (
