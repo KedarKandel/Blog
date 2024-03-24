@@ -263,8 +263,7 @@ router.post(
         comment?.likes?.push(userId);
       }
       await blog.save();
-    console.log(blog?.comments)
-    console.log(blog)
+   
       return res
         .status(200)
         .json({ blogId, commentId, userId, isLiked: !isLikedByUser });

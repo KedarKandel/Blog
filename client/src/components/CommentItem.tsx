@@ -8,9 +8,7 @@ import {
 } from "../redux/reducers/blogSlice";
 import { showToast } from "../redux/reducers/toastSlice";
 import { Link, useNavigate } from "react-router-dom";
-
 import { User, ThumbsUp } from "lucide-react";
-
 
 type Props = {
   comment: CommentType;
@@ -22,7 +20,7 @@ const CommentItem = ({ comment, user, blogId }: Props) => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const commentId = comment._id;
- 
+
   const handleCommentDelete = async () => {
     try {
       const actionResult = await dispatch(
@@ -70,10 +68,18 @@ const CommentItem = ({ comment, user, blogId }: Props) => {
         <p className="text-blue-600">{comment.content}</p>
 
         <div className="flex  items-center justify-between gap-2 text-blue-900">
-          <div className="flex  gap-4 font-extrabold">
+          <div className="flex  gap-4 ">
             {user ? (
               <>
-                <Link to="#" onClick={handleCommentLike}>
+                <Link
+                  to="#"
+                  onClick={handleCommentLike}
+                  className={
+                    user && user._id && comment.likes?.includes(user._id)
+                      ? "font-bold text-blue-500"
+                      : ""
+                  }
+                >
                   Like
                 </Link>
 
