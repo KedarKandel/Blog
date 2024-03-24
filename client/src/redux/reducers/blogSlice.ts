@@ -3,6 +3,7 @@ import * as apiClient from "../../api-client";
 import {
   BlogSearchResponse,
   BlogType,
+ 
 } from "../../../../server/src/sharedTypes";
 
 export type blogState = {
@@ -122,13 +123,24 @@ export const commentBlogAsync = createAsyncThunk(
   }
 );
 
-// thunk API to delete a comment
+// thunk api to like/unlike a comment
+export const likeCommentAsync = createAsyncThunk(
+  "comment/like",
+  async ({ blogId, commentId }: { blogId: string; commentId: string }) => {
+    try {
+      const response = await apiClient.likeComment(blogId, commentId);
+      return response;
+    } catch (error) {
+      throw new Error("Failed to like the comment");
+    }
+  }
+);
 
+// thunk API to delete a comment
 export const deleteCommentAsync = createAsyncThunk(
   "blog/deleteComment",
   async ({ commentId, blogId }: { commentId: string; blogId: string }) => {
     const response = await apiClient.deleteMyComment(commentId, blogId);
-    console.log(response)
     return response;
   }
 );
@@ -299,6 +311,49 @@ const blogSlice = createSlice({
       .addCase(commentBlogAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to comment on the blog";
+      });
+
+    builder
+      .addCase(likeCommentAsync.pending, (state) => {
+        state.loading = true;
+      })
+
+      .addCase(likeCommentAsync.fulfilled, (state, action) => {
+        state.loading = false;
+
+        const { commentId, userId, isLiked } = action.payload;
+
+        // Find the blog containing the liked comment
+        const blogIndex = state.blogs.findIndex((blog) =>
+          blog.comments?.some((comment) => comment._id === commentId)
+        );
+
+        if (blogIndex !== -1) {
+         
+          state.blogs[blogIndex].comments = state.blogs[
+            blogIndex
+          ].comments?.map((comment) => {
+            if (comment._id === commentId) {
+              // Update the likes array of the comment
+              if (isLiked) {
+                return {
+                  ...comment,
+                  likes: [...(comment.likes || []), userId],
+                };
+              } else {
+                return {
+                  ...comment,
+                  likes: (comment.likes || []).filter((id) => id !== userId),
+                };
+              }
+            }
+            return comment;
+          });
+        }
+      })
+      .addCase(likeCommentAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to like the comment";
       });
 
     builder

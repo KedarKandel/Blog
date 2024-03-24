@@ -1,10 +1,16 @@
-import { User } from "lucide-react"; // You can replace these icons with your preferred icons
 import { CommentType, UserType } from "../../../server/src/sharedTypes";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
-import { deleteCommentAsync } from "../redux/reducers/blogSlice";
+import {
+  deleteCommentAsync,
+  fetchBlogByIdAsync,
+  likeCommentAsync,
+} from "../redux/reducers/blogSlice";
 import { showToast } from "../redux/reducers/toastSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+import { User, ThumbsUp } from "lucide-react";
+
 
 type Props = {
   comment: CommentType;
@@ -14,8 +20,9 @@ type Props = {
 
 const CommentItem = ({ comment, user, blogId }: Props) => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const commentId = comment._id;
-
+ 
   const handleCommentDelete = async () => {
     try {
       const actionResult = await dispatch(
@@ -43,6 +50,15 @@ const CommentItem = ({ comment, user, blogId }: Props) => {
     }
   };
 
+  const handleCommentLike = async () => {
+    if (!user) {
+      navigate("/sign-in");
+      return;
+    }
+    await dispatch(likeCommentAsync({ blogId, commentId }));
+    dispatch(fetchBlogByIdAsync(blogId));
+  };
+
   return (
     <div className="flex flex-col gap-2 p-3 border-t-2">
       <div className="flex flex-col gap-1">
@@ -57,8 +73,13 @@ const CommentItem = ({ comment, user, blogId }: Props) => {
           <div className="flex  gap-4 font-extrabold">
             {user ? (
               <>
-                <Link to="#">Like</Link>
-                <Link to="#">Reply</Link>
+                <Link to="#" onClick={handleCommentLike}>
+                  Like
+                </Link>
+
+                <span className="flex items-center justify-center gap-1">
+                  <ThumbsUp /> {comment.likes?.length}
+                </span>
               </>
             ) : (
               ""

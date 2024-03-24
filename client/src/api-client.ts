@@ -289,3 +289,33 @@ export const deleteMyComment = async (
   const responseBody = await response.json();
   return responseBody;
 };
+
+// like a comment
+export const likeComment = async (
+  blogId: string,
+  commentId: string
+): Promise<{
+  blogId: string;
+  commentId: string;
+  userId: string;
+  isLiked: boolean;
+}> => {
+  const response = await fetch(
+    `${API_BASE_URL}/api/my-blogs/${blogId}/comments/${commentId}/like`,
+    {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  const responseBody = await response.json();
+
+  if (!response.ok) {
+    throw new Error(responseBody.message);
+  }
+
+  return responseBody;
+};

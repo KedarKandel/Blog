@@ -4,6 +4,7 @@ import Blog from "../models/blog";
 import User from "../models/user";
 import { check, validationResult } from "express-validator";
 import { v4 as uuidv4 } from "uuid";
+import { CommentType } from "../sharedTypes";
 
 const router = express.Router();
 // Create a new blog
@@ -166,6 +167,7 @@ router.post(
         userId,
         content,
         createdAt: new Date(),
+       
       };
 
       blog?.comments?.unshift(newComment);
@@ -224,6 +226,51 @@ router.delete(
     } catch (error) {
       console.error("Error deleting comment:", error);
       res.status(500).json({ message: "Server error" });
+    }
+  }
+);
+
+// route to like a comment
+router.post(
+  "/:blogId/comments/:commentId/like",
+  verifyToken,
+  async (req, res) => {
+    const { blogId, commentId } = req.params;
+    const userId = req.userId;
+
+    try {
+      // Find the blog by its ID
+      const blog = await Blog.findById(blogId);
+      if (!blog) {
+        return res.status(404).json({ message: "Blog not found" });
+      }
+
+      // Find the comment within the blog's comments array
+      const comment = blog?.comments?.find(
+        (comment) => comment._id.toString() === commentId
+      ) as CommentType;
+      if (!comment) {
+        return res.status(404).json({ message: "Comment not found" });
+      }
+
+      // Check if the user has already liked the comment
+      const isLikedByUser = comment?.likes?.includes(userId);
+     console.log(isLikedByUser)
+      //Toggle like/unlike based on whether the user has already liked the comment
+      if (isLikedByUser ) {
+        comment.likes = comment?.likes?.filter((id) => id !== userId);
+      } else {
+        comment?.likes?.push(userId);
+      }
+      await blog.save();
+    console.log(blog?.comments)
+    console.log(blog)
+      return res
+        .status(200)
+        .json({ blogId, commentId, userId, isLiked: !isLikedByUser });
+    } catch (error) {
+      console.error("Error toggling like/unlike:", error);
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 );
