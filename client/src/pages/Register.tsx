@@ -26,25 +26,35 @@ const Register = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const onSubmit = handleSubmit(async (data) => {
-    const actionResult = await dispatch(registerUserAsync(data));
-
-    if (registerUserAsync.rejected.match(actionResult)) {
+    try {
+      const actionResult = await dispatch(registerUserAsync(data));
+      if (registerUserAsync.rejected.match(actionResult)) {
+        dispatch(
+          showToast({
+            message:
+              actionResult.error.message ||
+              "An error occured during registration",
+            type: "error",
+          })
+        );
+      } else {
+        // reset the form
+        reset();
+        navigate("/");
+        dispatch(
+          showToast({ message: "Registration successful", type: "success" })
+        );
+        await apiClient.validateToken();
+      }
+    } catch (error) {
+      // Handle any unexpected errors
       dispatch(
         showToast({
-          message:
-            actionResult.error.message ||
-            "An error occured during registration",
+          message: "An unexpected error occured during registration",
           type: "error",
         })
       );
-    } else {
-      // reset the form
-      reset();
-      navigate("/");
-      dispatch(
-        showToast({ message: "Registration successful", type: "success" })
-      );
-      await apiClient.validateToken();
+      console.error("An unexpected error occurred during registration:", error);
     }
   });
   return (
