@@ -13,9 +13,9 @@ password: Test+User123
 
 ## Features
 - **User Authentication:** Secure registration and login using JSON Web Tokens.
-- **Blog Operations:** Write, like, and comment on blogs.
+- **Blog Operations:** Write a blog, like, and comment on blogs, delete blogs, delete.
 - **Responsive Design:** User-friendly interface with Tailwind CSS.
-
+- and many more functionalities
 
 
 ## Getting Started
@@ -56,18 +56,22 @@ Register with a unique username and a secure password.
 
 Log In:
 Enter your credentials to log in securely.
-Write a Blog:
 
-Click on "Write a Blog" to create and publish your blogs.
+Write a Blog:
+Click on "Create" to create and publish your blogs.
 Like and Comment:
 
 Interact with other blogs by liking and commenting.
-API Endpoints
+Some API Endpoints examples:
 GET /api/blogs: Get all blogs
-POST /api/blogs: Create a new blog
+POST /api/my-blogs/: Create a new blog
 GET /api/blogs/:blogId: Get a specific blog
-PUT /api/blogs/:blogId: Update a blog
-DELETE /api/blogs/:blogId: Delete a blog
+PUT /api/my-blogs/:blogId: Update a blog
+DELETE /api/my-blogs/:blogId: Delete a blog
+PUT api/blogs/:blogId/comment: Comment on a blog
+PUT api/blogs/:blogId/comments/:commentId/like
+DELETE api/my-blogs/:blogId/comment/:commentId: Delete a comment 
+and likewise
 ...
 Dependencies
 Express, Mongoose, React, Redux Toolkit, Tailwind CSS

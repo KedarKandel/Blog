@@ -255,7 +255,7 @@ router.post(
 
       // Check if the user has already liked the comment
       const isLikedByUser = comment?.likes?.includes(userId);
-     console.log(isLikedByUser)
+    
       //Toggle like/unlike based on whether the user has already liked the comment
       if (isLikedByUser ) {
         comment.likes = comment?.likes?.filter((id) => id !== userId);
