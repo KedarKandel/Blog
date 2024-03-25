@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.0.1",
+    "@types/redux-persist": "^4.3.1",
     "framer-motion": "^11.0.5",
     "lucide-react": "^0.331.0",
     "react": "^18.2.0",
