@@ -1,4 +1,4 @@
-// src/state/user/userSlice.ts
+
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RegisterFormData } from "../../pages/Register";
 import { LoginFormData } from "../../pages/Login";
