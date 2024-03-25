@@ -59,7 +59,7 @@ const Register = () => {
   });
   return (
     <form
-      className=" rounded-md shadow-lg p-2 xl:mx-80 flex flex-col text-blue-800"
+      className=" rounded-md shadow-lg p-4 md:p-8 xl:mx-80 flex flex-col text-blue-800"
       onSubmit={onSubmit}
     >
       <h1 className="text-2xl mb-5 font-bold text-center text-blue-800 shadow-sm p-2">
@@ -163,7 +163,7 @@ const Register = () => {
           Register
         </button>
         <Link to={"/sign-in"} className=" text-sm md:text-lg">
-          Already registered ? <span className=" underline">Sign in here</span>{" "}
+          Already registered ? <span className=" underline">Sign in here</span>
         </Link>
       </div>
     </form>
