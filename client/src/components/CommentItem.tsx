@@ -87,7 +87,7 @@ const CommentItem = ({ comment, user, blogId }: Props) => {
           </div>
 
           {user?._id === comment.userId ? (
-            <button className="" onClick={handleCommentDelete}>
+            <button className="text-red-400" onClick={handleCommentDelete}>
               Delete
             </button>
           ) : (

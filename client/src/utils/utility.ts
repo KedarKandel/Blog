@@ -16,11 +16,13 @@ export const splitTextIntoParagraphs = (
 
   for (let i = 0; i < sentences.length; i++) {
     const sentence = sentences[i].trim(); // Remove leading and trailing spaces from the sentence
-    if (sentence !== "") { //the sentence is not empty
-      if (sentence.endsWith("?")) { // Check if the sentence ends with a question mark
+    if (sentence !== "") {
+      //the sentence is not empty
+      if (sentence.endsWith("?")) {
+        // Check if the sentence ends with a question mark
         currentParagraph += sentence;
       } else {
-        currentParagraph += sentence + "."; // Add the sentence to the current paragraph
+        currentParagraph += sentence + "." + " "; // Add the sentence to the current paragraph
       }
       if (currentParagraph.split(" ").length >= maxWordsPerParagraph) {
         paragraphs.push(currentParagraph.trim());
