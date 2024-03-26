@@ -25,6 +25,7 @@ router.get("/currentUser", verifyToken, async (req: Request, res: Response) => {
   }
 });
 
+// edit user information
 router.post("/editProfile", [
   check("firstName", "First Name is required").isString(),
   check("lastName", "Last Name is required").isString(),
@@ -58,7 +59,6 @@ router.post("/editProfile", [
         return res.status(400).json({ message: "Invalid current password" });
       }
 
-      
       user.firstName = firstName;
       user.lastName = lastName;
 
@@ -69,15 +69,28 @@ router.post("/editProfile", [
 
       await user.save();
 
-      // Need to update the blog's created by filed when the profile is updated. 
+      // Need to update the blog's created by field when the profile is updated.
       //Find blogs created by the user
-      const blogsToUpdate = await Blog.find({ userId: user._id });
+      // const blogsToUpdate = await Blog.find({ userId: user._id });
 
-      // Update createdBy field in each blog
-      for (let blog of blogsToUpdate) {
-        blog.createdBy = `${firstName} ${lastName}`;
-        await blog.save();
-      }
+      // // Update createdBy field in each blog
+      // for (let blog of blogsToUpdate) {
+      //   blog.createdBy = `${firstName} ${lastName}`;
+
+      //   await blog.save();
+      // }
+
+      // Update createdBy field in each blog created by the user
+      await Blog.updateMany(
+        { userId: user._id },
+        { $set: { createdBy: `${firstName} ${lastName}` } }
+      );
+
+      // Update userName field in each comment created by the user
+      await Blog.updateMany(
+        { "comments.userId": user._id },
+        { $set: { "comments.$.userName": `${firstName} ${lastName}` } }
+      );
       const token = jwt.sign(
         { userId: user.id },
         process.env.JWT_SECRET_KEY as string,
