@@ -59,6 +59,8 @@ router.get("/", async (req: Request, res: Response) => {
       .skip((Number(page) - 1) * perPage)
       .limit(perPage);
 
+
+      console.log(blogs.length)
     res.json({
       blogs,
       currentPage: page,
@@ -124,9 +126,5 @@ router.post(
 
 
 
-router.post("/:id", verifyToken, (req: Request, RES: Response) => {
-  const userId = req.userId;
-  const commentId = req.params;
-});
 
 export default router;
