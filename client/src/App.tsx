@@ -25,28 +25,34 @@ export default function App() {
     }
   }, [isLoggedIn]);
 
+  const version = import.meta.env.VITE_REACT_APP_VERSION || ""
+
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<SearchPage />} />
-          <Route path="sign-in" element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="/blogs/:id" element={<BlogPage />} />
+    <>
+    //
+    <script src={`/assets/index-gsZBg36t.js${version}`} />
+      <Router>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<SearchPage />} />
+            <Route path="sign-in" element={<Login />} />
+            <Route path="register" element={<Register />} />
+            <Route path="/blogs/:id" element={<BlogPage />} />
 
-          {/* protected routes*/}
-          {isLoggedIn && (
-            <>
-              <Route path="create" element={<Create />} />
-              <Route path="my-account" element={<MyAccount />} />
-              <Route path="my-blogs" element={<MyBlogs />} />
-            </>
-          )}
+            {/* protected routes*/}
+            {isLoggedIn && (
+              <>
+                <Route path="create" element={<Create />} />
+                <Route path="my-account" element={<MyAccount />} />
+                <Route path="my-blogs" element={<MyBlogs />} />
+              </>
+            )}
 
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      </Routes>
-      <Toast />
-    </Router>
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        </Routes>
+        <Toast />
+      </Router>
+    </>
   );
 }

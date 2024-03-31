@@ -58,9 +58,7 @@ router.get("/", async (req: Request, res: Response) => {
       .sort(sort)
       .skip((Number(page) - 1) * perPage)
       .limit(perPage);
-
-
-      console.log(blogs.length)
+      
     res.json({
       blogs,
       currentPage: page,

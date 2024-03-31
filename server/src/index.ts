@@ -7,7 +7,7 @@ import mongoose from "mongoose";
 // routes
 import usersRoutes from "./routes/users";
 import authRoutes from "./routes/auth";
-import myBlogRoutes from "./routes/my-blogs"
+import myBlogRoutes from "./routes/my-blogs";
 import blogRoutes from "./routes/blogs";
 import path from "path";
 
@@ -26,13 +26,14 @@ app.use(
   })
 );
 
-app.use(express.static(path.join(__dirname, "../../client/dist")));
+app.use(
+  express.static(path.join(__dirname, "../../client/dist"), { maxAge: "1d" })
+);
 
 app.use("/api/users", usersRoutes);
 app.use("/api/auth", authRoutes);
-app.use("/api/my-blogs", myBlogRoutes)
+app.use("/api/my-blogs", myBlogRoutes);
 app.use("/api/blogs", blogRoutes);
-
 
 app.get("*", (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, "../../client/dist/index.html"));
