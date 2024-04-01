@@ -1,4 +1,4 @@
-import { BlogType } from "../../../server/src/sharedTypes";
+import { BlogType } from "../sharedTypes";
 import { NotebookPen } from "lucide-react";
 import { Trash2 } from "lucide-react";
 import { splitTextIntoParagraphs } from "../utils/utility";

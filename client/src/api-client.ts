@@ -2,7 +2,7 @@ import {
   BlogSearchResponse,
   BlogType,
   UserType,
-} from "../../server/src/sharedTypes";
+} from "./sharedTypes";
 import { LoginFormData } from "./pages/Login";
 import { RegisterFormData } from "./pages/Register";
 import { EditProfileData } from "./types";

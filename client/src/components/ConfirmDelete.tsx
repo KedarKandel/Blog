@@ -1,4 +1,4 @@
-import { BlogType } from "../../../server/src/sharedTypes";
+import { BlogType } from "../sharedTypes";
 
 type Props = {
   blog: BlogType

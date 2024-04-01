@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BlogType } from "../../../server/src/sharedTypes";
+import { BlogType } from "../sharedTypes";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
 import { updateBlogAsync } from "../redux/reducers/blogSlice";

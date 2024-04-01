@@ -6,7 +6,7 @@ import SearchBar from "../components/Search";
 import FilterOptions from "../components/Filter";
 import Blog from "../components/Blog";
 import Pagination from "../components/Pagination";
-import { BlogType } from "../../../server/src/sharedTypes";
+import { BlogType } from "../sharedTypes";
 
 const SearchPage = () => {
   const blogs = useSelector((state: RootState) => state.blog.blogs);

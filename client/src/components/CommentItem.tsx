@@ -1,4 +1,4 @@
-import { CommentType, UserType } from "../../../server/src/sharedTypes";
+import { CommentType, UserType } from "../sharedTypes";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
 import {

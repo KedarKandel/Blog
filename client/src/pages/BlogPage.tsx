@@ -14,7 +14,7 @@ import { showToast } from "../redux/reducers/toastSlice";
 import { ArrowLeftCircle } from "lucide-react";
 import { User } from "lucide-react";
 import ConfirmDelete from "../components/ConfirmDelete";
-import { CommentType } from "../../../server/src/sharedTypes";
+import { CommentType } from "../sharedTypes";
 import CommentItem from "../components/CommentItem";
 import CommentForm from "../components/CommentForm";
 

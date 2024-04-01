@@ -1,4 +1,4 @@
-// SearchBar.js
+
 import { useState } from "react";
 
 type Props = {

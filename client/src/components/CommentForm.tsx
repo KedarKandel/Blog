@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
 import { commentBlogAsync } from "../redux/reducers/blogSlice";
 import { useState } from "react";
-import { BlogType, CommentType } from "../../../server/src/sharedTypes";
+import { BlogType, CommentType } from "../sharedTypes";
 
 type Props = {
   blogId: string;

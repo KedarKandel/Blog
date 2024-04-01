@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { BlogType } from "../../../server/src/sharedTypes";
+import { BlogType } from "../sharedTypes";
 import { truncateDescription } from "../utils/utility";
 import { Heart } from "lucide-react";
 import { MessageCircleMore } from "lucide-react";

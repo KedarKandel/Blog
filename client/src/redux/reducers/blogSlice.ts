@@ -4,7 +4,7 @@ import {
   BlogSearchResponse,
   BlogType,
  
-} from "../../../../server/src/sharedTypes";
+} from "../../sharedTypes";
 
 export type blogState = {
   blogs: BlogType[];

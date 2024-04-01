@@ -5,7 +5,7 @@ import {
   fetchUserBlogsAsync,
 } from "../redux/reducers/blogSlice";
 import { AppDispatch, RootState } from "../redux/store";
-import { BlogType } from "../../../server/src/sharedTypes";
+import { BlogType } from "../sharedTypes";
 import MyBlog from "../components/MyBlog";
 import { showToast } from "../redux/reducers/toastSlice";
 import * as apiClient from "../api-client";

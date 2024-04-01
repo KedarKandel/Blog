@@ -2,7 +2,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RegisterFormData } from "../../pages/Register";
 import { LoginFormData } from "../../pages/Login";
-import { UserType } from "../../../../server/src/sharedTypes";
+import { UserType } from "../../sharedTypes";
 import * as apiClient from "../../api-client";
 import { EditProfileData } from "../../types";
 
