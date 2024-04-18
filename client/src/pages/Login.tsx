@@ -16,7 +16,6 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const onSubmit = handleSubmit(async (data) => {
-    
     try {
       const actionResult = await dispatch(loginUserAsync(data));
       if (loginUserAsync.rejected.match(actionResult)) {
@@ -54,6 +53,12 @@ const Login = () => {
         className="p-8 rounded-md shadow-md w-full max-w-md flex flex-col"
         onSubmit={onSubmit}
       >
+        <div className=" p-1 flex flex-col text-xl">
+          <h2 className=" underline">Demo Account</h2>
+          <span className="bg-yellow-200 max-w-max">email: test@test.com</span>
+          <span className="bg-yellow-200 max-w-max">Password: Test+User123</span>
+        </div>
+
         <h1 className=" text-2xl text-center">Login</h1>
         <div className="mb-4">
           <label htmlFor="email" className="block font-bold">
