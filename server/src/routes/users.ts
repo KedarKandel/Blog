@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { check, validationResult } from "express-validator";
 import User from "../models/user";
 import verifyToken from "../middleware/auth";

@@ -25,12 +25,11 @@ export default function App() {
     }
   }, [isLoggedIn]);
 
-  const version = import.meta.env.VITE_REACT_APP_VERSION || ""
+  const version = import.meta.env.VITE_REACT_APP_VERSION || "";
 
   return (
     <>
-    //
-    <script src={`/assets/index-gsZBg36t.js${version}`} />
+      <script src={`/assets/index-gsZBg36t.js${version}`} />
       <Router>
         <Routes>
           <Route path="/" element={<Layout />}>

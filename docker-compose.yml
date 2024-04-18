@@ -1,23 +1,47 @@
-version: '3'
+
+version: '3.8'
 
 services:
   frontend:
-    build: ./client
+    depends_on:
+      - backend
+    build:
+      context: ./client
+      dockerfile: Dockerfile
     ports:
-      - "8080:80"
+      - "8000:8000"
     env_file:
-      - ./client/.env  
+      - ./client/.env 
+    network_mode: host  
 
   backend:
-    build: ./server
+    build:
+      context: ./server
+      dockerfile: Dockerfile
     ports:
-      - "5000:50"
+      - "7000:7000"
     env_file:
       - ./server/.env
     depends_on:
       - database
+    restart: always
 
-  database:
-    image: mongo
+  database: 
+    image: mongo:latest
     ports:
       - "27017:27017"
+    volumes:
+      - database_data:/data/db
+    restart: always
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./etc/nginx/nginx.config:/etc/nginx/nginx.conf:ro
+    ports:
+      - "8080:80"
+    depends_on:
+      - frontend
+
+volumes:
+  database_data:
