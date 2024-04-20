@@ -2,7 +2,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Heart, MessageCircleMore } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
-import { splitTextIntoParagraphs } from "../utils/utility";
+import { splitTextIntoParagraphs } from "../utils";
 import {
   deleteBlogAsync,
   fetchBlogByIdAsync,

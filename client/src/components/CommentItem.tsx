@@ -36,7 +36,7 @@ const CommentItem = ({ comment, user, blogId }: Props) => {
           })
         );
       } else {
-        dispatch(showToast({ message: "deleted", type: "success" }));
+        dispatch(showToast({ message: "comment removed from the post", type: "success" }));
       }
     } catch (error) {
       dispatch(

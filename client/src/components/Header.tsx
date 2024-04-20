@@ -4,7 +4,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { AppDispatch, RootState } from "../redux/store";
 import { logoutUserAsync } from "../redux/reducers/userSlice";
 import { showToast } from "../redux/reducers/toastSlice";
-import { Menu } from "lucide-react";
+import {
+  BookOpenText,
+  Menu,
+  SettingsIcon,
+  SquarePen,
+  LogOut,
+  LogIn,
+  Rss,
+} from "lucide-react";
 import { X } from "lucide-react";
 
 const Header = () => {
@@ -35,7 +43,10 @@ const Header = () => {
           isMenuOpen ? "visible" : "invisible"
         } md:hidden`}
       >
-        <h1 className=" text-3xl font-serif p-9 text-yellow-500 text-left" onClick={handleMenuClick}>
+        <h1
+          className=" text-3xl font-serif p-9 text-yellow-500 text-left"
+          onClick={handleMenuClick}
+        >
           <Link to="/">ExpressEcho</Link>
         </h1>
 
@@ -45,39 +56,39 @@ const Header = () => {
             <>
               <Link
                 to="/create"
-                className="my-3 text-xl font-serif text-yellow-400"
+                className="my-3 text-xl font-serif text-yellow-400  flex items-center gap-1 "
                 onClick={handleMenuClick}
               >
-                Create
+                write <SquarePen />
               </Link>
               <Link
                 to="/my-blogs"
-                className="my-3 text-xl font-serif "
+                className="my-3 text-xl font-serif  flex items-center gap-1  "
                 onClick={handleMenuClick}
               >
-                My blogs
+                My Blogs <BookOpenText />
               </Link>
               <Link
                 to="/my-account"
-                className="my-3 text-xl font-serif "
+                className="my-3 text-xl font-serif   flex items-center gap-1 "
                 onClick={handleMenuClick}
               >
-                Account
+                Account <SettingsIcon />
               </Link>
               <button
                 onClick={handleLogout}
-                className="bg-white text-blue-600 font-serif px-3 py-1 rounded-sm text-md font-bold hover:bg-gray-200 my-2"
+                className="bg-white text-blue-600 font-serif px-3 py-1 rounded-sm text-md font-bold hover:bg-gray-200 my-2 flex items-center gap-1 "
               >
-                Log out
+                Logout <LogOut />
               </button>
             </>
           ) : (
             <Link
               onClick={handleMenuClick}
               to={"/sign-in"}
-              className="flex items-center bg-white text-blue-500 text-md rounded  px-3 py-1 font-bold hover:bg-gray-200"
+              className="flex items-center gap-1 bg-white text-blue-500 text-sm rounded  px-3 py-1 font-bold hover:bg-gray-200 "
             >
-              Log In
+              Log In <LogIn />
             </Link>
           )}
         </div>
@@ -90,7 +101,7 @@ const Header = () => {
             to={"/"}
             className="text-2xl text-yellow-400 font-bold tracking-tight"
           >
-          ExpressEcho
+            ExpressEcho
           </Link>
 
           {/* Hamburger menu icon */}
@@ -102,25 +113,45 @@ const Header = () => {
           </button>
 
           <span className="space-x-2 hidden md:flex">
+            <Link
+              to="/"
+              className="mr-5 text-xl font-serif text-yellow-400  flex items-center gap-1 "
+              onClick={handleMenuClick}
+            >
+             <Rss />
+            </Link>
             {/* Links */}
             {isLoggedIn ? (
               <div className="hidden md:flex items-center gap-8 text-xl text-yellow-100">
-                <Link to="/create">Create</Link>
-                <Link to="/my-blogs">My blogs</Link>
-                <Link to="/my-account">Account</Link>
+                <Link to="/create" className=" flex items-center gap-1 text-sm">
+                  write
+                  <SquarePen />
+                </Link>
+                <Link
+                  to="/my-blogs"
+                  className=" flex items-center gap-1 text-sm"
+                >
+                  My blogs <BookOpenText />
+                </Link>
+                <Link
+                  to="/my-account"
+                  className=" flex items-center gap-1 text-sm"
+                >
+                  Account <SettingsIcon />
+                </Link>
                 <button
                   onClick={handleLogout}
-                  className="bg-white flex items-center text-blue-600 px-2 py-1 rounded-sm text-sm font-bold hover:bg-gray-200"
+                  className="bg-white flex items-center gap-1 text-blue-600 px-2 py-1 rounded-sm text-sm font-bold hover:bg-gray-200"
                 >
-                  Log out
+                  Logout <LogOut />
                 </button>
               </div>
             ) : (
               <Link
                 to={"/sign-in"}
-                className="flex items-center bg-white text-blue-500 rounded  px-3 py-1 font-bold hover:bg-gray-200"
+                className="flex items-center gap-1 bg-white text-blue-500 text-sm rounded  px-3 py-1 font-bold hover:bg-gray-200"
               >
-                Log In
+                Log In <LogIn />
               </Link>
             )}
           </span>

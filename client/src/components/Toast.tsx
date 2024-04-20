@@ -19,12 +19,12 @@ const Toast = () => {
 
   return (
     <div
-      className={`fixed top-5 right-5 z-50 flex items-center text-white p-2 rounded-md transition-opacity duration-300 ease-in-out ${
+      className={`fixed top-5 right-10 z-1000 flex items-center text-white text-sm py-2 px-4 rounded-md transition-opacity duration-300 ease-in-out ${
         message
           ? "opacity-100 pointer-events-auto"
           : "opacity-0 pointer-events-none"
       }
-      ${type === "error" ? "bg-red-500" : "bg-green-500"}
+      ${type === "error" ? "bg-red-500" : " bg-green-600"}
       `}
     >
       <span>{message}</span>

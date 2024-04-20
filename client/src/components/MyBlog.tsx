@@ -1,7 +1,7 @@
 import { BlogType } from "../sharedTypes";
 import { NotebookPen } from "lucide-react";
 import { Trash2 } from "lucide-react";
-import { splitTextIntoParagraphs } from "../utils/utility";
+import { splitTextIntoParagraphs } from "../utils";
 import { useState } from "react";
 import ConfirmDelete from "./ConfirmDelete";
 

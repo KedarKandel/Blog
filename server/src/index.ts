@@ -8,6 +8,7 @@ import mongoose from "mongoose";
 import usersRoutes from "./routes/users";
 import authRoutes from "./routes/auth";
 import myBlogRoutes from "./routes/my-blogs";
+//import blogRoutes from "./routes/blogs";
 import blogRoutes from "./routes/blogs";
 import path from "path";
 

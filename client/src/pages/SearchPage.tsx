@@ -11,7 +11,7 @@ import { BlogType } from "../sharedTypes";
 const SearchPage = () => {
   const blogs = useSelector((state: RootState) => state.blog.blogs);
   const pages = useSelector((state: RootState) => state.blog.totalPages);
-  
+
 
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState<number>(
@@ -19,9 +19,12 @@ const SearchPage = () => {
   );
   const [filter, setFilter] = useState("");
   const dispatch = useDispatch<AppDispatch>();
+
   const handleSearch = (searchQuery: string) => {
     setSearchQuery(searchQuery);
     setFilter("");
+
+   
   };
 
   const handleFilter = (filterQuery: string) => {
@@ -42,7 +45,10 @@ const SearchPage = () => {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
         {blogs?.map((blog: BlogType, index) => (
-          <Blog key={index} blog={blog} />
+          <Blog
+            key={index}
+            blog={blog}
+          />
         ))}
       </div>
 

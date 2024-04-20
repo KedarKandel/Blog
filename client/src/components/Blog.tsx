@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { BlogType } from "../sharedTypes";
-import { truncateDescription } from "../utils/utility";
+import { truncateDescription } from "../utils";
 import { Heart } from "lucide-react";
 import { MessageCircleMore } from "lucide-react";
 
@@ -42,7 +42,7 @@ const Blog = ({ blog }: Props) => {
           By: <span className="text-sm text-blue-800">{blog.createdBy}</span>
         </p>
         <p className=" text-sm text-blue-800">
-         {new Date(blog.createdAt).toLocaleDateString()}
+          {new Date(blog.createdAt).toLocaleDateString()}
         </p>
       </div>
     </Link>

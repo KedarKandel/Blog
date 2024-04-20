@@ -1,4 +1,5 @@
 export const truncateDescription = (description: string) => {
+ 
   const maxCharacters = 400;
   if (description.length > maxCharacters) {
     return `${description.substring(0, maxCharacters)}...`;

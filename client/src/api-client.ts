@@ -206,9 +206,10 @@ export const getAllBlogs = async (
   }
   if (filter) {
     queryParams.append("filter", filter);
+
   }
 
-  const url = `${API_BASE_URL}/api/blogs?${queryParams}`;
+  const url = `${API_BASE_URL}/api/blogs?${queryParams.toString()}`;
 
   try {
     const response = await fetch(url);
@@ -221,6 +222,8 @@ export const getAllBlogs = async (
     console.log(error);
     throw error;
   }
+
+  
 };
 
 // get blog by id
